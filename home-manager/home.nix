@@ -59,7 +59,10 @@
   };
 
   # Add stuff for your user as you see fit:
-  # home.packages = with pkgs; [ steam ];
+  home.packages = with pkgs; [
+    #steam
+    pinentry
+  ];
 
   programs.home-manager.enable = true;
   programs.bash = {
@@ -224,6 +227,14 @@
         immutable = true;
       };
     };
+  };
+
+  services.gpg-agent = {
+    enable = true;
+    enableBashIntegration = true;
+    defaultCacheTtl = 3600;
+    maxCacheTtl = 999999;
+    pinentryPackage = pkgs.pinentry;
   };
 
   # Nicely reload system units when changing configs
