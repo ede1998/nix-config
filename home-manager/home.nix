@@ -49,12 +49,25 @@
   home = {
     username = "erik";
     homeDirectory = "/home/erik";
+    sessionVariables = {
+      VISUAL = "${pkgs.neovim}/bin/nvim";
+      EDITOR = "${pkgs.neovim}/bin/nvim";
+    };
+    shellAliases = {
+    # for simple aliases that are cross-shell compatible
+    };
   };
 
   # Add stuff for your user as you see fit:
   # home.packages = with pkgs; [ steam ];
 
   programs.home-manager.enable = true;
+  programs.bash = {
+    enable = true;
+    initExtra = ''
+      source "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+    '';
+  };
   programs.git = {
     enable = true;
     diff-so-fancy.enable = true;
@@ -81,7 +94,6 @@
   };
   programs.neovim = {
     enable = true;
-    defaultEditor = true;
     viAlias = true;
     vimAlias = true;
     extraConfig = ''
