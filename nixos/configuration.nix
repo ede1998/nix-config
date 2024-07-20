@@ -102,7 +102,7 @@
     nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
   };
 
-  networking.hostName = "nixos";
+  networking.hostName = "nixos-erik-desktop";
   networking.networkmanager.enable = true;
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
