@@ -228,6 +228,13 @@
       };
     };
   };
+  programs.konsole = {
+    enable = true;
+    extraConfig = {
+      MainWindow.MenuBar = false;
+    };
+
+  };
 
   services.gpg-agent = {
     enable = true;
