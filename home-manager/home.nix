@@ -216,15 +216,23 @@
       };
     };
 
+    kwin = {
+      titlebarButtons.left = ["on-all-desktops" "keep-above-windows" "application-menu"];
+      virtualDesktops = {
+        number = 4;
+	rows = 4;
+      };
+    };
+
     # Some low-level settings:
     configFile = {
       "baloofilerc"."Basic Settings"."Indexing-Enabled" = false;
-      # Window titlebar button on left side: visible on all desktops, always on top, show menu options
-      "kwinrc"."org.kde.kdecoration2"."ButtonsOnLeft" = "SFN";
-      "kwinrc"."Desktops"."Number" = {
-        value = 4;
+      "kwinrc" = {
         # Forces kde to not change this value (even through the settings app).
-        immutable = true;
+        "Desktops"."Number".immutable = true;
+        # Disable effects when cursor is on screen edge
+        # Source: https://www.reddit.com/r/kde/comments/r5xir0/comment/hoehzhq
+        "Effect-overview".BorderActivate = 9;
       };
     };
   };
