@@ -62,6 +62,7 @@
   home.packages = with pkgs; [
     #steam
     pinentry
+    cura5
   ];
 
   programs.home-manager.enable = true;
@@ -251,6 +252,17 @@
     maxCacheTtl = 999999;
     pinentryPackage = pkgs.pinentry;
   };
+
+  #xdg = {
+  #  enable = true;
+  #
+  # Cura config does not work well, program seems to ignore it when it's write-only
+  #  dataFile."cura" = {
+  #    source = ./cura/.local/share;
+  #    recursive = true;
+  #  };
+  #  configFile."cura".source = ./cura/.config;
+  #};
 
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
