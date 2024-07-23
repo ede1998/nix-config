@@ -31,6 +31,7 @@
 
       # You can also add overlays exported from other flakes:
       # neovim-nightly-overlay.overlays.default
+      inputs.nix-vscode-extensions.overlays.default
 
       # Or define it inline, for example:
       # (final: prev: {
@@ -55,6 +56,7 @@
     };
     shellAliases = {
     # for simple aliases that are cross-shell compatible
+      code = "codium";
     };
   };
 
@@ -243,6 +245,33 @@
       MainWindow.MenuBar = false;
     };
 
+  };
+  programs.vscode = {
+    enable = true;
+    package = pkgs.unstable.vscodium; # stable version is a bit older and some extensions are not compatible
+    mutableExtensionsDir = false;
+    # overlay is under `vscode-marketplace`
+    # usual extensions are under `vscode-extensions`
+    extensions = with pkgs.vscode-marketplace; [
+        arrterian.nix-env-selector
+        bbenoist.nix
+        fardolieri.close-tabs-via-regex
+        james-yu.latex-workshop
+        ms-python.python
+        nvarner.typst-lsp
+        rust-lang.rust-analyzer
+        streetsidesoftware.code-spell-checker
+        tamasfe.even-better-toml
+        vscodevim.vim
+    ];
+    keybindings = [
+      {
+        key = "ctrl+alt+x";
+        command = "close-tabs-via-regex.close";
+        args = "\\("; # Close all tabs that contain an opening bracket
+      }
+    ];
+    # TODO: add user settings, e.g. clippy instead of check
   };
 
   services.gpg-agent = {
