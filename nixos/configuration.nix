@@ -123,6 +123,7 @@
         "docker"
         "networkmanager"
         "wheel"
+        "wireshark"
       ];
 
       packages = with pkgs; [
@@ -132,8 +133,8 @@
     };
   };
 
-  # Install firefox.
   programs.firefox.enable = true;
+  programs.partition-manager.enable = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
