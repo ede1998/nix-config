@@ -62,6 +62,7 @@
 
   # Add stuff for your user as you see fit:
   home.packages = with pkgs; [
+    koi
     bat
     bitwarden-desktop
     blender
@@ -114,6 +115,7 @@
     rust-script
     rustup
     texliveFull
+    tldr
     traceroute
     tree
     typst
