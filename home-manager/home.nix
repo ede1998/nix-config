@@ -78,7 +78,7 @@
     cura5
     dig
     direnv
-    discord
+    discord # If not already there, add the following to ~/.config/discord/settings.json: { "SKIP_HOST_UPDATE": true }
     dust
     exif
     fclones
