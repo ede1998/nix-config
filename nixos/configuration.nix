@@ -167,6 +167,13 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
+  # Enable auto-discovery of printers
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    openFirewall = true;
+  };
+
   virtualisation.docker.enable = true;
 
   # Enable sound with pipewire.
