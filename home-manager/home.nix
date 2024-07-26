@@ -155,6 +155,7 @@
     };
     ignores = [
       ".vscode/"
+      "_wip/"
     ];
     extraConfig = {
       credential.helper = "store --file ~/.config/git/credentials";
