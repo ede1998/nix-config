@@ -329,6 +329,7 @@
         rust-lang.rust-analyzer
         streetsidesoftware.code-spell-checker
         tamasfe.even-better-toml
+        usernamehw.errorlens
         vscodevim.vim
     ];
     keybindings = [
