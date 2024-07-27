@@ -12,7 +12,7 @@
   imports = [
     # If you want to use modules your own flake exports (from modules/home-manager):
     outputs.homeManagerModules.initial-files
-    outputs.homeManagerModules.initial-config.bitwarden-desktop
+    outputs.homeManagerModules.initial-config
 
     # Or modules exported from other flakes (such as nix-colors):
     # inputs.nix-colors.homeManagerModules.default
@@ -83,9 +83,12 @@
     pinentryPackage = pkgs.pinentry;
   };
 
-  initial-config.bitwarden-desktop = {
-    enable = true;
-    email = "bitwarden@erik-hennig.me";
+  initial-config = {
+    bitwarden-desktop = {
+      enable = true;
+      email = "bitwarden@erik-hennig.me";
+    };
+    discord.enable = true;
   };
 
   #xdg = {

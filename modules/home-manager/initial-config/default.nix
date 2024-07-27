@@ -1,3 +1,6 @@
 {
-  bitwarden-desktop = import ./bitwarden-desktop.nix;
+  imports = [
+    ./bitwarden-desktop.nix
+    ./discord.nix
+  ];
 }
