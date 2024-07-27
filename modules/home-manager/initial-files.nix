@@ -112,9 +112,12 @@ in {
           local target_dir="$(dirname "$target")";
 
           run mkdir -p "$target_dir"
-          echo "$force" | run --silence cp --interactive "$source" "$target"
+          # Option errexit is set and would stop script here when cp fails because file exists
+          # This is not desirable because the file always exists except for during the first run.
+          local exit_code=0
+          echo "$force" | run --silence cp --interactive "$source" "$target" || exit_code="$?"
 
-          if [ $? -eq 0 ]; then
+          if [ $exit_code -eq 0 ]; then
             if [ "$force" = "yes" ]; then
               verboseEcho "Forced overwrite: '$source' -> '$target'"
             else
@@ -133,7 +136,7 @@ in {
         # Force local source paths to be added to the store
         "${fileEntry.source}"
         fileEntry.target
-        fileEntry.force
+        (if fileEntry.force then "yes" else "no")
         fileEntry.permissions
         fileEntry.user
         fileEntry.group
