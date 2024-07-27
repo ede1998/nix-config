@@ -1,6 +1,16 @@
-{ lib, stdenv, fetchFromGitHub, cmake, qtbase, wrapQtAppsHook, kcoreaddons, kwidgetsaddons, kconfig }:
+{
+  lib,
+  stdenv,
+  fetchFromGitHub,
+  cmake,
+  qtbase,
+  wrapQtAppsHook,
+  kcoreaddons,
+  kwidgetsaddons,
+  kconfig,
+}:
 
-stdenv.mkDerivation rec{
+stdenv.mkDerivation rec {
   pname = "koi";
   version = "0.3.1";
 
@@ -11,9 +21,16 @@ stdenv.mkDerivation rec{
     sha256 = "sha256-dhpuKIY/Xi62hzJlnVCIOF0k6uoQ3zH129fLq/r+Kmg=";
   };
 
-  nativeBuildInputs = [ cmake wrapQtAppsHook ];
+  nativeBuildInputs = [
+    cmake
+    wrapQtAppsHook
+  ];
 
-  buildInputs = [ kcoreaddons kwidgetsaddons kconfig ];
+  buildInputs = [
+    kcoreaddons
+    kwidgetsaddons
+    kconfig
+  ];
 
   sourceRoot = "source/src";
 

@@ -7,7 +7,8 @@
   config,
   pkgs,
   ...
-}: {
+}:
+{
   # You can import other home-manager modules here
   imports = [
     # If you want to use modules your own flake exports (from modules/home-manager):
@@ -56,7 +57,7 @@
     username = "erik";
     homeDirectory = "/home/erik";
     shellAliases = {
-    # for simple aliases that are cross-shell compatible
+      # for simple aliases that are cross-shell compatible
       code = "codium";
     };
   };
@@ -101,7 +102,7 @@
   #  };
   #  configFile."cura".source = ./cura/.config;
   #};
-  
+
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
 

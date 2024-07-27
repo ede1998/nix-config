@@ -1,4 +1,4 @@
-{pkgs, ...}:
+{ pkgs, ... }:
 {
   home.sessionVariables = {
     VISUAL = "${pkgs.neovim}/bin/nvim";

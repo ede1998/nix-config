@@ -1,4 +1,4 @@
-{pkgs, ...}:
+{ pkgs, ... }:
 {
   programs.plasma = {
     enable = true;
@@ -58,7 +58,11 @@
     };
 
     kwin = {
-      titlebarButtons.left = ["on-all-desktops" "keep-above-windows" "application-menu"];
+      titlebarButtons.left = [
+        "on-all-desktops"
+        "keep-above-windows"
+        "application-menu"
+      ];
       virtualDesktops = {
         number = 4;
         rows = 4;
