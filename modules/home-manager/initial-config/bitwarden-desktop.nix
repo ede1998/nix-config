@@ -6,7 +6,7 @@ in {
   # Cannot import here and in home.nix. Error:
   # The option `initial-files.file' in `home.nix' is already declared in initial-files.nix
   # As it is already imported in home.nix, it is passed down to here as function arg.
-  # imports = [ import ../initial-files.nix ];
+  # imports = [ ../initial-files.nix ];
 
   options.initial-config.bitwarden-desktop = {
     enable = mkEnableOption "Bitwarden";
