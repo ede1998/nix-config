@@ -356,11 +356,6 @@
     email = "bitwarden@erik-hennig.me";
   };
 
-  #initial-files.file = {
-  #  "${config.home.homeDirectory}/Downloads/elsewhere.json" = {
-  #    source = ./foobar.txt;
-  #  };
-  #};
   #xdg = {
   #  enable = true;
   #

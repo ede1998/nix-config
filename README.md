@@ -62,6 +62,8 @@ export NIX_CONFIG="experimental-features = nix-command flakes"
 - Run `home-manager switch --flake .#username@hostname` to apply your home
   configuration.
   - If you don't have home-manager installed, try `nix shell nixpkgs#home-manager`.
+- Run `nix repl` and then type `:lf .` to load this flake into an interactive interpreter
+  and check out available options. 
 
 And that's it, really! You're ready to have fun with your configurations using
 the latest and greatest nix3 flake-enabled command UX.
@@ -119,7 +121,7 @@ environment.systemPackages =
 You can organize them by hostname and username on `nixos` and `home-manager`
 directories, be sure to also add them to `flake.nix`.
 
-You can take a look at my (beware, here be reproductible dragons)
+You can take a look at my (beware, here be reproducible dragons)
 [configuration repo](https://github.com/misterio77/nix-config) for ideas.
 
 NixOS makes it easy to share common configuration between hosts (you might want
@@ -161,12 +163,12 @@ syntax, there's home-manager options (such as `xdg.configFile`) for including
 files from your config repository into your usual dot directories. Add your
 existing dotfiles to this repo and try it out!
 
-## Try opt-in persistance
+## Try opt-in persistence
 
 You might have noticed that there's impurity in your NixOS system, in the form
 of configuration files and other cruft your system generates when running. What
 if you change them in a whim to get something working and forget about it?
-Boom, your system is not fully reproductible anymore.
+Boom, your system is not fully reproducible anymore.
 
 You can instead fully delete your `/` and `/home` on every boot! Nix is okay
 with a empty root on boot (all you need is `/boot` and `/nix`), and will
@@ -211,8 +213,8 @@ to package stuff.
 ## Adding overlays
 
 Found some outdated package on nixpkgs you need the latest version of? Perhaps
-you want to apply a patch to fix a behaviour you don't like? Nix makes it easy
-and manageble with overlays!
+you want to apply a patch to fix a behavior you don't like? Nix makes it easy
+and manageable with overlays!
 
 Use the `overlays/default.nix` file for this.
 
