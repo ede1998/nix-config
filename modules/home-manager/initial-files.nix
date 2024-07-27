@@ -109,8 +109,10 @@ in {
           local permissions="$4";
           local user="''${5:-$(id -u)}";
           local group="''${6:-$(id -g)}";
+          local target_dir="$(dirname "$target")";
 
-          echo "$force" | run --quiet cp --interactive "$source" "$target"
+          run mkdir -p "$target_dir"
+          echo "$force" | run --silence cp --interactive "$source" "$target"
 
           if [ $? -eq 0 ]; then
             if [ "$force" = "yes" ]; then

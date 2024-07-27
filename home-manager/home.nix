@@ -12,6 +12,7 @@
   imports = [
     # If you want to use modules your own flake exports (from modules/home-manager):
     outputs.homeManagerModules.initial-files
+    outputs.homeManagerModules.initial-config.bitwarden-desktop
 
     # Or modules exported from other flakes (such as nix-colors):
     # inputs.nix-colors.homeManagerModules.default
@@ -64,7 +65,6 @@
   home.packages = with pkgs; [
     koi
     bat
-    bitwarden-desktop
     blender
     cargo-asm
     cargo-binutils
@@ -254,7 +254,7 @@
       # Windows-like panel at the top
       {
         location = "top";
-	screen = 2;
+        screen = 2;
         widgets = [
           "org.kde.plasma.kickoff"
           "org.kde.plasma.icontasks"
@@ -351,6 +351,16 @@
     pinentryPackage = pkgs.pinentry;
   };
 
+  initial-config.bitwarden-desktop = {
+    enable = true;
+    email = "bitwarden@erik-hennig.me";
+  };
+
+  #initial-files.file = {
+  #  "${config.home.homeDirectory}/Downloads/elsewhere.json" = {
+  #    source = ./foobar.txt;
+  #  };
+  #};
   #xdg = {
   #  enable = true;
   #
@@ -361,7 +371,7 @@
   #  };
   #  configFile."cura".source = ./cura/.config;
   #};
-
+  
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
 
