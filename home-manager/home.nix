@@ -23,6 +23,7 @@
     ./neovim.nix
     ./pkgs.nix
     ./plasma.nix
+    ./thunderbird.nix
     ./vscode.nix
   ];
 
