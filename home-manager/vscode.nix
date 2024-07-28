@@ -9,6 +9,7 @@
     extensions = with pkgs.vscode-marketplace; [
       arrterian.nix-env-selector
       bbenoist.nix
+      eamodio.gitlens
       fardolieri.close-tabs-via-regex
       james-yu.latex-workshop
       ms-python.python
