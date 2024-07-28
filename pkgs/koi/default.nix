@@ -3,7 +3,6 @@
   stdenv,
   fetchFromGitHub,
   cmake,
-  qtbase,
   wrapQtAppsHook,
   kcoreaddons,
   kwidgetsaddons,

@@ -1,7 +1,6 @@
 {
   appimageTools,
   fetchurl,
-  bash,
   pkgs,
   writeScriptBin,
 }:
@@ -14,7 +13,7 @@ let
       url = "https://github.com/Ultimaker/Cura/releases/download/${version}-RC2/UltiMaker-Cura-${version}-linux-X64.AppImage";
       hash = "sha256-XlTcCmIqcfTg8fxM2KDik66qjIKktWet+94lFIJWopY=";
     };
-    extraPkgs = pkgs: with pkgs; [ ];
+    extraPkgs = pkgs: [ ];
   };
 in
 writeScriptBin "cura" ''

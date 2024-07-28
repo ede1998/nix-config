@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  initial-files,
   ...
 }:
 with lib;
