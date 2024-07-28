@@ -40,7 +40,6 @@
     kdePackages.krdc
     kdePackages.krfb
     libreoffice-fresh
-    nixfmt-rfc-style
     p7zip
     pciutils
     pdfarranger

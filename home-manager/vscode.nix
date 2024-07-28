@@ -8,10 +8,10 @@
     # usual extensions are under `vscode-extensions`
     extensions = with pkgs.vscode-marketplace; [
       arrterian.nix-env-selector
-      bbenoist.nix
       eamodio.gitlens
       fardolieri.close-tabs-via-regex
       james-yu.latex-workshop
+      jnoortheen.nix-ide
       ms-python.python
       nvarner.typst-lsp
       rust-lang.rust-analyzer
@@ -28,5 +28,35 @@
       }
     ];
     # TODO: add user settings, e.g. clippy instead of check
+    userSettings = {
+      "window.autoDetectColorScheme" = true;
+      "diffEditor.ignoreTrimWhitespace" = false;
+      "diffEditor.renderSideBySide" = false;
+
+      "nix.enableLanguageServer" = true;
+      "nix.serverPath" = "nil";
+      "nix.serverSettings".nil.formatting.command = [ "nixfmt" ];
+
+      "editor.inlayHints.enabled" = "offUnlessPressed"; # CTRL + ALT to enable/disable
+      "editor.minimap.enabled" = false;
+
+      "vim.normalModeKeyBindings" = [
+        {
+          before = [ "ctrl+p" ];
+          commands = [ "workbench.action.quickOpen" ];
+          silent = true;
+        }
+      ];
+
+      "rust-analyzer.check.command" = "clippy";
+      "rust-analyzer.interpret.tests" = true;
+      "rust-analyzer.completion.snippets.custom" = import ./rust-analyzer-snippets.nix;
+
+      "cSpell.userWords" = import ./vscode-spelling.nix;
+    };
   };
+  home.packages = [
+    pkgs.nil # language server for nix
+    pkgs.nixfmt-rfc-style
+  ];
 }
