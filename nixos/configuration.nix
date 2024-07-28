@@ -138,6 +138,12 @@
 
   programs.firefox.enable = true;
   programs.partition-manager.enable = true;
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true;
+    dedicatedServer.openFirewall = true;
+    localNetworkGameTransfers.openFirewall = true;
+  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
