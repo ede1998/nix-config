@@ -91,9 +91,20 @@
     };
     discord.enable = true;
     nextcloud-client = {
-      enable = true;
-      config-file = ./config-files/nextcloud.cfg;
+      enable = false;
       start-in-background = true;
+      user = "erik";
+      instance-url = "https://cloud.erik-hennig.me";
+      folder-sync = {
+        "/Documents" = {
+          localPath = "${config.home.homeDirectory}/Documents";
+          ignoreHiddenFiles = false;
+        };
+        "/Pictures" = {
+          localPath = "${config.home.homeDirectory}/Pictures";
+          ignoreHiddenFiles = false;
+        };
+      };
     };
   };
 
