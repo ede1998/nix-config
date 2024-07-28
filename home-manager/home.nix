@@ -90,6 +90,11 @@
       email = "bitwarden@erik-hennig.me";
     };
     discord.enable = true;
+    nextcloud-client = {
+      enable = true;
+      config-file = ./config-files/nextcloud.cfg;
+      start-in-background = true;
+    };
   };
 
   #xdg = {
