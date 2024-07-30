@@ -106,6 +106,13 @@
         };
       };
     };
+    vorta = {
+      enable = true;
+      profiles = [
+        ./vorta-profiles/HDD.json
+        ./vorta-profiles/NAS.json
+      ];
+    };
   };
 
   #xdg = {

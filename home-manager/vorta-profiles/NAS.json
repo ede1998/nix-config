@@ -1,0 +1,366 @@
+{
+    "id": 1,
+    "name": "NAS",
+    "added_at": "2023-03-13 16:23:31.436633",
+    "repo": {
+        "url": "/mnt/erikdoc/backups/borg/desktop.borg",
+        "name": "",
+        "added_at": "2023-03-13 16:27:08.445695",
+        "encryption": "repokey",
+        "unique_size": null,
+        "unique_csize": null,
+        "total_size": null,
+        "total_unique_chunks": null,
+        "create_backup_cmd": "--exclude-caches",
+        "extra_borg_arguments": ""
+    },
+    "ssh_key": null,
+    "compression": "zstd,8",
+    "exclude_patterns": null,
+    "exclude_if_present": null,
+    "schedule_mode": "fixed",
+    "schedule_interval_count": 3,
+    "schedule_interval_unit": "hours",
+    "schedule_fixed_hour": 2,
+    "schedule_fixed_minute": 50,
+    "schedule_interval_hours": 3,
+    "schedule_interval_minutes": 42,
+    "schedule_make_up_missed": true,
+    "validation_on": true,
+    "validation_weeks": 3,
+    "prune_on": true,
+    "prune_hour": 2,
+    "prune_day": 7,
+    "prune_week": 4,
+    "prune_month": 6,
+    "prune_year": 2,
+    "prune_keep_within": "10H",
+    "new_archive_name": "{hostname}-daily-{now:%Y-%m-%dT%H:%M:%S}",
+    "prune_prefix": "{hostname}-daily",
+    "pre_backup_cmd": "",
+    "post_backup_cmd": "",
+    "dont_run_on_metered_networks": true,
+    "SourceFileModel": [
+        {
+            "dir": "/home/erik/Documents/",
+            "dir_size": 0,
+            "dir_files_count": 0,
+            "path_isdir": true,
+            "profile": 1,
+            "added_at": "2023-03-13 15:34:09.232045"
+        },
+        {
+            "dir": "/home/erik/Music/",
+            "dir_size": 0,
+            "dir_files_count": 0,
+            "path_isdir": true,
+            "profile": 1,
+            "added_at": "2023-03-13 15:34:09.249072"
+        },
+        {
+            "dir": "/home/erik/Pictures/",
+            "dir_size": 0,
+            "dir_files_count": 0,
+            "path_isdir": true,
+            "profile": 1,
+            "added_at": "2023-03-13 15:34:09.256622"
+        },
+        {
+            "dir": "/home/erik/Templates/",
+            "dir_size": 0,
+            "dir_files_count": 0,
+            "path_isdir": true,
+            "profile": 1,
+            "added_at": "2023-03-13 15:34:09.262866"
+        },
+        {
+            "dir": "/home/erik/Videos/",
+            "dir_size": 0,
+            "dir_files_count": 0,
+            "path_isdir": true,
+            "profile": 1,
+            "added_at": "2023-03-13 15:34:09.273622"
+        },
+        {
+            "dir": "/home/erik/dotfiles/",
+            "dir_size": 6084423,
+            "dir_files_count": 774,
+            "path_isdir": true,
+            "profile": 1,
+            "added_at": "2023-03-13 15:34:09.284836"
+        },
+        {
+            "dir": "/home/erik/daten/music/",
+            "dir_size": 195885349825,
+            "dir_files_count": 9156,
+            "path_isdir": true,
+            "profile": 1,
+            "added_at": "2023-03-13 15:34:09.292667"
+        },
+        {
+            "dir": "/home/erik/daten/videos/",
+            "dir_size": 70271703504,
+            "dir_files_count": 57,
+            "path_isdir": true,
+            "profile": 1,
+            "added_at": "2023-03-13 15:34:09.299074"
+        },
+        {
+            "dir": "/home/erik/daten/folder/",
+            "dir_size": 29657770671,
+            "dir_files_count": 1841,
+            "path_isdir": true,
+            "profile": 1,
+            "added_at": "2023-03-13 15:34:09.309981"
+        },
+        {
+            "dir": "/home/erik/dev",
+            "dir_size": 40577857,
+            "dir_files_count": 755,
+            "path_isdir": true,
+            "profile": 1,
+            "added_at": "2023-03-13 15:34:23.770753"
+        },
+        {
+            "dir": "/home/erik/Documents/",
+            "dir_size": 0,
+            "dir_files_count": 0,
+            "path_isdir": true,
+            "profile": 1,
+            "added_at": "2023-03-13 15:34:09.232045"
+        },
+        {
+            "dir": "/home/erik/Music/",
+            "dir_size": 0,
+            "dir_files_count": 0,
+            "path_isdir": true,
+            "profile": 1,
+            "added_at": "2023-03-13 15:34:09.249072"
+        },
+        {
+            "dir": "/home/erik/Pictures/",
+            "dir_size": 0,
+            "dir_files_count": 0,
+            "path_isdir": true,
+            "profile": 1,
+            "added_at": "2023-03-13 15:34:09.256622"
+        },
+        {
+            "dir": "/home/erik/Templates/",
+            "dir_size": 0,
+            "dir_files_count": 0,
+            "path_isdir": true,
+            "profile": 1,
+            "added_at": "2023-03-13 15:34:09.262866"
+        },
+        {
+            "dir": "/home/erik/Videos/",
+            "dir_size": 0,
+            "dir_files_count": 0,
+            "path_isdir": true,
+            "profile": 1,
+            "added_at": "2023-03-13 15:34:09.273622"
+        },
+        {
+            "dir": "/home/erik/dotfiles/",
+            "dir_size": 6084423,
+            "dir_files_count": 774,
+            "path_isdir": true,
+            "profile": 1,
+            "added_at": "2023-03-13 15:34:09.284836"
+        },
+        {
+            "dir": "/home/erik/daten/music/",
+            "dir_size": 195885349825,
+            "dir_files_count": 9156,
+            "path_isdir": true,
+            "profile": 1,
+            "added_at": "2023-03-13 15:34:09.292667"
+        },
+        {
+            "dir": "/home/erik/daten/videos/",
+            "dir_size": 70271703504,
+            "dir_files_count": 57,
+            "path_isdir": true,
+            "profile": 1,
+            "added_at": "2023-03-13 15:34:09.299074"
+        },
+        {
+            "dir": "/home/erik/daten/folder/",
+            "dir_size": 29657770671,
+            "dir_files_count": 1841,
+            "path_isdir": true,
+            "profile": 1,
+            "added_at": "2023-03-13 15:34:09.309981"
+        },
+        {
+            "dir": "/home/erik/dev",
+            "dir_size": 40577857,
+            "dir_files_count": 755,
+            "path_isdir": true,
+            "profile": 1,
+            "added_at": "2023-03-13 15:34:23.770753"
+        }
+    ],
+    "SchemaVersion": {
+        "id": 1,
+        "version": 22,
+        "changed_at": "2024-01-19 20:38:49.557408"
+    },
+    "WifiSettingModel": [],
+    "SettingsModel": [
+        {
+            "key": "enable_notifications",
+            "value": true,
+            "str_value": "",
+            "label": "Display notifications when background tasks fail",
+            "group": "Notifications",
+            "tooltip": "",
+            "type": "checkbox"
+        },
+        {
+            "key": "enable_notifications_success",
+            "value": true,
+            "str_value": "",
+            "label": "Notify about successful background tasks",
+            "group": "Notifications",
+            "tooltip": "",
+            "type": "checkbox"
+        },
+        {
+            "key": "autostart",
+            "value": true,
+            "str_value": "",
+            "label": "Automatically start Vorta at login",
+            "group": "Startup",
+            "tooltip": "Add Vorta to the systems autostart list",
+            "type": "checkbox"
+        },
+        {
+            "key": "foreground",
+            "value": false,
+            "str_value": "",
+            "label": "Show main window of Vorta on launch",
+            "group": "Startup",
+            "tooltip": "Make Vorta appear on screen instead of minimizing to system tray",
+            "type": "checkbox"
+        },
+        {
+            "key": "get_srcpath_datasize",
+            "value": true,
+            "str_value": "",
+            "label": "Get statistics of file/folder when added",
+            "group": "Information",
+            "tooltip": "When adding a new source, calculate its size and the number of files.",
+            "type": "checkbox"
+        },
+        {
+            "key": "use_system_keyring",
+            "value": true,
+            "str_value": "",
+            "label": "Store repository passwords in system keychain, if available",
+            "group": "Security",
+            "tooltip": "Otherwise Vorta's configuration database stores the password in plaintext.",
+            "type": "checkbox"
+        },
+        {
+            "key": "override_mount_permissions",
+            "value": false,
+            "str_value": "",
+            "label": "Try to replace file permissions when mounting an archive",
+            "group": "Security",
+            "tooltip": "Set owner to current user and umask to 0277",
+            "type": "checkbox"
+        },
+        {
+            "key": "previous_profile_id",
+            "value": false,
+            "str_value": "1",
+            "label": "Previously selected profile",
+            "group": "",
+            "tooltip": "",
+            "type": "internal"
+        },
+        {
+            "key": "previous_window_width",
+            "value": false,
+            "str_value": "2191",
+            "label": "Previous window width",
+            "group": "",
+            "tooltip": "",
+            "type": "internal"
+        },
+        {
+            "key": "previous_window_height",
+            "value": false,
+            "str_value": "1172",
+            "label": "Previous window height",
+            "group": "",
+            "tooltip": "",
+            "type": "internal"
+        },
+        {
+            "key": "enable_background_question",
+            "value": true,
+            "str_value": "",
+            "label": "If the system tray isn't available, ask whether to continue in the background on exit",
+            "group": "",
+            "tooltip": "",
+            "type": "checkbox"
+        },
+        {
+            "key": "disable_background_state",
+            "value": false,
+            "str_value": "",
+            "label": "Previous background exit button state",
+            "group": "",
+            "tooltip": "",
+            "type": "internal"
+        },
+        {
+            "key": "diff_files_display_mode",
+            "value": false,
+            "str_value": "0",
+            "label": "Diff dialog display mode",
+            "group": "",
+            "tooltip": "",
+            "type": "internal"
+        },
+        {
+            "key": "extract_files_display_mode",
+            "value": false,
+            "str_value": "0",
+            "label": "Extract dialog display mode",
+            "group": "",
+            "tooltip": "",
+            "type": "internal"
+        },
+        {
+            "key": "sourcetab_sort_column",
+            "value": false,
+            "str_value": "0",
+            "label": "Source Tab Sort Column",
+            "group": "",
+            "tooltip": "",
+            "type": "internal"
+        },
+        {
+            "key": "sourcetab_sort_order",
+            "value": false,
+            "str_value": "0",
+            "label": "Source Tab Sort Order",
+            "group": "",
+            "tooltip": "",
+            "type": "internal"
+        },
+        {
+            "key": "enable_fixed_units",
+            "value": false,
+            "str_value": "",
+            "label": "Use the same unit of measurement for archive sizes",
+            "group": "Information",
+            "tooltip": "When enabled, all archive sizes will use the same unit of measurement, such as  KB or MB. This can make archive sizes easier to compare.",
+            "type": "checkbox"
+        }
+    ]
+}

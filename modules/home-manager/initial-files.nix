@@ -197,82 +197,80 @@ in
     };
   };
 
-  config = {
-    home.activation = {
-      createInitialFiles = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+  config = mkIf (files' != [ ] || dirs' != [ ]) {
+    home.activation.createInitialFiles = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
 
-        verboseEcho "Creating initial files"
+      verboseEcho "Creating initial files"
 
-        makeFileEntry() {
-          local source="$1";
-          local target="$2";
-          local force="$3";
-          local permissions="$4";
-          local user="''${5:-$(id -u)}";
-          local group="''${6:-$(id -g)}";
-          local target_dir="$(dirname "$target")";
+      makeFileEntry() {
+        local source="$1";
+        local target="$2";
+        local force="$3";
+        local permissions="$4";
+        local user="''${5:-$(id -u)}";
+        local group="''${6:-$(id -g)}";
+        local target_dir="$(dirname "$target")";
 
-          run mkdir -p "$target_dir"
-          # Option errexit is set and would stop script here when cp fails because file exists.
-          # This is not desirable because the file always exists except for during the first run.
-          local exit_code=0
-          echo "$force" | run --silence cp --interactive "$source" "$target" || exit_code="$?"
+        run mkdir -p "$target_dir"
+        # Option errexit is set and would stop script here when cp fails because file exists.
+        # This is not desirable because the file always exists except for during the first run.
+        local exit_code=0
+        echo "$force" | run --silence cp --interactive "$source" "$target" || exit_code="$?"
 
-          if [ $exit_code -eq 0 ]; then
-            if [ "$force" = "yes" ]; then
-              verboseEcho "Forced overwrite: '$source' -> '$target'"
-            else
-              verboseEcho "'$source' -> '$target'"
-            fi
-            run chown "$user:$group" "$target"
-            run chmod "$permissions" "$target"
+        if [ $exit_code -eq 0 ]; then
+          if [ "$force" = "yes" ]; then
+            verboseEcho "Forced overwrite: '$source' -> '$target'"
           else
-            verboseEcho "File already exists: Skip copying '$source' -> '$target'"
+            verboseEcho "'$source' -> '$target'"
           fi
-        }
-
-        ${concatMapStringsSep "\n" (
-          fileEntry:
-          escapeShellArgs [
-            "makeFileEntry"
-            # Force local source paths to be added to the store
-            "${fileEntry.source}"
-            fileEntry.target
-            (if fileEntry.force then "yes" else "no")
-            fileEntry.permissions
-            fileEntry.user
-            fileEntry.group
-          ]
-        ) files'}
-
-        makeDirEntry() {
-          local target="$1";
-          local permissions="$2";
-          local user="''${3:-$(id -u)}";
-          local group="''${4:-$(id -g)}";
-
-          if [[ -d "$target" ]]; then
-            verboseEcho "Directory already exists: Skip creating '$target'"
-            return
-          fi
-
-          run mkdir -p "$target"
-          verboseEcho "Created directory '$target'"
           run chown "$user:$group" "$target"
           run chmod "$permissions" "$target"
-        }
+        else
+          verboseEcho "File already exists: Skip copying '$source' -> '$target'"
+        fi
+      }
 
-        ${concatMapStringsSep "\n" (
-          dirEntry:
-          escapeShellArgs [
-            "makeDirEntry"
-            dirEntry.target
-            dirEntry.permissions
-            dirEntry.user
-            dirEntry.group
-          ]
-        ) dirs'}
-      '';
-    };
+      ${concatMapStringsSep "\n" (
+        fileEntry:
+        escapeShellArgs [
+          "makeFileEntry"
+          # Force local source paths to be added to the store
+          "${fileEntry.source}"
+          fileEntry.target
+          (if fileEntry.force then "yes" else "no")
+          fileEntry.permissions
+          fileEntry.user
+          fileEntry.group
+        ]
+      ) files'}
+
+      makeDirEntry() {
+        local target="$1";
+        local permissions="$2";
+        local user="''${3:-$(id -u)}";
+        local group="''${4:-$(id -g)}";
+
+        if [[ -d "$target" ]]; then
+          verboseEcho "Directory already exists: Skip creating '$target'"
+          return
+        fi
+
+        run mkdir -p "$target"
+        verboseEcho "Created directory '$target'"
+        run chown "$user:$group" "$target"
+        run chmod "$permissions" "$target"
+      }
+
+      ${concatMapStringsSep "\n" (
+        dirEntry:
+        escapeShellArgs [
+          "makeDirEntry"
+          dirEntry.target
+          dirEntry.permissions
+          dirEntry.user
+          dirEntry.group
+        ]
+      ) dirs'}
+    '';
   };
 }
