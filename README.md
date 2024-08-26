@@ -63,7 +63,11 @@ export NIX_CONFIG="experimental-features = nix-command flakes"
   configuration.
   - If you don't have home-manager installed, try `nix shell nixpkgs#home-manager`.
 - Run `nix repl` and then type `:lf .` to load this flake into an interactive interpreter
-  and check out available options. 
+  and check out available options. Useful commands:
+  `cfg = homeConfigurations."erik@nixos-erik-desktop".config`
+  `lib = nixosConfigurations.nixos-erik-desktop.lib`
+  `pkgs = nixosConfigurations.nixos-erik-desktop.pkgs`
+  `:p <expr>`
 
 And that's it, really! You're ready to have fun with your configurations using
 the latest and greatest nix3 flake-enabled command UX.

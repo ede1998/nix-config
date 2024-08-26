@@ -23,6 +23,7 @@
     ./neovim.nix
     ./pkgs.nix
     ./plasma.nix
+    ./ssh.nix
     ./thunderbird.nix
     ./vscode.nix
   ];
@@ -66,7 +67,9 @@
   programs.bash = {
     enable = true;
     initExtra = ''
-      source "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+      source "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh";
+      # connect to ssh-agent
+      [ -e /run/user/$(id -u)/ssh-agent ] && export SSH_AUTH_SOCK=/run/user/$(id -u)/ssh-agent;
     '';
   };
   programs.konsole = {
