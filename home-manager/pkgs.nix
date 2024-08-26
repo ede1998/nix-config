@@ -24,6 +24,7 @@
     freecad
     gcc
     gimp
+    git-crypt
     glxinfo
     gnumake
     htop
