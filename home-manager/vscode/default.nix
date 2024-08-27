@@ -27,11 +27,11 @@
         args = "\\("; # Close all tabs that contain an opening bracket
       }
     ];
-    # TODO: add user settings, e.g. clippy instead of check
     userSettings = {
       "window.autoDetectColorScheme" = true;
       "diffEditor.ignoreTrimWhitespace" = false;
       "diffEditor.renderSideBySide" = false;
+      "terminal.integrated.stickyScroll.enabled" = true;
 
       "nix.enableLanguageServer" = true;
       "nix.serverPath" = "nil";

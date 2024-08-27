@@ -13,7 +13,7 @@
   services.ssh-agent.enable = true;
 
   home.file.".ssh" = {
-    source = ../secrets/ssh;
+    source = ../../secrets/ssh;
     recursive = true;
   };
 }
