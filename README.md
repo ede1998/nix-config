@@ -28,6 +28,8 @@ and follow along (just ignore the `nixos-*` commands).
 ```bash
 git clone https://github.com/ede1998/nix-config.git
 cd nix-config
+# Decode secrets
+wl-paste | base64 -d | git crypt unlock -
 ```
 - Make sure you're running Nix 2.4+, and opt into the experimental `flakes` and `nix-command` features:
 ```bash

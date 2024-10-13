@@ -5,7 +5,10 @@
       nix
       home-manager
       git
+
       git-crypt
+      wl-clipboard # for wl-paste
+      coreutils # for base64
     ];
   };
 }
