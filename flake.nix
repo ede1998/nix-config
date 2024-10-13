@@ -8,6 +8,11 @@
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     # Also see the 'unstable-packages' overlay at 'overlays/default.nix'.
 
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager/release-24.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -38,10 +43,10 @@
       # Supported systems for your flake packages, shell, etc.
       systems = [
         "aarch64-linux"
-        "i686-linux"
+        #"i686-linux"
         "x86_64-linux"
-        "aarch64-darwin"
-        "x86_64-darwin"
+        #"aarch64-darwin"
+        #"x86_64-darwin"
       ];
       # This is a function that generates an attribute by calling a function you
       # pass to it, with each system as an argument
@@ -73,7 +78,16 @@
           };
           modules = [
             # > Our main nixos configuration file <
-            ./nixos/configuration.nix
+            ./nixos/nixos-erik-desktop/configuration.nix
+          ];
+        };
+        babbage = nixpkgs.lib.nixosSystem {
+          specialArgs = {
+            inherit inputs outputs;
+          };
+          modules = [
+            # > Our main nixos configuration file <
+            ./nixos/babbage/configuration.nix
           ];
         };
       };
@@ -82,6 +96,16 @@
       # Available through 'home-manager --flake .#your-username@your-hostname'
       homeConfigurations = {
         "erik@nixos-erik-desktop" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+          extraSpecialArgs = {
+            inherit inputs outputs;
+          };
+          modules = [
+            # > Our main home-manager configuration file <
+            ./home-manager/home.nix
+          ];
+        };
+        "erik@babbage" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = {
             inherit inputs outputs;
