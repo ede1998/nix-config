@@ -59,7 +59,7 @@ export NIX_CONFIG="experimental-features = nix-command flakes"
   configuration.
     - If you're still on a live installation medium, run `nixos-install --flake .#hostname` instead, and reboot.
     - If you are using disko, run `sudo nix run 'github:nix-community/disko#disko-install' --
-      --flake .#<flake-attr> --disk <disko-disk-name> <disk-path>` instead, and reboot.
+      --write-efi-boot-entries --flake .#<flake-attr> --disk <disko-disk-name> <disk-path>` instead, and reboot.
 - Run `home-manager switch --flake .#username@hostname` to apply your home
   configuration.
   - If you don't have home-manager installed, try `nix shell nixpkgs#home-manager`.
