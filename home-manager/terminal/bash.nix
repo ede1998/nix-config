@@ -17,10 +17,4 @@
     "\e[5~": history-search-backward
     "\e[6~": history-search-forward
   '';
-  programs.konsole = {
-    enable = true;
-    extraConfig = {
-      MainWindow.MenuBar = false;
-    };
-  };
 }

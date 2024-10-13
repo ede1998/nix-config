@@ -15,7 +15,6 @@
     cargo-update
     cura5
     dig
-    direnv
     dust
     exif
     fclones
