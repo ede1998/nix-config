@@ -1,83 +1,56 @@
-# Erik's NixOS configuration
+# ede1998's NixOS configuration
 
-*Based on [Misterio77/nix-starter-configs](https://github.com/Misterio77/nix-starter-configs/tree/f1ecf7e2275f541af7bec763866a909224b937a4)*
+## Bootstrapping a new system
 
-- Basic boilerplate for adding custom packages (under `pkgs`) and overlays
-  (under `overlay`). Accessible on your system, home config, as well as `nix
-  build .#package-name`.
-- Boilerplate for custom NixOS (`modules/nixos`) and home-manager
-  (`modules/home-manager`) modules
-- NixOS and home-manager configurations from minimal, and they should
-  also use your overlays and custom packages right out of the box.
-
-# Getting started
-
-Assuming you have a basic NixOS booted up (either live or installed, anything
-works). [Here's a link to the latest NixOS downloads, just for
-you](https://nixos.org/download#download-nixos).
-
-Alternatively, you can totally use `nix` and `home-manager` on your existing
-distro (or even on Darwin). [Install nix](https://nixos.org/download.html#nix)
-and follow along (just ignore the `nixos-*` commands).
-
-
-## The repo
-
-- [Install git](https://nixos.wiki/wiki/git), if you haven't already.
-- Create a repository for your config, for example:
+- Start a [NixOS live system](https://nixos.org/download#download-nixos).
+- Login to Github in browser and get a new personal access token (scope Content)
 ```bash
 git clone https://github.com/ede1998/nix-config.git
 cd nix-config
+nix-shell
 # Decode secrets
 wl-paste | base64 -d | git crypt unlock -
 ```
-- Make sure you're running Nix 2.4+, and opt into the experimental `flakes` and `nix-command` features:
-```bash
-# Should be 2.4+
-nix --version
-export NIX_CONFIG="experimental-features = nix-command flakes"
-```
-- If you want to use NixOS: add stuff you currently have on `/etc/nixos/` to
-  `nixos` (usually `configuration.nix` and `hardware-configuration.nix`, when
-  you're starting out).
-    - The included file has some options you might want, specially if you don't
-      have a configuration ready. Make sure you have generated your own
-      `hardware-configuration.nix`; if not, just mount your partitions to
-      `/mnt` and run: `nixos-generate-config --root /mnt`.
-- If you want to use home-manager: add your stuff from `~/.config/nixpkgs`
-  to `home-manager` (probably `home.nix`).
-  - The included file is also a good starting point if you don't have a config
-    yet.
-- Take a look at `flake.nix`, making sure to fill out anything marked with
-  FIXME (required) or TODO (usually tips or optional stuff you might want)
-- Update your flake lock with `nix flake update`, so you get the latest
-  packages and modules
-- `git add` and `git push` your changes! Or at least copy them somewhere if
-  you're on a live medium.
-
-## Usage
-
-- Run `sudo nixos-rebuild switch --flake .#hostname` to apply your system
-  configuration.
-    - If you're still on a live installation medium, run `nixos-install --flake .#hostname` instead, and reboot.
-    - If you are using disko, run `sudo nix run 'github:nix-community/disko#disko-install' --
-      --write-efi-boot-entries --flake .#<flake-attr> --disk <disko-disk-name> <disk-path>` instead, and reboot.
-- Run `home-manager switch --flake .#username@hostname` to apply your home
-  configuration.
+- When creating partitions by hand:
+  - Create partitions via CLI
+  - Mount your partitions to `/mnt` and run: `nixos-generate-config --root /mnt --dir .`.
+  - Integrate resulting files into repository
+  - Run `nixos-install --flake .#hostname --no-root-password` 
+- When creating partitions with [disko](https://github.com/nix-community/disko)
+  - Create partitions in nix configuration
+  - Run `nixos-generate-config --no-filesystems --no-filesystems --dir .`
+  - Integrate resulting files into repository
+  - Run `sudo nix run 'github:nix-community/disko#disko-install' -- --flake .#hostname --disk disko-disk-name disk-path`
+- Reboot
+- Login with default password `correcthorsebatterystaple` and run `passwd` to change it
+- Clone repository again
+- Run `home-manager switch --flake .#username@hostname`
   - If you don't have home-manager installed, try `nix shell nixpkgs#home-manager`.
+
+## Updating the configuration
+
+- Run `sudo nixos-rebuild switch --flake .#hostname` to apply your system configuration.
+- Run `home-manager switch --flake .#username@hostname` to apply your home configuration.
 - Run `nix repl` and then type `:lf .` to load this flake into an interactive interpreter
   and check out available options. Useful commands:
   `cfg = homeConfigurations."erik@nixos-erik-desktop".config`
   `lib = nixosConfigurations.nixos-erik-desktop.lib`
   `pkgs = nixosConfigurations.nixos-erik-desktop.pkgs`
   `:p <expr>`
+- Update your flake lock with `nix flake update` to get the latest packages and modules.
 
-And that's it, really! You're ready to have fun with your configurations using
-the latest and greatest nix3 flake-enabled command UX.
 
-# What next?
+## Features
 
-## Use home-manager as a NixOS module
+*Based on [Misterio77/nix-starter-configs](https://github.com/Misterio77/nix-starter-configs/tree/f1ecf7e2275f541af7bec763866a909224b937a4)*
+
+- Basic boilerplate for adding custom packages (under `pkgs`) and overlays (under `overlay`).
+  Accessible on your system, home config, as well as `nix build .#package-name`.
+- Boilerplate for custom NixOS (`modules/nixos`) and home-manager (`modules/home-manager`) modules
+- NixOS and home-manager configurations from minimal, and they should also use your overlays and custom packages right out of the box.
+
+
+### Use home-manager as a NixOS module
 
 If you prefer to build your home configuration together with your NixOS one,
 it's pretty simple.
@@ -123,7 +96,7 @@ environment.systemPackages =
   [ inputs.home-manager.packages.${pkgs.system}.default ];
 ```
 
-## Adding more hosts or users
+### Adding more hosts or users
 
 You can organize them by hostname and username on `nixos` and `home-manager`
 directories, be sure to also add them to `flake.nix`.
@@ -136,7 +109,7 @@ to create a common directory for these), while keeping everything in sync.
 home-manager can help you sync your environment (from editor to WM and
 everything in between) anywhere you use it. Have fun!
 
-## User password and secrets
+### User password and secrets
 
 You have basically two ways of setting up default passwords:
 - By default, you'll be prompted for a root password when installing with
@@ -156,7 +129,7 @@ management](https://nixos.wiki/wiki/Comparison_of_secret_managing_schemes),
 including some that can include them (encrypted) into your config repo and/or
 nix store, be sure to check them out if you're interested.
 
-## Dotfile management with home-manager
+### Dotfile management with home-manager
 
 Besides just adding packages to your environment, home-manager can also manage
 your dotfiles. I strongly recommend you do, it's awesome!
@@ -170,7 +143,7 @@ syntax, there's home-manager options (such as `xdg.configFile`) for including
 files from your config repository into your usual dot directories. Add your
 existing dotfiles to this repo and try it out!
 
-## Try opt-in persistence
+### Try opt-in persistence
 
 You might have noticed that there's impurity in your NixOS system, in the form
 of configuration files and other cruft your system generates when running. What
@@ -201,7 +174,7 @@ Here's some awesome blog posts about it:
 Note that for `home-manager` to work correctly here, you need to set up its
 NixOS module, as described in the [previous section](#use-home-manager-as-a-nixos-module).
 
-## Adding custom packages
+### Adding custom packages
 
 Something you want to use that's not in nixpkgs yet? You can easily build and
 iterate on a derivation (package) from this very repository.
@@ -217,7 +190,7 @@ or bring them into your shell with `nix shell .#package-name`.
 See [the manual](https://nixos.org/manual/nixpkgs/stable/) for some tips on how
 to package stuff.
 
-## Adding overlays
+### Adding overlays
 
 Found some outdated package on nixpkgs you need the latest version of? Perhaps
 you want to apply a patch to fix a behavior you don't like? Nix makes it easy
@@ -230,7 +203,7 @@ If you're creating patches, you can keep them on the `overlays` folder as well.
 See [the wiki article](https://nixos.wiki/wiki/Overlays) to see how it all
 works.
 
-## Adding your own modules
+### Adding your own modules
 
 Got some configurations you want to create an abstraction of? Modules are the
 answer. These awesome files can expose _options_ and implement _configurations_
@@ -243,29 +216,24 @@ sure to also add them to the listing at `modules/nixos/default.nix` or
 See [the wiki article](https://nixos.wiki/wiki/Module) to learn more about
 them.
 
-# Troubleshooting / FAQ
+## Troubleshooting / FAQ
 
 Please [let me know](https://github.com/Misterio77/nix-starter-config/issues)
 any questions or issues you face with these templates, so I can add more info
 here!
 
-## Nix says my repo files don't exist, even though they do!
+### Nix says my repo files don't exist, even though they do!
 
 Nix flakes only see files that git is currently tracked, so just `git add .`
 and you should be good to go. Files on `.gitignore`, of course, are invisible
 to nix - this is to guarantee your build won't depend on anything that is not
 on your repo.
 
-## Nix installs the wrong version of software/fails to find new software
+### Nix installs the wrong version of software/fails to find new software
 
 The nix dependencies (such as `nixpkgs`) used by your configuration will
 strictly follow the `flake.lock` file, using the commits written into it when
 you (re)generated.
 
 To update your flake inputs, simply use `nix flake update`.
-
-<!--
-# Learning resources
-TODO
--->
 
