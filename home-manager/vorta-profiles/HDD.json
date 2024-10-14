@@ -7,11 +7,11 @@
         "name": "",
         "added_at": "2023-03-13 18:43:22.708913",
         "encryption": "repokey",
-        "unique_size": 477963725858,
+        "unique_size": 518271657203,
         "unique_csize": null,
-        "total_size": 20039791536642,
-        "total_unique_chunks": 528780,
-        "create_backup_cmd": "",
+        "total_size": 24093942069281,
+        "total_unique_chunks": 570108,
+        "create_backup_cmd": "--exclude-caches --exclude-if-present CLOBBER",
         "extra_borg_arguments": ""
     },
     "ssh_key": null,
@@ -106,12 +106,28 @@
             "added_at": "2023-03-13 17:46:04.573183"
         },
         {
-            "dir": "/home/erik/daten/folder/",
-            "dir_size": 29657770671,
-            "dir_files_count": 1841,
+            "dir": "/home/erik/dev",
+            "dir_size": -1,
+            "dir_files_count": -1,
+            "path_isdir": false,
+            "profile": 2,
+            "added_at": "2024-09-03 17:47:07.035453"
+        },
+        {
+            "dir": "/mnt/shared-hdd/folder",
+            "dir_size": 101151103318,
+            "dir_files_count": 11775,
             "path_isdir": true,
             "profile": 2,
-            "added_at": "2023-03-13 17:46:04.589509"
+            "added_at": "2024-09-04 15:47:06.545851"
+        },
+        {
+            "dir": "/mnt/erikdoc/archivebox",
+            "dir_size": 574469424,
+            "dir_files_count": 81,
+            "path_isdir": true,
+            "profile": 2,
+            "added_at": "2024-10-06 13:26:52.544494"
         }
     ],
     "SchemaVersion": {
@@ -196,7 +212,7 @@
         {
             "key": "previous_window_width",
             "value": false,
-            "str_value": "2191",
+            "str_value": "2194",
             "label": "Previous window width",
             "group": "",
             "tooltip": "",
@@ -205,7 +221,7 @@
         {
             "key": "previous_window_height",
             "value": false,
-            "str_value": "1172",
+            "str_value": "1174",
             "label": "Previous window height",
             "group": "",
             "tooltip": "",
@@ -232,7 +248,7 @@
         {
             "key": "diff_files_display_mode",
             "value": false,
-            "str_value": "0",
+            "str_value": "2",
             "label": "Diff dialog display mode",
             "group": "",
             "tooltip": "",

@@ -7,11 +7,11 @@
         "name": "",
         "added_at": "2023-03-13 16:27:08.445695",
         "encryption": "repokey",
-        "unique_size": null,
+        "unique_size": 637063155637,
         "unique_csize": null,
-        "total_size": null,
-        "total_unique_chunks": null,
-        "create_backup_cmd": "--exclude-caches",
+        "total_size": 8639769751734,
+        "total_unique_chunks": 2153776,
+        "create_backup_cmd": "--exclude-caches --exclude-if-present CLOBBER",
         "extra_borg_arguments": ""
     },
     "ssh_key": null,
@@ -106,14 +106,6 @@
             "added_at": "2023-03-13 15:34:09.299074"
         },
         {
-            "dir": "/home/erik/daten/folder/",
-            "dir_size": 29657770671,
-            "dir_files_count": 1841,
-            "path_isdir": true,
-            "profile": 1,
-            "added_at": "2023-03-13 15:34:09.309981"
-        },
-        {
             "dir": "/home/erik/dev",
             "dir_size": 40577857,
             "dir_files_count": 755,
@@ -122,84 +114,20 @@
             "added_at": "2023-03-13 15:34:23.770753"
         },
         {
-            "dir": "/home/erik/Documents/",
-            "dir_size": 0,
-            "dir_files_count": 0,
+            "dir": "/mnt/shared-hdd/folder",
+            "dir_size": 101151103318,
+            "dir_files_count": 11775,
             "path_isdir": true,
             "profile": 1,
-            "added_at": "2023-03-13 15:34:09.232045"
+            "added_at": "2024-09-04 15:26:48.429796"
         },
         {
-            "dir": "/home/erik/Music/",
-            "dir_size": 0,
-            "dir_files_count": 0,
+            "dir": "/mnt/erikdoc/archivebox",
+            "dir_size": 574469424,
+            "dir_files_count": 81,
             "path_isdir": true,
             "profile": 1,
-            "added_at": "2023-03-13 15:34:09.249072"
-        },
-        {
-            "dir": "/home/erik/Pictures/",
-            "dir_size": 0,
-            "dir_files_count": 0,
-            "path_isdir": true,
-            "profile": 1,
-            "added_at": "2023-03-13 15:34:09.256622"
-        },
-        {
-            "dir": "/home/erik/Templates/",
-            "dir_size": 0,
-            "dir_files_count": 0,
-            "path_isdir": true,
-            "profile": 1,
-            "added_at": "2023-03-13 15:34:09.262866"
-        },
-        {
-            "dir": "/home/erik/Videos/",
-            "dir_size": 0,
-            "dir_files_count": 0,
-            "path_isdir": true,
-            "profile": 1,
-            "added_at": "2023-03-13 15:34:09.273622"
-        },
-        {
-            "dir": "/home/erik/dotfiles/",
-            "dir_size": 6084423,
-            "dir_files_count": 774,
-            "path_isdir": true,
-            "profile": 1,
-            "added_at": "2023-03-13 15:34:09.284836"
-        },
-        {
-            "dir": "/home/erik/daten/music/",
-            "dir_size": 195885349825,
-            "dir_files_count": 9156,
-            "path_isdir": true,
-            "profile": 1,
-            "added_at": "2023-03-13 15:34:09.292667"
-        },
-        {
-            "dir": "/home/erik/daten/videos/",
-            "dir_size": 70271703504,
-            "dir_files_count": 57,
-            "path_isdir": true,
-            "profile": 1,
-            "added_at": "2023-03-13 15:34:09.299074"
-        },
-        {
-            "dir": "/home/erik/daten/folder/",
-            "dir_size": 29657770671,
-            "dir_files_count": 1841,
-            "path_isdir": true,
-            "profile": 1,
-            "added_at": "2023-03-13 15:34:09.309981"
-        },
-        {
-            "dir": "/home/erik/dev",
-            "dir_size": 40577857,
-            "dir_files_count": 755,
-            "path_isdir": true,
-            "profile": 1,
-            "added_at": "2023-03-13 15:34:23.770753"
+            "added_at": "2024-10-06 13:31:54.502221"
         }
     ],
     "SchemaVersion": {
@@ -284,7 +212,7 @@
         {
             "key": "previous_window_width",
             "value": false,
-            "str_value": "2191",
+            "str_value": "2194",
             "label": "Previous window width",
             "group": "",
             "tooltip": "",
@@ -293,7 +221,7 @@
         {
             "key": "previous_window_height",
             "value": false,
-            "str_value": "1172",
+            "str_value": "1174",
             "label": "Previous window height",
             "group": "",
             "tooltip": "",
@@ -320,7 +248,7 @@
         {
             "key": "diff_files_display_mode",
             "value": false,
-            "str_value": "0",
+            "str_value": "2",
             "label": "Diff dialog display mode",
             "group": "",
             "tooltip": "",
