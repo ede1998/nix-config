@@ -58,14 +58,16 @@ in
             exit 1;
           fi
 
-          ${concatMapStringsSep "\n" (
-            profile:
-            escapeShellArgs [
-              "import_profile"
-              # Force local source paths to be added to the store
-              "${profile}"
-            ]
-          ) cfg.profiles}
+          ${
+            concatMapStringsSep "\n" (
+              profile:
+              escapeShellArgs [
+                "import_profile"
+                # Force local source paths to be added to the store
+                "${profile}"
+              ]
+            ) cfg.profiles
+          }
 
           run touch "${marker-file}"
         else

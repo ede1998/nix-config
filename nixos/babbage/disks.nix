@@ -7,7 +7,8 @@
         content = {
           type = "gpt";
           partitions = {
-            ESP = { # EFI system partition
+            ESP = {
+              # EFI system partition
               label = "boot";
               size = "1024M";
               type = "EF00";
@@ -32,19 +33,29 @@
                 };
                 content = {
                   type = "btrfs";
-                  extraArgs = ["-L" "wd-blue-sn580-btrfs" "-f"]; # Override existing partition
+                  extraArgs = [
+                    "-L"
+                    "wd-blue-sn580-btrfs"
+                    "-f"
+                  ]; # Override existing partition
                   subvolumes = {
                     "/root" = {
                       mountpoint = "/";
-                      mountOptions = ["compress=zstd" "noatime"];
+                      mountOptions = [
+                        "compress=zstd"
+                        "noatime"
+                      ];
                     };
                     "/home" = {
                       mountpoint = "/home";
-                      mountOptions = ["compress=zstd"];
+                      mountOptions = [ "compress=zstd" ];
                     };
                     "/nix" = {
                       mountpoint = "/nix";
-                      mountOptions = ["compress=zstd" "noatime"];
+                      mountOptions = [
+                        "compress=zstd"
+                        "noatime"
+                      ];
                     };
                     "/swap" = {
                       mountpoint = "/swap";
@@ -60,5 +71,3 @@
     };
   };
 }
-
-
