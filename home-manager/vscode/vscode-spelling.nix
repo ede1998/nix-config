@@ -4,6 +4,7 @@
   "Deque"
   "Durchschnitt"
   "Hennig"
+  "LUKS"
   "Latenz"
   "Nextcloud"
   "Peekable"

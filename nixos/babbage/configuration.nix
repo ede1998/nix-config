@@ -35,6 +35,8 @@
 
     efi.canTouchEfiVariables = true;
   };
+  security.tpm2.enable = true;
+  boot.initrd.systemd.enable = true;
 
   # Set your time zone.
   time.timeZone = "Europe/Berlin";

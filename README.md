@@ -26,6 +26,7 @@ wl-paste | base64 -d | git crypt unlock -
 - Clone repository again
 - Run `home-manager switch --flake .#username@hostname`
   - If you don't have home-manager installed, try `nix shell nixpkgs#home-manager`.
+- If using LUKS, you can configure auto-unlock via TPM2: `sudo systemd-cryptenroll /dev/LUKS-root-partition --tpm2-device=auto`
 
 ## Updating the configuration
 
