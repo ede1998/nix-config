@@ -22,7 +22,7 @@ wl-paste | base64 -d | git crypt unlock -
   - Integrate resulting files into repository
   - Run `sudo nix run 'github:nix-community/disko#disko-install' -- --flake .#hostname --disk disko-disk-name disk-path`
 - Reboot
-- Login with default password `correcthorsebatterystaple` and run `passwd` to change it
+- Login with default password `correcthorsebatterystaple` and run `passwd` to change it, also change password in KWallet
 - Clone repository again
 - Run `home-manager switch --flake .#username@hostname`
   - If you don't have home-manager installed, try `nix shell nixpkgs#home-manager`.
