@@ -5,6 +5,7 @@
   outputs,
   config,
   pkgs,
+  hostName,
   ...
 }:
 {
@@ -78,7 +79,7 @@
     };
     discord.enable = true;
     nextcloud-client = {
-      enable = false;
+      enable = hostName == "babbage";
       start-in-background = true;
       user = "erik";
       instance-url = "https://cloud.erik-hennig.me";
@@ -89,6 +90,10 @@
         };
         "/Pictures" = {
           localPath = "${config.home.homeDirectory}/Pictures";
+          ignoreHiddenFiles = false;
+        };
+        "/shared" = {
+          localPath = "${config.home.homeDirectory}/nextcloud-shared";
           ignoreHiddenFiles = false;
         };
       };

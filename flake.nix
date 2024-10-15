@@ -101,6 +101,7 @@
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = {
             inherit inputs outputs;
+            hostName = "nixos-erik-desktop";
           };
           modules = [
             # > Our main home-manager configuration file <
@@ -111,6 +112,7 @@
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = {
             inherit inputs outputs;
+            hostName = "babbage";
           };
           modules = [
             # > Our main home-manager configuration file <

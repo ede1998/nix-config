@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 with lib;
 let
   cfg = config.initial-config.nextcloud-client;
@@ -162,7 +167,9 @@ in
       enable = true;
       startInBackground = cfg.start-in-background;
     };
+    home.packages = [ pkgs.nextcloud-client ];
     initial-files = {
+      file."${config-dir}/sync-exclude.lst".text = cfg.sync-exclude;
       file."${config-dir}/nextcloud.cfg".text = generators.toINI { } (
         let
           makeSyncEntry =
@@ -198,6 +205,5 @@ in
         in
         genAttrs dirs' (key: { });
     };
-    home.file."${config-dir}/sync-exclude.lst".text = cfg.sync-exclude;
   };
 }
