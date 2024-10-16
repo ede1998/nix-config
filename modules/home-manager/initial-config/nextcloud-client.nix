@@ -157,7 +157,6 @@ in
         My Saved Places.
         \#*#
         *.sb-*
-        .git
       '';
     };
   };
