@@ -36,7 +36,6 @@
     jqp
     kdePackages.filelight
     kdePackages.kcalc
-    kdePackages.kdeconnect-kde
     kdePackages.krdc
     kdePackages.krfb
     libreoffice-fresh

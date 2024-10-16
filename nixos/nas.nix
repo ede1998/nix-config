@@ -17,20 +17,16 @@ in
   fileSystems = {
     "/mnt/erikdoc" = {
       device = "//QNAP-NAS/home";
-      inherit (cifs-filesystem) fsType options;
-    };
+    } // cifs-filesystem;
     "/mnt/multimedia" = {
       device = "//QNAP-NAS/multimedia";
-      inherit (cifs-filesystem) fsType options;
-    };
+    } // cifs-filesystem;
     "/mnt/download" = {
       device = "//QNAP-NAS/Download";
-      inherit (cifs-filesystem) fsType options;
-    };
+    } // cifs-filesystem;
     "/mnt/container" = {
       device = "//QNAP-NAS/Container";
-      inherit (cifs-filesystem) fsType options;
-    };
+    } // cifs-filesystem;
   };
   environment.etc."samba/QNAP-NAS.cred" = {
     source = ../secrets/QNAP-NAS.cred;
