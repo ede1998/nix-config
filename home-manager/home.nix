@@ -72,12 +72,16 @@
     pinentryPackage = pkgs.pinentry;
   };
 
+  home.file."${config.xdg.configHome}/autostart/steam.desktop".source = "${pkgs.steam}/share/applications/steam.desktop";
   initial-config = {
     bitwarden-desktop = {
       enable = true;
       email = "bitwarden@erik-hennig.me";
     };
-    discord.enable = true;
+    discord = {
+      enable = true;
+      auto_start = true;
+    };
     nextcloud-client = {
       enable = hostName == "babbage";
       start-in-background = true;

@@ -24,12 +24,21 @@ in
       '';
       default = true;
     };
+    auto_start = mkOption {
+      type = types.bool;
+      description = "Whether to autostart discord.";
+      default = false;
+    };
   };
 
   config = mkIf cfg.enable {
     home.packages = [ pkgs.discord ];
     initial-files.file."${config.xdg.configHome}/discord/settings.json" = {
       text = builtins.toJSON { SKIP_HOST_UPDATE = cfg.skip_host_update; };
+    };
+    home.file."${config.xdg.configHome}/autostart/discord.desktop" = {
+      enable = cfg.auto_start;
+      source = "${pkgs.discord}/share/applications/discord.desktop";
     };
   };
 }
