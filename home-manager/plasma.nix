@@ -5,6 +5,13 @@
     overrideConfig = true;
     # Run rc2nix tool to see current config formatted as nix: `nix run github:nix-community/plasma-manager`
 
+    powerdevil.AC = {
+      autoSuspend.action = "nothing";
+      turnOffDisplay = {
+        idleTimeout = 900;
+      };
+    };
+
     # Some high-level settings:
     workspace = {
       clickItemTo = "select";
@@ -27,10 +34,30 @@
         screen = 2;
         widgets = [
           "org.kde.plasma.kickoff"
-          "org.kde.plasma.icontasks"
+          "org.kde.plasma.pager"
+          {
+            iconTasks.launchers = [
+              "applications:org.kde.dolphin.desktop"
+              "applications:firefox.desktop"
+              "applications:thunderbird.desktop"
+            ];
+          }
           "org.kde.plasma.marginsseparator"
-          "org.kde.plasma.systemtray"
-          "org.kde.plasma.digitalclock"
+          { systemTray.items.hidden = [ "org.kde.plasma.battery" ]; }
+          {
+            digitalClock = {
+              calendar = {
+                firstDayOfWeek = "monday";
+                plugins = [ "holidaysevents" ];
+                showWeekNumbers = true;
+              };
+              date.format = "isoDate";
+              time = {
+                format = "24h";
+                showSeconds = "always";
+              };
+            };
+          }
         ];
       }
       # Global menu at the top
