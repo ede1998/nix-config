@@ -39,6 +39,7 @@
     kdePackages.krdc
     kdePackages.krfb
     libreoffice-fresh
+    nix-tree
     p7zip
     pciutils
     pdfarranger
