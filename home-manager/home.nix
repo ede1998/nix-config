@@ -54,15 +54,6 @@
     };
   };
 
-  home = {
-    username = "erik";
-    homeDirectory = "/home/erik";
-    shellAliases = {
-      # for simple aliases that are cross-shell compatible
-      code = "codium";
-    };
-  };
-
   programs.home-manager.enable = true;
 
   services.gpg-agent = {
@@ -73,7 +64,20 @@
     pinentryPackage = pkgs.pinentry;
   };
 
-  home.file."${config.xdg.configHome}/autostart/steam.desktop".source = "${pkgs.steam}/share/applications/steam.desktop";
+  #xdg = {
+  #  enable = true;
+  #
+  # Cura config does not work well, program seems to ignore it when it's write-only
+  #  dataFile."cura" = {
+  #    source = ./cura/.local/share;
+  #    recursive = true;
+  #  };
+  #  configFile."cura".source = ./cura/.config;
+  #};
+
+  # Nicely reload system units when changing configs
+  systemd.user.startServices = "sd-switch";
+
   initial-config = {
     bitwarden-desktop = {
       enable = true;
@@ -112,20 +116,18 @@
     };
   };
 
-  #xdg = {
-  #  enable = true;
-  #
-  # Cura config does not work well, program seems to ignore it when it's write-only
-  #  dataFile."cura" = {
-  #    source = ./cura/.local/share;
-  #    recursive = true;
-  #  };
-  #  configFile."cura".source = ./cura/.config;
-  #};
+  home = rec {
+    username = "erik";
+    homeDirectory = "/home/erik";
+    shellAliases = {
+      # for simple aliases that are cross-shell compatible
+      code = "codium";
+      home-manager = "home-manager --flake ${homeDirectory}/nix-config#${username}@${hostName}";
+    };
 
-  # Nicely reload system units when changing configs
-  systemd.user.startServices = "sd-switch";
+    file."${config.xdg.configHome}/autostart/steam.desktop".source = "${pkgs.steam}/share/applications/steam.desktop";
 
-  # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-  home.stateVersion = "24.05";
+    # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
+    stateVersion = "24.05";
+  };
 }
