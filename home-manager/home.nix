@@ -123,6 +123,8 @@
       # for simple aliases that are cross-shell compatible
       code = "codium";
       home-manager = "home-manager --flake ${homeDirectory}/nix-config#${username}@${hostName}";
+      nixos-rebuild = "sudo nixos-rebuild --flake ${homeDirectory}/nix-config#${hostName}";
+      open = "xdg-open";
     };
 
     file."${config.xdg.configHome}/autostart/steam.desktop".source = "${pkgs.steam}/share/applications/steam.desktop";
