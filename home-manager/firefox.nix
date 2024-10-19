@@ -101,51 +101,55 @@ in
         };
 
         # Layout
-        "browser.uiCustomization.state" = builtins.toJSON {
-          currentVersion = 20;
-          dirtyAreaCache = [
-            "nav-bar"
-            "PersonalToolbar"
-            "toolbar-menubar"
-            "TabsToolbar"
-            "widget-overflow-fixed-list"
-          ];
-          placements = {
-            TabsToolbar = [
-              "firefox-view-button"
-              "tabbrowser-tabs"
-              "new-tab-button"
-              "alltabs-button"
+        "browser.uiCustomization.state" = {
+          Value = builtins.toJSON {
+            currentVersion = 20;
+            dirtyAreaCache = [
+              "nav-bar"
+              "PersonalToolbar"
+              "toolbar-menubar"
+              "TabsToolbar"
+              "widget-overflow-fixed-list"
             ];
-            nav-bar = with browser-action; [
-              "back-button"
-              "forward-button"
-              "stop-reload-button"
-              "personal-bookmarks"
-              "urlbar-container"
-              "search-container"
-              "downloads-button"
-              bitwarden
-              one-tab
-              tos-dr
-              "unified-extensions-button"
-            ];
-            toolbar-menubar = [ "menubar-items" ];
-            unified-extensions-area = with browser-action; [
-              ublock-origin
-              sponsor-block
-              wayback-machine
-              i-dont-care-about-cookies
-              cookies-txt
-              facebook-container
-              plasma-integration
-            ];
+            placements = {
+              PersonalToolbar = []; # required so that personal-bookmarks stays in nav-bar
+              TabsToolbar = [
+                "firefox-view-button"
+                "tabbrowser-tabs"
+                "new-tab-button"
+                "alltabs-button"
+              ];
+              nav-bar = with browser-action; [
+                "back-button"
+                "forward-button"
+                "stop-reload-button"
+                "personal-bookmarks"
+                "urlbar-container"
+                "search-container"
+                "downloads-button"
+                bitwarden
+                one-tab
+                tos-dr
+                "unified-extensions-button"
+              ];
+              toolbar-menubar = [ "menubar-items" ];
+              unified-extensions-area = with browser-action; [
+                ublock-origin
+                sponsor-block
+                wayback-machine
+                i-dont-care-about-cookies
+                cookies-txt
+                facebook-container
+                plasma-integration
+              ];
+            };
+            seen = [
+              "save-to-pocket-button"
+              "developer-button"
+              # don't put downloads-button here or download panel won't open
+            ] ++ attrValues browser-action;
           };
-          seen = [
-            "save-to-pocket-button"
-            "developer-button"
-            "downloads-button"
-          ] ++ attrValues browser-action;
+          Status = "locked";
         };
       };
     };
