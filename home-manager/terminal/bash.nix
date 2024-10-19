@@ -1,4 +1,10 @@
 { ... }:
+let
+  keys = {
+    up = "\\e[A";
+    down = "\\e[B";
+  };
+in
 {
   programs.bash = {
     enable = true;
@@ -14,10 +20,9 @@
   };
   programs.readline = {
     enable = true;
-    extraConfig = ''
-      # alternate mappings for "page up" and "page down" to search the history
-      "\e[5~": history-search-backward
-      "\e[6~": history-search-forward
-    '';
+    bindings = {
+      "${keys.up}" = "history-search-backward";
+      "${keys.down}" = "history-search-forward";
+    };
   };
 }
