@@ -131,7 +131,6 @@
     };
   };
 
-  programs.firefox.enable = true;
   programs.partition-manager.enable = true;
   programs.steam = {
     enable = true;

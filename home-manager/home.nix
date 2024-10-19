@@ -20,9 +20,10 @@
     inputs.plasma-manager.homeManagerModules.plasma-manager
 
     # You can also split up your configuration and import pieces of it here:
-    ./terminal
+    ./firefox.nix
     ./pkgs.nix
     ./plasma.nix
+    ./terminal
     ./thunderbird.nix
     ./vscode
   ];
