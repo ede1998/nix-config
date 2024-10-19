@@ -51,12 +51,12 @@ in
       AutofillCreditCardEnabled = false;
       AutofillAddressEnabled = false;
       OfferToSaveLogins = false;
+      PasswordManagerEnabled = false;
 
       FirefoxHome = {
         Search = true;
         SponsoredTopSites = false;
 
-        # TODO check what these 3 are
         TopSites = true;
         Highlights = true;
         Snippets = true;
@@ -79,23 +79,10 @@ in
       # Sometimes, settings are mentioned in policies documentation.
       # Otherwise, use https://searchfox.org/ to search code.
       Preferences = {
-        # TODO these should be covered by other settings/policies/etc
-        # TODO "browser.search.defaultenginename" = "DuckDuckGo";
-        # TODO "browser.search.order.1" = "DuckDuckGo";
-        # TODO "extensions.pocket.enabled" = lock-false;
-        # TODO "browser.startup.homepage_override.mstone" = "ignore"; # don't show different homepage after upgrade
-        # TODO "startup.homepage_override_url" = ""; # unset alternate homepage after upgrade
-        # TODO "trailhead.firstrun.didSeeAboutWelcome" = lock-true;
-        # TODO Disable crappy home activity stream page
-        # TODO "browser.newtabpage.activity-stream.feeds.topsites" = false;
-        # TODO "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
-        # TODO "browser.newtabpage.activity-stream.improvesearch.topSiteSearchShortcuts" = false;
-        # TODO "signon.rememberSignons" = lock-false; # Disable "save password" prompt
         "general.autoScroll" = lock-true; # Scroll with mouse wheel click
-        "browser.contentblocking.category" = {
-          Value = "strict";
-          Status = "locked";
-        };
+        # TODO I cannot open the panel, the UI bugs out...
+        "browser.download.autohideButton" = lock-false;
+        "browser.translations.automaticallyPopup" = lock-false;
 
         # Disable irritating first-run stuff
         "browser.disableResetPrompt" = lock-true;
@@ -108,19 +95,22 @@ in
 
         # Harden
         "dom.security.https_only_mode" = lock-true;
+        "browser.contentblocking.category" = {
+          Value = "strict";
+          Status = "clear"; # Reset to strict on each startup
+        };
+
         # Layout
         "browser.uiCustomization.state" = builtins.toJSON {
           currentVersion = 20;
-          # newElementCount = 5;
           dirtyAreaCache = [
             "nav-bar"
-            # "PersonalToolbar"
+            "PersonalToolbar"
             "toolbar-menubar"
             "TabsToolbar"
             "widget-overflow-fixed-list"
           ];
           placements = {
-            # PersonalToolbar = [ "personal-bookmarks" ];
             TabsToolbar = [
               "firefox-view-button"
               "tabbrowser-tabs"
@@ -150,7 +140,6 @@ in
               facebook-container
               plasma-integration
             ];
-            # widget-overflow-fixed-list = [ ];
           };
           seen = [
             "save-to-pocket-button"
@@ -201,7 +190,6 @@ in
           };
           "Bing".metaData.hidden = true;
           "Wikipedia (en)".metaData.hidden = true;
-          "Actions".metaData.hidden = false;
         };
       };
 
