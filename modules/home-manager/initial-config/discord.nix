@@ -26,7 +26,7 @@ in
     };
     auto_start = mkOption {
       type = types.bool;
-      description = "Whether to autostart discord.";
+      description = "Whether to autostart Discord.";
       default = false;
     };
   };
