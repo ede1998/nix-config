@@ -4,13 +4,13 @@
     "added_at": "2023-03-13 18:12:52.020986",
     "repo": {
         "url": "/run/media/erik/Backup-HDD/backups/desktop-external-hdd.borg",
-        "name": "",
+        "name": "External HDD",
         "added_at": "2023-03-13 18:43:22.708913",
         "encryption": "repokey",
-        "unique_size": 518271657203,
+        "unique_size": null,
         "unique_csize": null,
-        "total_size": 24093942069281,
-        "total_unique_chunks": 570108,
+        "total_size": null,
+        "total_unique_chunks": null,
         "create_backup_cmd": "--exclude-caches --exclude-if-present CLOBBER",
         "extra_borg_arguments": ""
     },
@@ -36,9 +36,9 @@
     "prune_year": 2,
     "prune_keep_within": "10H",
     "new_archive_name": "{hostname}-{now:%Y-%m-%dT%H:%M:%S}",
-    "prune_prefix": "{hostname}-",
-    "pre_backup_cmd": "gio mount -d 'E6A6-B8AA' /run/media/erik/Backup-HDD",
-    "post_backup_cmd": "gio mount -u /run/media/erik/Backup-HDD/",
+    "prune_prefix": "",
+    "pre_backup_cmd": "udisksctl mount --block-device /dev/disk/by-uuid/E6A6-B8AA",
+    "post_backup_cmd": "udisksctl unmount --block-device /dev/disk/by-uuid/E6A6-B8AA",
     "dont_run_on_metered_networks": true,
     "SourceFileModel": [
         {
@@ -80,14 +80,6 @@
             "path_isdir": true,
             "profile": 2,
             "added_at": "2023-03-13 17:46:04.518116"
-        },
-        {
-            "dir": "/home/erik/dotfiles/",
-            "dir_size": 6084054,
-            "dir_files_count": 774,
-            "path_isdir": true,
-            "profile": 2,
-            "added_at": "2023-03-13 17:46:04.547600"
         },
         {
             "dir": "/home/erik/daten/music/",
@@ -133,7 +125,7 @@
     "SchemaVersion": {
         "id": 1,
         "version": 22,
-        "changed_at": "2024-01-19 20:38:49.557408"
+        "changed_at": "2024-10-14 23:30:29.902242"
     },
     "WifiSettingModel": [],
     "SettingsModel": [
