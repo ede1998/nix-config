@@ -1,4 +1,7 @@
-{ lib, ... }:
+{ lib, pkgs, ... }:
+let
+  credentials = lib.importJSON ../secrets/mailbox-dav.json;
+in
 rec {
   accounts.email.accounts.mailbox-org = {
     primary = true;
@@ -22,6 +25,18 @@ rec {
         "mailnews.default_sort_order" = 2; # descending
         "mailnews.default_sort_type" = 18; # by date
       };
+    };
+  };
+  accounts.calendar.accounts.mailbox-org = {
+    primary = true;
+    remote = {
+      type = "caldav";
+      url = "https://dav.mailbox.org";
+      userName = credentials.userName;
+      passwordCommand = [
+        "${pkgs.coreutils}/bin/echo"
+        credentials.password
+      ];
     };
   };
   programs.thunderbird = {
