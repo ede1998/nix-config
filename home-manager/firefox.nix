@@ -21,13 +21,16 @@ let
     sponsor-block = "sponsorblocker_ajay_app-browser-action";
   };
   inherit (lib.attrsets) attrValues;
+
+  integration = {
+    package = pkgs.kdePackages.plasma-browser-integration;
+    json = "native-messaging-hosts/org.kde.plasma.browser_integration.json";
+  };
 in
 {
   programs.firefox = {
     enable = true;
-    package = pkgs.firefox.override {
-      cfg.nativeMessagingHosts.packages = [ pkgs.kdePackages.plasma-browser-integration ];
-    };
+    package = pkgs.firefox.override { cfg.nativeMessagingHosts.packages = [ integration.package ]; };
 
     # ---- POLICIES ----
     # Check about:policies#documentation for options.
@@ -80,7 +83,7 @@ in
       # Otherwise, use https://searchfox.org/ to search code.
       Preferences = {
         "general.autoScroll" = lock-true; # Scroll with mouse wheel click
-        # TODO I cannot open the panel, the UI bugs out...
+        "browser.tabs.loadBookmarksInTabs" = lock-true;
         "browser.download.autohideButton" = lock-false;
         "browser.translations.automaticallyPopup" = lock-false;
 
@@ -112,7 +115,7 @@ in
               "widget-overflow-fixed-list"
             ];
             placements = {
-              PersonalToolbar = []; # required so that personal-bookmarks stays in nav-bar
+              PersonalToolbar = [ ]; # required so that personal-bookmarks stays in nav-bar
               TabsToolbar = [
                 "firefox-view-button"
                 "tabbrowser-tabs"
@@ -203,6 +206,10 @@ in
       };
     };
   };
+
+  # Source: https://github.com/nix-community/home-manager/issues/1586
+  # Also needs package override in programs.firefox.packages
+  home.file.".mozilla/${integration.json}".source = "${pkgs.plasma-browser-integration}/lib/mozilla/${integration.json}";
 
   xdg.mimeApps.defaultApplications = {
     "text/html" = [ "firefox.desktop" ];
