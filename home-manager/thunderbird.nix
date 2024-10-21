@@ -7,6 +7,12 @@ let
     userName = credentials.userName;
     # passwordCommand = [ "${pkgs.coreutils}/bin/echo" credentials.password ];
   };
+  mailboxOrgContactList = id: {
+    type = "carddav";
+    url = "https://dav.mailbox.org/carddav/${toString id}/";
+    userName = credentials.userName;
+    # passwordCommand = [ "\${pkgs.coreutils}/bin/echo" credentials.password ];
+  };
   color = {
     pink = "#FD3297";
     blue = "#1365CA";
@@ -36,6 +42,7 @@ rec {
       settings = id: {
         "mailnews.default_sort_order" = 2; # descending
         "mailnews.default_sort_type" = 18; # by date
+        "mail.chat.enabled" = false;
       };
     };
   };
@@ -85,6 +92,8 @@ rec {
       remote = mailboxOrgCalendar "Y2FsOi8vMC80Mg";
     };
   };
+
+  accounts.contact.accounts.Kontakte.remote = mailboxOrgContactList 32;
 
   programs.thunderbird = {
     enable = true;
