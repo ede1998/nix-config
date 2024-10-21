@@ -118,6 +118,7 @@
     koi = {
       enable = true;
       auto-start = true;
+      force = true;
       General.notify-on-swap = false;
       ColorScheme = {
         enable = true;

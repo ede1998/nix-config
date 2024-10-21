@@ -43,10 +43,21 @@ in
 
   options.initial-config.koi = {
     enable = mkEnableOption "Koi";
+
     auto-start = mkOption {
       type = types.bool;
       description = "Whether to autostart Koi.";
       default = false;
+    };
+
+    force = mkOption {
+      type = types.bool;
+      default = false;
+      description = ''
+        If true, always overwrite the configuration file when the generation is activated.
+        This should be safe for Koi because the only non-managed state in this file is whether
+        light or dark theme is currently active. This would be reverted to the value of `General.initial-theme`.
+      '';
     };
 
     General = {
@@ -135,6 +146,7 @@ in
       source = "${pkgs.koi}/share/applications/koi.desktop";
     };
     initial-files.file."${config.xdg.configHome}/koirc" = {
+      force = cfg.force;
       text = generators.toINI { } {
         General = with cfg.General; {
           current = initial-theme;
