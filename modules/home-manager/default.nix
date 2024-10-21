@@ -3,5 +3,6 @@
 {
   # List your module files here
   initial-files = import ./initial-files.nix;
+  thunderbird = import ./thunderbird.nix;
   initial-config = import ./initial-config;
 }

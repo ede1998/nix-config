@@ -14,6 +14,7 @@
     # If you want to use modules your own flake exports (from modules/home-manager):
     outputs.homeManagerModules.initial-files
     outputs.homeManagerModules.initial-config
+    outputs.homeManagerModules.thunderbird
 
     # Or modules exported from other flakes (such as nix-colors):
     # inputs.nix-colors.homeManagerModules.default

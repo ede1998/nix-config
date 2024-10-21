@@ -1,6 +1,18 @@
-{ lib, pkgs, ... }:
+{ lib, ... }:
 let
   credentials = lib.importJSON ../secrets/mailbox-dav.json;
+  mailboxOrgCalendar = id: {
+    type = "caldav";
+    url = "https://dav.mailbox.org/caldav/${id}/";
+    userName = credentials.userName;
+    # passwordCommand = [ "${pkgs.coreutils}/bin/echo" credentials.password ];
+  };
+  color = {
+    pink = "#FD3297";
+    blue = "#1365CA";
+    green = "#247E1E";
+    violet = "#4A27D0";
+  };
 in
 rec {
   accounts.email.accounts.mailbox-org = {
@@ -27,18 +39,53 @@ rec {
       };
     };
   };
-  accounts.calendar.accounts.mailbox-org = {
-    primary = true;
-    remote = {
-      type = "caldav";
-      url = "https://dav.mailbox.org";
-      userName = credentials.userName;
-      passwordCommand = [
-        "${pkgs.coreutils}/bin/echo"
-        credentials.password
-      ];
+
+  accounts.calendar.accounts = {
+    mailbox-org-main = {
+      primary = true;
+
+      thunderbird = {
+        color = color.pink;
+        display-name = "Kalender";
+        position = 0;
+      };
+
+      # TODO This information is never used by KDE
+      remote = mailboxOrgCalendar "Y2FsOi8vMC8zMQ";
+    };
+
+    mailbox-org-birthdays = {
+      thunderbird = {
+        color = color.blue;
+        display-name = "Geburtstage";
+        read-only = true;
+        position = 1;
+      };
+
+      remote = mailboxOrgCalendar "Y2FsOi8vMS8w";
+    };
+
+    mailbox-org-lectures = {
+      thunderbird = {
+        color = color.green;
+        display-name = "Vorlesungen";
+        position = 2;
+      };
+
+      remote = mailboxOrgCalendar "Y2FsOi8vMC80Ng";
+    };
+
+    mailbox-org-trash-pickup = {
+      thunderbird = {
+        color = color.violet;
+        display-name = "Müllabfuhr";
+        position = 3;
+      };
+
+      remote = mailboxOrgCalendar "Y2FsOi8vMC80Mg";
     };
   };
+
   programs.thunderbird = {
     enable = true;
     profiles.default = {
