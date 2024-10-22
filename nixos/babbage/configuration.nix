@@ -100,6 +100,16 @@
       # Opinionated: make flake registry and nix path match flake inputs
       registry = lib.mapAttrs (_: flake: { inherit flake; }) flakeInputs;
       nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
+
+      # Regularly run garbage collection
+      gc = {
+        automatic = true;
+        randomizedDelaySec = "30min";
+        persistent = true;
+        dates = "weekly";
+        # Also delete older configurations
+        options = "--delete-older-than 60d";
+      };
     };
 
   networking.hostName = "babbage";
