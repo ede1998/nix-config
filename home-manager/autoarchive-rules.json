@@ -1,0 +1,38 @@
+[
+    {
+        "path": "mailbox-org/Archives/${year}/internet/amazon",
+        "selector": "return message.author.includes('@amazon.de');"
+    },
+    {
+        "path": "mailbox-org/Archives/${year}/finanzen/paypal",
+        "selector": "return message.author === '\"service@paypal.de\" <service@paypal.de>';"
+    },
+    {
+        "path": "mailbox-org/Archives/${year}/finanzen",
+        "selector": "return message.author === '\"Barclays Deutschland\" <service@email.barclays.de>';"
+    },
+    {
+        "path": "mailbox-org/Archives/${year}/finanzen",
+        "selector": "return message.author === 'ING <noreply@info.ing.de>';"
+    },
+    {
+        "path": "mailbox-org/Archives/${year}/internet",
+        "selector": "return message.subject.includes('Your Patreon receipt is here!');"
+    },
+    {
+        "path": "mailbox-org/Archives/${year}/finanzen",
+        "selector": "return message.author.includes('kundenservice@e.leaseplanbank.de') && message.subject.includes('Zins');"
+    },
+    {
+        "path": "mailbox-org/Archives/${year}/finanzen",
+        "selector": "return message.author.includes('investor@bondora.com');"
+    },
+    {
+        "path": "mailbox-org/Archives/${year}/other",
+        "selector": "return message.author.includes('noreply@ssb-ag.de');"
+    },
+    {
+        "path": "mailbox-org/Archives/${year}/internet/hetzner",
+        "selector": "return message.author.includes('billing@hetzner.com');"
+    }
+]

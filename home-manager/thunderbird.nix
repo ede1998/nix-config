@@ -1,4 +1,9 @@
-{ lib, config, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   credentials = lib.importJSON ../secrets/mailbox-dav.json;
   mailboxOrgCalendar = id: {
@@ -104,6 +109,16 @@ rec {
 
   programs.thunderbird = {
     enable = true;
+    package = pkgs.thunderbird.override {
+      extraPolicies.ExtensionSettings = {
+        # TODO also add configuration for this plugin to Thunderbird
+        # Currently located at home-manager/autoarchive-rules.json
+        "autoarchive@erik-hennig.me" = {
+          installation_mode = "force_installed";
+          install_url = "https://github.com/ede1998/autoarchive/releases/download/1.0/autoarchive-1.0-tb.xpi";
+        };
+      };
+    };
     profiles.default = {
       isDefault = true;
       # Work-around for repeated creation of new profile
