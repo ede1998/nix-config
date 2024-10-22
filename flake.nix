@@ -51,8 +51,15 @@
       # This is a function that generates an attribute by calling a function you
       # pass to it, with each system as an argument
       forAllSystems = nixpkgs.lib.genAttrs systems;
+      git-crypt-initialized = (builtins.readFile ./secrets/hello-world.txt) == "Hello World!";
+      warning-git-crypt = ''
+        Please add your decryption key to git-crypt.
+        Otherwise, programs will receive encrypted configuration.
+        Command:
+        wl-paste | base64 -d | git crypt unlock -
+      '';
     in
-    {
+    (nixpkgs.lib.warnIfNot git-crypt-initialized warning-git-crypt {
       # Your custom packages
       # Accessible through 'nix build', 'nix shell', etc
       packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
@@ -120,5 +127,5 @@
           ];
         };
       };
-    };
+    });
 }
