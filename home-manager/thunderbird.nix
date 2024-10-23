@@ -43,6 +43,9 @@ rec {
         tls.useStartTls = true;
       };
 
+      # requires thunderbird.programs.profiles.<profile>.withExternalGnupg to work properly
+      gpg.key = "4A9A41ADAEDE8D68AB34B94905B608222A57A2FB";
+
       thunderbird = {
         enable = true;
         settings = id: {
@@ -121,6 +124,7 @@ rec {
     };
     profiles.default = {
       isDefault = true;
+      withExternalGnupg = true;
       # Work-around for repeated creation of new profile
       # https://github.com/nix-community/home-manager/issues/5031
       settings = {
