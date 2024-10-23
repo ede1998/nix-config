@@ -131,7 +131,7 @@ rec {
         "mail.accountmanager.accounts" =
           let
             toHashedName = x: "account_" + (builtins.hashString "sha256" x);
-            accountUsesThunderbird = account_name: accounts.email.accounts."${account_name}".thunderbird.enable;
+            accountUsesThunderbird = account_name: accounts.email.accounts.${account_name}.thunderbird.enable;
             account-names = lib.filter accountUsesThunderbird (lib.attrNames accounts.email.accounts);
           in
           lib.concatStringsSep "," ((map toHashedName account-names) ++ [ "account1" ]);

@@ -115,7 +115,6 @@ in
         description = "Directory where the mails should be stored locally";
       };
     };
-
   };
 
   config = mkIf config.programs.thunderbird.enable {
@@ -183,7 +182,7 @@ in
                 carddav = 102;
                 async = 103;
               }
-              ."${type}";
+              .${type};
           in
           optionalAttrs th.enable {
             "ldap_2.servers.${name}.carddav.url" = rem.url;

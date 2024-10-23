@@ -21,8 +21,8 @@ in
   programs.readline = {
     enable = true;
     bindings = {
-      "${keys.up}" = "history-search-backward";
-      "${keys.down}" = "history-search-forward";
+      ${keys.up} = "history-search-backward";
+      ${keys.down} = "history-search-forward";
     };
   };
 }
