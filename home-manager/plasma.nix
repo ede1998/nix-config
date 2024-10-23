@@ -99,6 +99,8 @@
     # Some low-level settings:
     configFile = {
       "baloofilerc"."Basic Settings"."Indexing-Enabled" = false;
+      # Disable KDE global menu daemon
+      "kded5rc"."Module-appmenu"."autoload" = false;
       "kwinrc" = {
         # Forces kde to not change this value (even through the settings app).
         "Desktops"."Number".immutable = true;
