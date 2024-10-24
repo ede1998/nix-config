@@ -4,7 +4,7 @@
     enable = true;
     addKeysToAgent = "yes";
     matchBlocks.smartknx = {
-      hostname = "smartknx.fritz.box";
+      hostname = "smartknx.local";
       user = "pi";
       identityFile = "~/.ssh/id_rsa";
     };
