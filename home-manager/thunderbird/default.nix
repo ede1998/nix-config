@@ -5,7 +5,7 @@
   ...
 }:
 let
-  credentials = lib.importJSON ../secrets/mailbox-dav.json;
+  credentials = lib.importJSON ../../secrets/mailbox-dav.json;
   mailboxOrgCalendar = id: {
     type = "caldav";
     url = "https://dav.mailbox.org/caldav/${id}/";

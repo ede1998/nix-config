@@ -26,7 +26,7 @@
     ./pkgs.nix
     ./plasma.nix
     ./terminal
-    ./thunderbird.nix
+    ./thunderbird
     ./vscode
   ];
 
