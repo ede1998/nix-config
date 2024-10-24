@@ -97,17 +97,24 @@
     };
 
     # Some low-level settings:
-    configFile = {
-      "baloofilerc"."Basic Settings"."Indexing-Enabled" = false;
-      # Disable KDE global menu daemon
-      "kded5rc"."Module-appmenu"."autoload" = false;
-      "kwinrc" = {
-        # Forces kde to not change this value (even through the settings app).
-        "Desktops"."Number".immutable = true;
-        # Disable effects when cursor is on screen edge
-        # Source: https://www.reddit.com/r/kde/comments/r5xir0/comment/hoehzhq
-        "Effect-overview".BorderActivate = 9;
+    configFile =
+      let
+        hot-corner.disabled = 9;
+        numlock.active-on-startup = 0;
+      in
+      {
+        baloofilerc."Basic Settings".Indexing-Enabled = false;
+        # Disable KDE global menu daemon
+        kded5rc.Module-appmenu.autoload = false;
+        # https://github.com/nix-community/plasma-manager/issues/117#issuecomment-2041384419
+        kcminputrc.Keyboard.NumLock.value = numlock.active-on-startup;
+        kwinrc = {
+          # Forces kde to not change this value (even through the settings app).
+          Desktops.Number.immutable = true;
+          # Disable effects when cursor is on screen edge
+          # Source: https://www.reddit.com/r/kde/comments/r5xir0/comment/hoehzhq
+          Effect-overview.BorderActivate = hot-corner.disabled;
+        };
       };
-    };
   };
 }
