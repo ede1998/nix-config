@@ -3,12 +3,19 @@
   programs.ssh = {
     enable = true;
     addKeysToAgent = "yes";
-    matchBlocks.smartknx = {
-      hostname = "smartknx.local";
-      user = "pi";
-      identityFile = "~/.ssh/id_rsa";
+    matchBlocks = {
+      smartknx = {
+        hostname = "smartknx.local";
+        user = "pi";
+        identityFile = "~/.ssh/id_rsa";
+      };
+      qnap-nas = {
+        hostname = "qnap-nas.local";
+        user = "admin";
+        identityFile = "~/.ssh/id_rsa";
+      };
+      "github.com".identityFile = "~/.ssh/id_rsa";
     };
-    matchBlocks."github.com".identityFile = "~/.ssh/id_rsa";
   };
   services.ssh-agent.enable = true;
 
