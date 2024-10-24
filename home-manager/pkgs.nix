@@ -57,7 +57,6 @@
     typst
     ungoogled-chromium
     unstable.espup
-    unstable.gnucash
     unstable.ocrmypdf
     unzip
     ventoy-full

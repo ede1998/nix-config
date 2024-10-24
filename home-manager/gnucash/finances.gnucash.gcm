@@ -1,0 +1,93 @@
+[Top]
+BookGuid=f73f0a471113410a81a680bd363a58d7
+WindowCount=1
+
+[Import csv,transaction - Kreditkarte]
+Name=Kreditkarte
+SkipStartLines=13
+SkipEndLines=0
+SkipAltLines=false
+CsvFormat=true
+Separators=;
+DateFormat=0
+CurrencyFormat=2
+Encoding=UTF-8
+MultiSplit=false
+BaseAccount=Liabilities:Credit Card
+ColumnTypes=None;Date;None;Deposit;Description;None;None;None;None;None;None;None;None;None;
+BaseAccountGuid=60728bb7a15343848afb662f4c1fd850
+
+[Import csv,transaction - INGdiba]
+Name=INGdiba
+SkipStartLines=10
+SkipEndLines=0
+SkipAltLines=false
+CsvFormat=true
+Separators=;
+DateFormat=0
+CurrencyFormat=2
+Encoding=UTF-8
+MultiSplit=false
+BaseAccountGuid=6387825cb9054667a7c8c542306eae1d
+BaseAccount=Assets:Investments:00-ING Cash Account
+ColumnTypes=None;Date;None;None;Description;None;None;Deposit;None;
+
+[Import csv,transaction - INGdiba-GIRO]
+Name=INGdiba-GIRO
+SkipStartLines=10
+SkipEndLines=0
+SkipAltLines=false
+CsvFormat=true
+Separators=;
+DateFormat=0
+CurrencyFormat=2
+Encoding=UTF-8
+MultiSplit=false
+BaseAccountGuid=54312853aede4634a8bd2309a3a10d98
+BaseAccount=Assets:Current Assets:ING Checking Account
+ColumnTypes=None;Date;Description;Action;None;None;Deposit;None;
+
+[Import csv,transaction - vw-bank]
+Name=vw-bank
+SkipStartLines=7
+SkipEndLines=0
+SkipAltLines=false
+CsvFormat=true
+Separators=;
+DateFormat=1
+CurrencyFormat=0
+Encoding=UTF-8
+MultiSplit=false
+BaseAccountGuid=53859ae5d8d24145bb91c92da8e02763
+BaseAccount=Assets:Current Assets:VW Bank Savings Account
+ColumnTypes=None;None;None;Description;None;None;None;None;None;Date;Amount (Negated);Amount;None;None;None;
+
+[Import csv,transaction - bondora]
+Name=bondora
+SkipStartLines=8
+SkipEndLines=0
+SkipAltLines=false
+CsvFormat=true
+Separators=;
+DateFormat=1
+CurrencyFormat=2
+Encoding=UTF-8
+MultiSplit=false
+BaseAccountGuid=89070953b8e2419faac6f59eb9078084
+BaseAccount=Assets:Investments:Bondora
+ColumnTypes=Date;Description;Amount;Amount (Negated);None;
+
+[Import csv,transaction - Leaseplan-Savings]
+Name=Leaseplan-Savings
+SkipStartLines=0
+SkipEndLines=0
+SkipAltLines=false
+CsvFormat=true
+Separators=;
+DateFormat=0
+CurrencyFormat=0
+Encoding=UTF-8
+MultiSplit=false
+BaseAccountGuid=09bf4d589d88402896f5b5a7c8614791
+BaseAccount=Assets:Current Assets:Leaseplan Bank Savings Account
+ColumnTypes=Date;Description;None;Amount;
