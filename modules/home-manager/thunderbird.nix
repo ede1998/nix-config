@@ -196,8 +196,7 @@ in
           mapAttrsToList (
             name: value:
             let
-              posOrMinus1 =
-                x: if x.thunderbird == null || x.thunderbird.position == null then -1 else x.thunderbird.position;
+              posOrMinus1 = x: x.thunderbird.position or (-1);
               max-position = fold max (-1) (map posOrMinus1 (attrValues cfg));
               posOrLast = pos: if pos == -1 then max-position + 1 else pos;
 
