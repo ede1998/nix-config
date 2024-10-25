@@ -1,4 +1,4 @@
-{ ... }:
+{ lib, ... }:
 {
   programs.plasma = {
     enable = true;
@@ -48,7 +48,10 @@
             digitalClock = {
               calendar = {
                 firstDayOfWeek = "monday";
-                plugins = [ "holidaysevents" ];
+                plugins = [
+                  "holidaysevents"
+                  "pimevents"
+                ];
                 showWeekNumbers = true;
               };
               date.format = "isoDate";
@@ -104,6 +107,21 @@
       in
       {
         baloofilerc."Basic Settings".Indexing-Enabled = false;
+
+        # Digital clock
+        # Display holidays for Baden-Württemberg in Digital Clock calendar widget.
+        plasma_calendar_holiday_regions.General.selectedRegion = "de-bw_de";
+        # TODO also automatically configure those calendars
+        # at the moment, I added these manually via
+        # nix run nixpkgs#kdePackages.akonadiconsole
+        # and add davgroupware resource
+        plasmashellrc.PIMEventsPlugin.calendars = lib.strings.concatStringsSep "," [
+          "15"
+          "16"
+          "17"
+          "18"
+        ];
+
         # Disable KDE global menu daemon
         kded5rc.Module-appmenu.autoload = false;
         # https://github.com/nix-community/plasma-manager/issues/117#issuecomment-2041384419
