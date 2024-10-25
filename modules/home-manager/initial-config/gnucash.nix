@@ -118,7 +118,7 @@ in
         ];
 
       home = {
-        packages = [ pkgs.unstable.gnucash ];
+        packages = [ pkgs.gnucash ];
         file = {
           # Automatically loaded at startup.
           # https://wiki.gnucash.org/wiki/Configuration_Locations
