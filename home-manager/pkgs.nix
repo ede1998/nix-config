@@ -15,6 +15,7 @@
     cura5
     dig
     dust
+    ede1998-utilities
     exif
     fclones
     fd
