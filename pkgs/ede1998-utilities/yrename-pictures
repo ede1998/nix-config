@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+
+# sort files in different folders according to their exif data; uses hard links for files and names files according to date/time in exif data
+# argument 1: folder for links
+
+set -o nounset
+
+OUTPUT_FOLDER="$1"
+if [ -z "$OUTPUT_FOLDER" ]; then
+	OUTPUT_FOLDER="output";
+fi
+OUTPUT_FOLDER_NO_EXIF="$OUTPUT_FOLDER/noexif"
+OUTPUT_FOLDER_EXIF_EMPTY="$OUTPUT_FOLDER/exifempty"
+OUTPUT_FOLDER_OTHERS="$OUTPUT_FOLDER/others"
+mkdir "$OUTPUT_FOLDER"
+mkdir "$OUTPUT_FOLDER_NO_EXIF"
+mkdir "$OUTPUT_FOLDER_EXIF_EMPTY"
+mkdir "$OUTPUT_FOLDER_OTHERS"
+
+function exifAndLink {
+  FILE="$1"
+ 
+  #DATE_ORIG=$(exif --tag=0x0132 -m "$FILE" 2> /dev/null | head -n 1)
+  DATE_ORIG=$(exif --tag=0x9003 -m "$FILE" 2> /dev/null | head -n 1)
+  EXIF_RESULT=$?
+  
+  if [ "$EXIF_RESULT" -eq 0 ] && [ -n "$DATE_ORIG" ]; then
+    DATE_MODIFIED=${DATE_ORIG/ /T}
+    DATE=${DATE_MODIFIED//:/-}
+    ln -- "$FILE" "$OUTPUT_FOLDER/$DATE.jpg" |& grep -v "File exists"
+
+    ret="${PIPESTATUS[0]}"
+    counter=1
+    while [ "$ret" -eq 1 ]; do
+      #echo "file exists, could not create link for '$FILE'"
+      # could not create link, file exists
+      ln -- "$FILE" "$OUTPUT_FOLDER/$DATE-$counter.jpg" |& grep -v "File exists"
+      ret="${PIPESTATUS[0]}"
+      ((++counter))
+    done
+    #if [ $counter -ne 1 ]; then
+    #  echo "Created '$OUTPUT_FOLDER_NO_EXIF/$DATE-$counter.jpg' instead"
+    #fi
+  elif [ "$EXIF_RESULT" -ne 0 ]; then
+    ln --backup=numbered -t "$OUTPUT_FOLDER_NO_EXIF" -- "$FILE"
+  else
+    ln --backup=numbered -t "$OUTPUT_FOLDER_EXIF_EMPTY" -- "$FILE"
+  fi
+
+  # link creation successful?
+  LN_RESULT=$?
+  if [ "$LN_RESULT" -ne 0 ]; then
+    echo "Could not create link for '$FILE'"
+  fi
+}
+
+find . -name "*.jpg" -or -name "*.JPG" -or -name "*.jpeg" | while read -r current_file; do
+  exifAndLink "$current_file";
+done
+find . -type f ! -name "*.jpg" ! -name "*.JPG" ! -name "*.jpeg" | while read -r current_file; do
+  ln --backup=numbered -- "$current_file" "$OUTPUT_FOLDER_OTHERS/$(basename "$current_file")";
+done
