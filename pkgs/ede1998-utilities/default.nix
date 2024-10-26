@@ -31,6 +31,17 @@ let
       gnugrep
       gnused
     ])
+    (shellApp "ygetscans" [
+      coreutils
+      fd
+      fzf
+      gnused
+      libreoffice-fresh
+      ocrmypdf
+      rm-improved
+      xdg-utils
+      # kdePackages.kde-cli-tools optionally required by xdg-open
+    ])
   ];
 in
 pkgs.symlinkJoin {
