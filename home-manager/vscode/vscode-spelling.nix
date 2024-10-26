@@ -30,6 +30,8 @@
   "nixfmt"
   "nixos"
   "nixpkgs"
+  "ocrmypdf"
+  "okular"
   "pkgs"
   "repr"
   "reqwest"
