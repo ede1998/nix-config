@@ -56,6 +56,7 @@
       allowUnfree = true;
     };
   };
+  xdg.configFile."nixpkgs/config.nix".text = "{ allowUnfree = true; }";
 
   programs.home-manager.enable = true;
 
