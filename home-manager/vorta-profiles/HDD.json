@@ -42,70 +42,6 @@
     "dont_run_on_metered_networks": true,
     "SourceFileModel": [
         {
-            "dir": "/home/erik/Documents/",
-            "dir_size": 17472185650,
-            "dir_files_count": 15158,
-            "path_isdir": true,
-            "profile": 2,
-            "added_at": "2023-03-13 17:46:04.473767"
-        },
-        {
-            "dir": "/home/erik/Music/",
-            "dir_size": 0,
-            "dir_files_count": 0,
-            "path_isdir": true,
-            "profile": 2,
-            "added_at": "2023-03-13 17:46:04.482869"
-        },
-        {
-            "dir": "/home/erik/Pictures/",
-            "dir_size": 56691583691,
-            "dir_files_count": 87130,
-            "path_isdir": true,
-            "profile": 2,
-            "added_at": "2023-03-13 17:46:04.490709"
-        },
-        {
-            "dir": "/home/erik/Templates/",
-            "dir_size": 43709644,
-            "dir_files_count": 47,
-            "path_isdir": true,
-            "profile": 2,
-            "added_at": "2023-03-13 17:46:04.502886"
-        },
-        {
-            "dir": "/home/erik/Videos/",
-            "dir_size": 0,
-            "dir_files_count": 0,
-            "path_isdir": true,
-            "profile": 2,
-            "added_at": "2023-03-13 17:46:04.518116"
-        },
-        {
-            "dir": "/home/erik/daten/music/",
-            "dir_size": 195885349825,
-            "dir_files_count": 9156,
-            "path_isdir": true,
-            "profile": 2,
-            "added_at": "2023-03-13 17:46:04.561713"
-        },
-        {
-            "dir": "/home/erik/daten/videos/",
-            "dir_size": 70271703504,
-            "dir_files_count": 57,
-            "path_isdir": true,
-            "profile": 2,
-            "added_at": "2023-03-13 17:46:04.573183"
-        },
-        {
-            "dir": "/home/erik/dev",
-            "dir_size": -1,
-            "dir_files_count": -1,
-            "path_isdir": false,
-            "profile": 2,
-            "added_at": "2024-09-03 17:47:07.035453"
-        },
-        {
             "dir": "/mnt/shared-hdd/folder",
             "dir_size": 101151103318,
             "dir_files_count": 11775,
@@ -120,6 +56,14 @@
             "path_isdir": true,
             "profile": 2,
             "added_at": "2024-10-06 13:26:52.544494"
+        },
+        {
+            "dir": "/home/erik",
+            "dir_size": -1,
+            "dir_files_count": -1,
+            "path_isdir": false,
+            "profile": 2,
+            "added_at": "2024-10-26 22:29:04.118100"
         }
     ],
     "SchemaVersion": {

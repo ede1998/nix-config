@@ -1,0 +1,21 @@
+# TODO add excludes automatically
+
+# custom added rules
+pp:/home/erik/.cache
+pp:/home/erik/nvme/lost+found
+pf:/home/erik/daten/vm/win10-wireshark.qcow2
+pp:/home/erik/nvme/steam-games
+
+# rust-artefacts
+fm:*/.cargo
+fm:*/.rustup
+
+# python-cache
+fm:*/__pycache__
+fm:*.pyc
+fm:*.pyo
+fm:*/.virtualenvs
+
+# node-cache
+fm:*/node_modules
+fm:*/.npm
