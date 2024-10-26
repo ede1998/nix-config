@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+
+print_usage() {
+	echo "Usage: $script_name [-o | --old <old symbol>] [-n | --new <new symbol>] [-h | --help] [-r | --recursive] <filename>...";
+	echo '';
+	echo 'This script renames any file given to it as argument. All occurrences of the old symbol in the filename are replaced by the new symbol.'
+	echo '';
+	echo 'Options:';
+	echo '  -n, --new <new symbol>';
+	echo '      The new symbol that substitutes the old one. The default symbol for replacement is the hyphen ("-").';
+	echo '  -o, --old <old symbol>';
+	echo '      The old symbol that is to be substituted. The default symbol to be replaced is the whitespace character (" ").';
+	echo '  -h, --help';
+	echo '      Print this help text and exit. Overrides all other flags.';
+	echo '  -r, --recursive';
+	echo '      Recursively rename any file with spaces within the given directories. This includes the given directory itself.';
+	echo '';
+	echo 'Bugs/Restrictions:';
+	echo '  1) It is not possible to rename the current working directory because it is used by the active shell.';
+	echo '  2) It is not certain if the recursive flag works correctly, i.e. the files are renamed starting from the deepest level';
+	echo '       so that all files within a directory are renamed before the directory itself is renamed to prevent invalidating file paths.';
+
+}
+
+new_symbol='-';
+old_symbol=' ';
+recursive=false;
+script_name="$(basename "$0")";
+filenames=( );
+
+# Parse args
+while [ $# -gt 0 ]; do
+	case "$1" in
+		-o|--old)
+			old_symbol="$2";
+			shift;
+			shift;
+			;;
+		-n|--new)
+			new_symbol="$2";
+			shift;
+			shift;
+			;;
+		-h|--help)
+			print_usage;
+			exit;
+			;;
+		-r|--recursive)
+			recursive=true;
+			shift;
+			;;
+		*)
+			# only add non empty strings
+			[ -z "$1" ] || filenames+=("$1");
+			shift;
+			;;
+	esac
+done
+
+if [ -z "${filenames[*]}" ]; then
+		echo "Missing file name argument.";
+		echo "For more information, type $script_name --help";
+		exit;
+fi
+
+
+if $recursive; then
+	mapfile -t filenames < <( find "${filenames[@]}" | tac )
+fi
+
+for filepath in "${filenames[@]}"; do
+	if [ ! -e "$filepath" ]; then 
+		echo "The file '$filepath' does not exist.";
+		continue;
+	fi
+	filename="$(basename "$filepath")";
+	path="$(dirname "$filepath")";
+	# sed expression is dynamically created with variables
+	# shellcheck disable=SC2001
+	delimited_filename="$(sed "s/$old_symbol/$new_symbol/g" <<< "$filename")";
+
+	# only try renaming if the file gets a new name
+	[ "$delimited_filename" != "$filename" ] && mv -i "$filepath" "$path/$delimited_filename";
+done

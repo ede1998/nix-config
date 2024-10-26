@@ -1,17 +1,26 @@
 { pkgs }:
 with pkgs;
 let
-  yopenany = writeShellApplication {
-    name = "yopenany";
-    runtimeInputs = [
-      findutils
+  shellApp =
+    name: runtimeInputs:
+    writeShellApplication {
+      inherit name runtimeInputs;
+      text = builtins.readFile ./${name};
+    };
+  apps = [
+    (shellApp "yopenany" [
       coreutils
+      findutils
       xdg-utils
-    ];
-    text = builtins.readFile ./yopenany;
-  };
+    ])
+    (shellApp "yrename-no-spaces" [
+      coreutils
+      findutils
+      gnused
+    ])
+  ];
 in
 pkgs.symlinkJoin {
   name = "ede1998-utilities";
-  paths = [ yopenany ];
+  paths = apps;
 }
