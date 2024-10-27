@@ -1,0 +1,194 @@
+#!/usr/bin/env bash
+
+print_help() {
+	echo "Usage: $script_name [-h | --help] [-p | --months-prior <n>] [--keep-old | -k]";
+	echo '';
+	echo 'This script:';
+	echo '  - checks that every transaction file is found in the downloads folder';
+	echo '  - cleans up the transaction folder';
+	echo '  - copies the downloaded transactions to the transaction folder';
+	echo '  - converts the transactions to csv if necessary';
+	echo '  - converts the dates to ISO8601';
+	echo '';
+	echo 'After the execution of the script you can import the transactions to gnucash.';
+	echo '';
+	echo 'Options:';
+	echo '  -h, --help';
+	echo '    Print this help text and exit. Overrides all other flags.';
+	echo '  -p, --months-prior <n>';
+	echo '    Number of months the transactions are in the past. Use 0 to assume the';
+	echo '    current month. Defaults to -1 (last month).';
+	echo '  -k, --keep-old';
+	echo '    If this flags is set, the files in the transaction folder are not removed.';
+	echo '';
+}
+
+script_name=$(basename "$0")
+dir_download='/home/erik/Downloads'
+dir_transaction='/home/erik/tmp/transactions';
+dir_finances='/home/erik/Documents/finanzen';
+convert-xlsx-to-csv() { soffice --convert-to csv:"Text - txt - csv (StarCalc)":59,34,76,1,,,true "$1" 2> /dev/null; }
+convert-dates-to-iso8601() { sed 's/\([0-9]\{2\}\)\.\([0-9]\{2\}\)\.\([0-9]\{4\}\)/\3-\2-\1/g' "$1" > "$2"; }
+make-withdrawals-negative() { sed -i 's/\(^[^;]*;[^;]*;"\)\([^;]*;[^;]*;"Lastschrift\)/\1-\2/' "$1"; }
+remove-euro-sign() { sed -i 's/ €//g' "$1"; }
+prior=1
+keep_old=false
+
+# parse args
+while [ $# -gt 0 ]; do
+	case "$1" in
+		-h|--help)
+			print_help;
+			exit;
+			;;
+		-p|--month-prior)
+			prior=$2;
+			[[ "$prior" =~ ^[0-9]+$ ]] || (echo "[-p | --months-prior <n>] needs non-negative n"; exit;)
+			shift;
+			shift;
+			;;
+		-k|--keep-old)
+			keep_old=true
+			shift;
+			;;
+		*)
+			echo "Usage: $script_name [-h | --help] [-p | --months-prior <n>]";
+			echo "For more information, type $script_name --help";
+			exit;
+			;;
+	esac
+done
+
+last_month=$(date -d "$(date +%Y-%m-1) -$prior month" +%Y-%m)
+last_month_without_year=${last_month/#[0-9][0-9][0-9][0-9]-/}
+year_of_last_month=${last_month/%-[0-9][0-9]/}
+
+check-file()
+{
+	if [ -f "$1" ]; then
+		return 0;
+	fi
+	while true; do
+		read -r -p "Missing file '$1' for $2. Skip it? [Yes/No] " yn
+		case $yn in
+			Yes|Y|y|yes)
+				return 2;
+				;;
+			No|n|no|N)
+				echo "Stopping script. Aborting without file changes.";
+				return 1;
+				;;
+		esac
+	done
+}
+
+
+# check that all required files are there
+
+# SC2125 seems to be just wrong? I do get glob expansion unlike the lint is telling me.
+# shellcheck disable=SC2125
+file_ing="$dir_download/Umsatzanzeige_DE25500105175512060053_"*".csv"
+# shellcheck disable=SC2125
+file_ing_checking="$dir_download/Umsatzanzeige_DE30500105175438009290_"*".csv"
+file_barclay="$dir_download/Umsätze.xlsx"
+file_leaseplan="$dir_download/Kontoauszug.pdf"
+#file_vw_bank="$dir_download/KtoNr_1524931191_Export_Umsätze_"*".csv"
+file_bondora=$(find ~/Downloads/ -maxdepth 1 -type f -name "${last_month_without_year}_01_${year_of_last_month}-${last_month_without_year}_*_${year_of_last_month}*.xlsx" | fzf --select-1 --prompt "Select Bondora file > ")
+
+check-file "$file_ing" "ING Extra"
+skip_ing="$?"
+[ "$skip_ing" -eq 1 ] && exit
+
+check-file "$file_ing_checking" "ING Giro"
+skip_ing_checking="$?"
+[ "$skip_ing_checking" -eq 1 ] && exit
+
+check-file "$file_barclay" "Barclay"
+skip_barclay="$?"
+[ "$skip_barclay" -eq 1 ] && exit
+
+check-file "$file_leaseplan" "Leaseplan"
+skip_leaseplan="$?"
+[ "$skip_leaseplan" -eq 1 ] && exit
+
+check-file "$file_bondora" "Bondora"
+skip_bondora="$?"
+[ "$skip_bondora" -eq 1 ] && exit
+
+#check-file "$file_vw_bank" "VW Bank"
+#skip_vw_bank="$?"
+#[ "$skip_vw_bank" -eq 1 ] && exit
+
+[ ! -d "$dir_transaction" ] && mkdir "$dir_transaction";
+
+cd "$dir_transaction"
+
+# clean up directory from last month
+[ "$(pwd)" = "$dir_transaction" ] && [ "$keep_old" = false ] && rm ./* 2> /dev/null
+
+# prepare ing sparbuch
+if [ "$skip_ing" -eq 0 ]; then
+	mv "$file_ing" "ing.csv"
+	convert-dates-to-iso8601 "ing.csv" "ing-iso8601.csv"
+	mv -i "ing.csv" "$dir_finances/ing/tagesgeld/auszuege/Umsatzanzeige-DE25500105175512060053-$last_month.csv"
+	echo "$file_ing processed."
+fi
+
+# prepare ing giro
+if [ "$skip_ing_checking" -eq 0 ]; then
+	mv "$file_ing_checking" "ing-giro.csv"
+	convert-dates-to-iso8601 "ing-giro.csv" "ing-giro-iso8601.csv"
+	iconv --from-code=ISO-8859-1 --to-code=UTF-8 ing-giro-iso8601.csv > tmp.txt
+	head -n 13 "tmp.txt" > tmp1.txt
+	tail -n +14 "tmp.txt" | awk -F ';' 'BEGIN { OFS=";" } {print $1,$2,$3,$5,$4,$6,$7,$8,$9}' | sed 's/^\([^;]*;[^;]*;[^;]*\);\(.*\)/\1 \2/' >> tmp1.txt
+	mv tmp1.txt "ing-giro-iso8601.csv"
+	rm tmp.txt
+	mv -i "ing-giro.csv" "$dir_finances/ing/giro/auszuege/kontoauszug-$last_month.csv"
+	echo "$file_ing_checking processed."
+fi
+
+# prepare credit card
+if [ "$skip_barclay" -eq 0 ]; then
+	mv "$file_barclay" "barclay.xlsx"
+	convert-xlsx-to-csv "barclay.xlsx"
+	convert-dates-to-iso8601 "barclay.csv" "barclay-iso8601.csv"
+	make-withdrawals-negative "barclay-iso8601.csv"
+	remove-euro-sign "barclay-iso8601.csv"
+	mv -i "barclay.csv" "$dir_finances/barclay/umsaetze/umsaetze-$last_month.csv"
+	echo "$file_barclay processed."
+fi
+
+# prepare leaseplanbank
+if [ "$skip_leaseplan" -eq 0 ]; then
+	mv "$file_leaseplan" "leaseplan.pdf"
+	pdftotext -layout "leaseplan.pdf" - |
+		sed -n '/^Datum.*Referenzkonto/,/^$/p' |
+		grep -v '^$\|^Datum *Referenzkonto' |
+		perl -pe 's/(\d\d)-(\d\d)-(\d\d\d\d) +(.*?) +(.*?) +(dazu|ab) +(.*) €/\3-\2-\1;\4;\5;\7/' > "leaseplan.csv"
+	sed -i 's/Zinsen;;/Zinsen;Zinsen;/' "leaseplan.csv"
+	fp="$dir_finances/leaseplan/$year_of_last_month"
+	mkdir -p "$fp"
+	mv -i leaseplan.pdf "$fp/transaktionen-$last_month.pdf"
+	echo "$file_leaseplan processed."
+fi
+
+# prepare bondora
+if [ "$skip_bondora" -eq 0 ]; then
+	bondora_pdf=${file_bondora//xlsx/pdf}
+	fp="$dir_finances/bondora/$year_of_last_month"
+	mv -i "$bondora_pdf" "$fp/transactions-$last_month.pdf" || echo "Failed to move Bondora statements to storage. Did you forget to download it? After download, run 'mv -i \"$bondora_pdf\" \"$fp/transactions-$last_month.pdf'"
+	mv "$file_bondora" bondora.xlsx
+	convert-xlsx-to-csv "bondora.xlsx"
+	mkdir -p "$fp"
+	mv -i bondora.xlsx "$fp/transactions-$last_month.xlsx"
+	echo "$file_bondora processed."
+fi
+
+# prepare VW bank
+#if [ "$skip_vw_bank" -eq 0 ]; then
+#	mv "$file_vw_bank" "vw-bank.csv"
+#	fp="$dir_finances/volkswagen-bank/auszuege/$year_of_last_month"
+#	mkdir -p "$fp"
+#	cp -i "vw-bank.csv" "$fp/KtoNr_1524931191_Export_Umsaetze_$last_month.csv"
+#	echo "$file_vw_bank processed."
+#fi
