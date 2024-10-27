@@ -10,20 +10,26 @@
     mutableExtensionsDir = false;
     # overlay is under `vscode-marketplace`
     # usual extensions are under `vscode-extensions`
-    extensions = with pkgs.vscode-marketplace; [
-      arrterian.nix-env-selector
-      eamodio.gitlens
-      fardolieri.close-tabs-via-regex
-      james-yu.latex-workshop
-      jnoortheen.nix-ide
-      ms-python.python
-      nvarner.typst-lsp
-      rust-lang.rust-analyzer
-      streetsidesoftware.code-spell-checker
-      tamasfe.even-better-toml
-      usernamehw.errorlens
-      vscodevim.vim
-    ];
+    extensions =
+      (with pkgs.vscode-marketplace; [
+        arrterian.nix-env-selector
+        alefragnani.bookmarks
+        eamodio.gitlens
+        fardolieri.close-tabs-via-regex
+        james-yu.latex-workshop
+        jnoortheen.nix-ide
+        ms-python.python
+        nvarner.typst-lsp
+        rust-lang.rust-analyzer
+        streetsidesoftware.code-spell-checker
+        tamasfe.even-better-toml
+        usernamehw.errorlens
+        vscodevim.vim
+      ])
+      ++ (with pkgs.vscode-extensions; [
+        # This extension from vscode-marketplace does not work.
+        ms-vsliveshare.vsliveshare
+      ]);
     keybindings = [
       {
         key = "ctrl+alt+x";
@@ -57,6 +63,11 @@
       "rust-analyzer.completion.snippets.custom" = import ./rust-analyzer-snippets.nix;
 
       "cSpell.userWords" = import ./vscode-spelling.nix;
+
+      "liveshare.diagnosticLogging" = true;
+      "liveshare.connectionMode" = "relay";
+
+      "bookmarks.saveBookmarksInProject" = true;
     };
   };
   home.packages = [

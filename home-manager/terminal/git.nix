@@ -16,6 +16,7 @@
       ".vscode/"
       "_wip/"
       "__pycache__/"
+      ".direnv/"
     ];
     extraConfig = {
       credential.helper = "store --file ~/.config/git/credentials";
