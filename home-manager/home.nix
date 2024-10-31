@@ -149,12 +149,33 @@
   home = rec {
     username = "erik";
     homeDirectory = "/home/erik";
-    shellAliases = {
+    shellAliases = with pkgs; {
       # for simple aliases that are cross-shell compatible
       code = "codium";
       home-manager = "home-manager --flake ${homeDirectory}/nix-config#${username}@${hostName}";
       nixos-rebuild = "sudo nixos-rebuild --flake ${homeDirectory}/nix-config#${hostName}";
       open = "xdg-open";
+      datetime8601 = ''date -u +"%Y-%m-%dT%H-%M-%S"'';
+      ll = "ls -lsah --color=auto";
+      # execute command once for each line in stdin (as opposed to once with all lines as argument for normal xargs)
+      trxargs = "tr '\n' '\0' | xargs -0 -n1";
+      ".." = "cd ..";
+      "..." = "cd ../..";
+      "...." = "cd ../../..";
+      mv = "mv -i";
+      cp = "cp -i";
+      ln = "ln -i";
+      rm = "rm -I";
+      gis = "${git}/bin/git status";
+      gip = "${git}/bin/git push";
+      gic = "${git}/bin/git commit";
+      gia = "${git}/bin/git add";
+      gid = "${git}/bin/git diff";
+      gids = "${git}/bin/git diff --staged";
+      giu = "${git}/bin/git pull";
+      gil = "${git}/bin/git log";
+      gila = "${git}/bin/git log --oneline --decorate --all --graph";
+      cdh = "cd `${git}/bin/git rev-parse --show-toplevel`";
     };
 
     file."${config.xdg.configHome}/autostart/steam.desktop".source = "${pkgs.steam}/share/applications/steam.desktop";
