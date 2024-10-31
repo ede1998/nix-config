@@ -2,31 +2,59 @@
   appimageTools,
   fetchurl,
   pkgs,
-  writeScriptBin,
+  lib,
 }:
-# Consume cura as AppImage as described in https://github.com/NixOS/nixpkgs/issues/186570#issuecomment-1627797219
 let
-  cura5 = appimageTools.wrapType2 rec {
-    name = "cura5";
-    version = "5.8.1";
-    src = fetchurl {
-      url = "https://github.com/Ultimaker/Cura/releases/download/${version}/UltiMaker-Cura-${version}-linux-X64.AppImage";
-      hash = "sha256-VLd+V00LhRZYplZbKkEp4DXsqAhA9WLQhF933QAZRX0=";
-    };
-    extraPkgs = pkgs: [ ];
+  pname = "cura5";
+  version = "5.8.1";
+  src = fetchurl {
+    url = "https://github.com/Ultimaker/Cura/releases/download/${version}/UltiMaker-Cura-${version}-linux-X64.AppImage";
+    hash = "sha256-VLd+V00LhRZYplZbKkEp4DXsqAhA9WLQhF933QAZRX0=";
   };
+  appimage-contents = appimageTools.extractType2 { inherit pname version src; };
 in
-writeScriptBin "cura" ''
-  #! ${pkgs.bash}/bin/bash
-  # AppImage version of Cura loses current working directory and treats all paths relative to $HOME.
-  # So we convert each of the files passed as argument to an absolute path.
-  # This fixes use cases like `cd /path/to/my/files; cura mymodel.stl anothermodel.stl`.
-  args=()
-  for a in "$@"; do
-    if [ -e "$a" ]; then
-      a="$(realpath "$a")"
-    fi
-    args+=("$a")
-  done
-  exec "${cura5}/bin/cura5" "''${args[@]}"
-''
+appimageTools.wrapType2 {
+  inherit pname version src;
+  extraPkgs = pkgs: [ pkgs.bash ];
+  extraInstallCommands =
+    let
+      # Consume cura as AppImage as described in https://github.com/NixOS/nixpkgs/issues/186570#issuecomment-1627797219
+      script = ''
+        #! ${pkgs.bash}/bin/bash
+        # AppImage version of Cura loses current working directory and treats all paths relative to $HOME.
+        # So we convert each of the files passed as argument to an absolute path.
+        # This fixes use cases like `cd /path/to/my/files; cura mymodel.stl anothermodel.stl`.
+        args=()
+        for a in "$@"; do
+          if [ -e "$a" ]; then
+            a="$(realpath "$a")"
+          fi
+          args+=("$a")
+        done
+        exec "$out/bin/cura5" "''${args[@]}"
+      '';
+    in
+    ''
+      install -m 444 -D ${appimage-contents}/cura-icon.png -t $out/share/pixmaps
+
+      install -m 444 -D ${appimage-contents}/com.ultimaker.cura.desktop -t $out/share/applications
+
+      substituteInPlace $out/share/applications/com.ultimaker.cura.desktop \
+        --replace-fail 'Exec=UltiMaker-Cura' 'Exec=cura'
+        
+      cat > $out/bin/cura << EOF
+      ${script}
+      EOF
+
+      chmod +x "$out/bin/cura"
+    '';
+
+  meta = with lib; {
+    description = "State-of-the-art slicer app to prepare your 3D models for your 3D printer.";
+    mainProgram = "cura";
+    homepage = "https://ultimaker.com/de/software/ultimaker-cura";
+    license = licenses.mit;
+    maintainers = [ ];
+    platforms = [ "x86_64-linux" ];
+  };
+}
