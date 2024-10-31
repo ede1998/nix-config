@@ -225,6 +225,12 @@
     # no need to redefine it in your config for now)
     #media-session.enable = true;
   };
+  services.udev.extraRules = ''
+    # Block webcam sound
+    # Do not want low quality webcam mic: https://rietta.com/blog/block-webcam-audio-ubuntu-linux/
+    # the webcam in question: Bus 003 Device 011: ID 1871:0341 Aveo Technology Corp.
+    SUBSYSTEM=="usb", DRIVER=="snd-usb-audio", ATTRS{idVendor}=="1871", ATTRS{idProduct}=="0341", ATTR{authorized}="0"
+  '';
 
   # This setups a SSH server. Very important if you're setting up a headless system.
   # Feel free to remove if you don't need it.
