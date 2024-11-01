@@ -107,6 +107,7 @@
       in
       {
         baloofilerc."Basic Settings".Indexing-Enabled = false;
+        katerc.General."Close After Last" = true;
 
         # Digital clock
         # Display holidays for Baden-Württemberg in Digital Clock calendar widget.
