@@ -48,11 +48,23 @@ rec {
 
       thunderbird = {
         enable = true;
-        settings = id: {
-          "mailnews.default_sort_order" = 2; # descending
-          "mailnews.default_sort_type" = 18; # by date
-          "mail.chat.enabled" = false;
-        };
+        settings =
+          id:
+          let
+            sort-order = {
+              descending = 2;
+            };
+            sort-type = {
+              by-date = 18;
+            };
+          in
+          {
+            "mailnews.default_sort_order" = sort-order.descending;
+            "mailnews.default_sort_type" = sort-type.by-date;
+            "mail.chat.enabled" = false;
+            # Reply from this identity when delivery headers match:
+            "mail.identity.id_${id}.catchAllHint" = "*@erik-hennig.me";
+          };
       };
     };
 
