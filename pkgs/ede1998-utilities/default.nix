@@ -42,18 +42,27 @@ let
       xdg-utils
       # kdePackages.kde-cli-tools optionally required by xdg-open
     ])
-    (shellApp "ypreparebanking" [
-      coreutils
-      findutils
-      fzf
-      gawk
-      gnugrep
-      gnused
-      iconv
-      libreoffice-fresh
-      perl
-      poppler_utils
-    ])
+    (shellApp'
+      {
+        bashOptions = [
+          "nounset"
+          "pipefail"
+        ];
+      }
+      "ypreparebanking"
+      [
+        coreutils
+        findutils
+        fzf
+        gawk
+        gnugrep
+        gnused
+        iconv
+        libreoffice-fresh
+        perl
+        poppler_utils
+      ]
+    )
   ];
 in
 pkgs.symlinkJoin {

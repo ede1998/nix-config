@@ -121,7 +121,7 @@ skip_bondora="$?"
 
 [ ! -d "$dir_transaction" ] && mkdir "$dir_transaction";
 
-cd "$dir_transaction"
+cd "$dir_transaction" || exit
 
 # clean up directory from last month
 [ "$(pwd)" = "$dir_transaction" ] && [ "$keep_old" = false ] && rm ./* 2> /dev/null
