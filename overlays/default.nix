@@ -20,14 +20,15 @@
         pkg: patches: cargoHash:
         pkg.overrideAttrs (oldAttrs: rec {
           # take the original source and apply all patches before making it the new source
-          # we cannot use patches or patchPhase because all dependencies are vendored into
+          # we cannot simply override patches or patchPhase because all dependencies are vendored into
           # a separate derivation before the patch phase resulting in mismatching Cargo.lock
           # checksums
-          src = prev.runCommand "patched-source" { } ''
-            cp --no-preserve=mode -r ${oldAttrs.src} $out
-            cd $out
-            ${prev.lib.concatMapStringsSep "\n" (patch: ''patch -p1 < "${patch}"'') patches}
-          '';
+          # applyPatches from trivialBuilders:
+          # https://github.com/NixOS/nixpkgs/blob/24.05/pkgs/build-support/trivial-builders/default.nix#L852
+          src = prev.applyPatches {
+            inherit (oldAttrs) src;
+            inherit patches;
+          };
           cargoDeps = oldAttrs.cargoDeps.overrideAttrs (
             prev.lib.const {
               inherit src;
