@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, options, ... }:
 {
   programs.plasma = {
     enable = true;
@@ -99,6 +99,8 @@
       };
     };
 
+    resetFiles = with options.programs.plasma.resetFiles; [ "gwenviewrc" ] ++ default;
+
     # Some low-level settings:
     configFile =
       let
@@ -108,6 +110,35 @@
       {
         baloofilerc."Basic Settings".Indexing-Enabled = false;
         katerc.General."Close After Last" = true;
+        gwenviewrc = {
+          # Need to have LastUsedVersion set or menubar config will be removed
+          # Also must be MenuBar must be immutable or the value will be reset
+          # if LastUsedVersion is unset. However, immutable seem to not really
+          # be respected: the key will be removed anyway. Also, its value can
+          # be modified within the program (ctrl+m)
+          General.LastUsedVersion.persistent = true;
+          MainWindow.MenuBar = {
+            immutable = true;
+            value = true;
+          };
+
+          SideBar = {
+            "IsVisible ViewMode" = true;
+            PreferredMetaInfoKeyList = lib.concatStringsSep "," [
+              "General.Name"
+              "General.Size"
+              "General.LocalPath"
+              "General.ImageSize"
+              "Exif.Photo.DateTimeDigitized"
+              "Exif.Image.Model"
+              "Exif.GPSInfo.GPSLatitude"
+              "Exif.Image.Make"
+              "Exif.Photo.DateTimeOriginal"
+              "Exif.GPSInfo.GPSLongitude"
+              "Exif.Image.DateTime"
+            ];
+          };
+        };
 
         # Digital clock
         # Display holidays for Baden-Württemberg in Digital Clock calendar widget.
