@@ -19,9 +19,6 @@
       addRustPatches =
         pkg: patches: cargoHash:
         pkg.overrideAttrs (oldAttrs: rec {
-          pname = oldAttrs.pname;
-          version = oldAttrs.version;
-
           # take the original source and apply all patches before making it the new source
           # we cannot use patches or patchPhase because all dependencies are vendored into
           # a separate derivation before the patch phase resulting in mismatching Cargo.lock
@@ -33,7 +30,6 @@
           '';
           cargoDeps = oldAttrs.cargoDeps.overrideAttrs (
             prev.lib.const {
-              name = "${pname}-vendor.tar.gz";
               inherit src;
               outputHash = cargoHash;
             }
@@ -52,7 +48,7 @@
           url = "https://patch-diff.githubusercontent.com/raw/pkolaczk/fclones/pull/280.patch";
           sha256 = "sha256:0inir6g158hfc4a1s2hwsbr887szb6mzpm961xjpisy1vgbjg9hy";
         })
-      ] "sha256-vHr1sVGrtJyZp+y1ukwDgkPaGfyYHxHUrlAqjnKfTEo=";
+      ] "sha256-o+jsVnw9FvaKagiEVGwc+l0hE25X+KYY36hFhJwlcj0=";
     };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will
