@@ -37,6 +37,7 @@
   "reqwest"
   "rsplit"
   "rustfmt"
+  "serde"
   "thiserror"
   "tmpfs"
   "walkdir"

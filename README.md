@@ -204,6 +204,9 @@ If you're creating patches, you can keep them on the `overlays` folder as well.
 See [the wiki article](https://nixos.wiki/wiki/Overlays) to see how it all
 works.
 
+Individual packages patched in the overlay can be built with
+`nix build .#homeConfigurations.erik@babbage.pkgs.${package_name}`.
+
 ### Adding your own modules
 
 Got some configurations you want to create an abstraction of? Modules are the

@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 let
   keys = {
     up = "\\e[A";
@@ -32,6 +32,9 @@ let
     complete -A command catwitch
     complete -A command batwitch
   '';
+  extra-completions = [
+    "source <( fclones complete bash )" # don't use package so completion script doesn't use full path
+  ];
 in
 {
   programs.bash = {
@@ -51,6 +54,8 @@ in
 
       ${switchbranch}
       ${catwitch}
+
+      ${lib.concatStringsSep "\n" extra-completions}
 
       source "${pkgs.complete-alias}/bin/complete_alias"
       complete -F _complete_alias "''${!BASH_ALIASES[@]}"
