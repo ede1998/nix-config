@@ -21,7 +21,7 @@
     },
     {
         "path": "mailbox-org/Archives/${year}/finanzen",
-        "selector": "return message.author.includes('kundenservice@e.leaseplanbank.de') && message.subject.includes('Zins');"
+        "selector": "return message.author.includes('zinsupdate@e.ayvensbank.de') && message.subject.includes('Zins');"
     },
     {
         "path": "mailbox-org/Archives/${year}/finanzen",
