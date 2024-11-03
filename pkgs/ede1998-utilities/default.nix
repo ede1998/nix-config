@@ -72,6 +72,13 @@ let
         gnused
       ];
     })
+    (shellApp {
+      name = "yfile-pictures";
+      runtimeInputs = [
+        coreutils
+        fd
+      ];
+    })
   ];
 in
 pkgs.symlinkJoin {

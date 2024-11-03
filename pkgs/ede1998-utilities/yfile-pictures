@@ -1,0 +1,114 @@
+#!/usr/bin/env bash
+
+# Usage: mv-to-correct-folder.sh <src-folder>
+
+script_name=$(basename "$0")
+
+target_directory="/home/erik/Pictures"
+source_directory="."
+verbose=false
+
+echo_err() { >&2 echo "$@"; }
+echo_verbose() { if [ "$verbose" == true ]; then echo_err "$@"; fi }
+
+print_help()
+{
+	echo_err "Usage: $script_name [-h | --help] [-v | --verbose] [-n | --dry-run] [-t | --target-directory <target-directory>] [source-directory]"
+	echo_err "    Move all the files in the given source directory into the target directory. They are grouped into one subdirectory per year."
+	echo_err "    The year is determined by the first 4 characters of the filename which have to be digits. Otherwise, the file is ignored."
+	echo_err "    On file name collisions, the files are moved into a backup directory instead for further processing."
+	echo_err "    Defaults to the current working directory as source directory."
+	echo_err ""
+	echo_err "Options:"
+	echo_err "	-h,--help"
+	echo_err "		print this help text"
+	echo_err "	-v | --verbose"
+	echo_err "      Prints detailed information about executed actions"
+	echo_err "	-t,--target-directory <target-directory>"
+	echo_err "		Move the images to the hierarchy within the given target directory. Defaults to $target_directory"
+	echo_err "	-n,--dry-run"
+	echo_err "		only print the commands that would be executed without running them"
+}
+
+print_cmd()
+{
+	echo "$@";
+}
+
+dry_run=""
+no_more_options=false
+
+# Parse args
+while [ $# -gt 0 ]; do
+	case "$1" in
+		-h|--help)
+			print_help
+			exit
+			;;
+		-t|--target-directory)
+			target_directory="$2"
+			shift
+			shift
+			;;
+		-n|--dry-run)
+			dry_run=print_cmd
+			shift
+			;;
+		-v|--verbose)
+			verbose=true
+			shift
+			;;
+		--)
+		    if [ $no_more_options == false ]; then
+			  no_more_options=true
+			  shift
+			  continue
+			fi
+			;&
+		-*)
+		    if [ $no_more_options == false ]; then
+		      echo_err "Unknown option $1. For help, run:";
+		      echo_err "$script_name --help";
+			  exit 1;
+			fi
+			;&
+		*)
+		    if [ "$source_directory" == "." ]; then
+			  source_directory="$1";
+			  shift
+			  continue
+			fi
+			echo_err "Too many arguments, expect only 1 positional argument: source-directory"
+			exit 1;
+			;;
+	esac
+done
+
+fd --type f --print0 "^\d{4}" -- "$source_directory" | \
+while IFS= read -r -d $'\0' file; do
+	# find folder where file should be moved to
+	filename="${file##*/}"
+	target_folder="${target_directory}/${filename::4}";
+
+	# create folder if not exists
+	if [ ! -d "$target_folder" ]; then
+		$dry_run mkdir -p -- "$target_folder"
+		echo_verbose "Created directory: $target_folder"
+	fi
+
+	target_file="$target_folder/$filename";
+
+	# backup if file already exists in folder
+	if [ -f "$target_file" ]; then
+	    backup_directory="${source_directory}/duplicates";
+		[ -d "$backup_directory" ] || { $dry_run mkdir -- "$backup_directory"; echo_verbose "Created directory: $backup_directory"; }
+		echo_err "CONFLICT: file already exists: $target_file"
+		echo_err "          moving new file to $backup_directory"
+
+        # Making a backup while moving counts as failure for some reason
+		$dry_run mv --backup=numbered --force -- "$file" "$backup_directory/$filename" || true
+	else
+	    echo_verbose "Moving $file to $target_file";
+		$dry_run mv -i -- "$file" "$target_file"
+	fi
+done

@@ -25,8 +25,8 @@ prog="mv -i"
 max_conflicts=10
 
 # Parse args
-for i in "$@"; do
-	case $i in
+while [ $# -gt 0 ]; do
+	case "$1" in
 		-h|--help)
 			print_help
 			exit
