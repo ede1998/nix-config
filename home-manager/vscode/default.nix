@@ -68,6 +68,14 @@
       "liveshare.connectionMode" = "relay";
 
       "bookmarks.saveBookmarksInProject" = true;
+
+      # Invoke the correct shell for VSCode integrated terminal:
+      # https://www.reddit.com/r/NixOS/comments/ycde3d/vscode_terminal_not_working_properly
+      "terminal.integrated.defaultProfile.linux" = "bash";
+      "terminal.integrated.profiles.linux"."bash" = {
+        "path" = "/run/current-system/sw/bin/bash";
+        "icon" = "terminal-bash";
+      };
     };
   };
   home.packages = [
