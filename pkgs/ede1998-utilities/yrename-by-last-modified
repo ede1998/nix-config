@@ -1,0 +1,102 @@
+#!/usr/bin/env bash
+
+script_name=$(basename "$0")
+
+print_help()
+{
+	echo "Usage: $script_name [-h | --help] [-c | --copy] [-mc | --max-conflicts <number of conflicts> ] <file-to-rename> [file-extension]"
+	echo "    Renames the file to its last modified value in file system according to the following scheme 'YYYY-MM-ddThh-mm-ss.file-extension'."
+	echo "    If file-extension is omitted, the original extension is used instead. The file is created in the working directory of the script."
+	echo ""
+	echo "Options:"
+	echo "    -h,--help		print this help text"
+	echo "    -c,--copy		only copy the file and do not rename it; overwrites -l"
+	echo "    -l,--hard-link	create a hard-link instead of renaming the file; overwrites -c"
+	echo "    -n,--dry-run          only print the new file name without doing any writes"
+	echo "    -mc,--max-conflicts   if the target file name already exists, append a number. This flags determines after how many attempts to abort trying (default 10)."
+}
+
+echo_digest()
+{
+	echo "$3";
+}
+
+prog="mv -i"
+max_conflicts=10
+
+# Parse args
+for i in "$@"; do
+	case $i in
+		-h|--help)
+			print_help
+			exit
+			;;
+		-mc|--max-conflicts)
+			max_conflicts="$2"
+			shift
+			shift
+			;;
+		-c|--copy)
+			prog="cp -i"
+			shift
+			;;
+		-l|--hard-link)
+			prog="ln -i"
+			shift
+			;;
+		-n|--dry-run)
+			prog=echo_digest
+			shift
+			;;
+		*)
+			if [[ "$1" == -* ]] ; then
+				echo "Warning: it looks like you are trying to pass an unknown option. If you're filename actually starts with '-', ignore this warning."
+				echo ""
+			fi
+			if [ -n "$1" ]; then
+				positional+=("$1") # save in array for later
+			fi
+			shift
+			;;
+	esac
+done
+
+set -- "${positional[@]}" # restore positional parameters
+
+for p in "${positional[@]}"; do
+	echo "$p"
+done
+
+if [ $# -ne 2 ] && [ $# -ne 1 ]; then
+	print_help
+	exit
+fi
+
+if [ $# -eq 2 ]; then
+	extension="$2"
+else
+	extension="${1##*.}"
+fi
+
+if [ -z "$extension" ]; then
+	echo "Could not determine file extension for file '$1' Please enter file extension manually."
+	read -r extension
+fi
+
+new_filename_base=$(stat -c "%y" -- "$1" | sed "s/ /T/" | sed "s/:/-/g" | sed "s/\..*//")
+new_filename="$new_filename_base.$extension"
+
+counter=0;
+while [ -f "$new_filename"  ]; do
+	if [ "$counter" -gt "$max_conflicts" ]; then
+		echo "Too many name collisions, bailing out."
+		break;
+	fi
+	
+	((++counter))
+	new_filename="$new_filename_base-$counter.$extension"
+done
+
+if $prog -- "$1" "$new_filename"; then
+	echo "Successfully renamed file from '$1' to '$new_filename'"
+fi

@@ -63,6 +63,10 @@ let
         poppler_utils
       ]
     )
+    (shellApp "yrename-by-last-modified" [
+      coreutils
+      gnused
+    ])
   ];
 in
 pkgs.symlinkJoin {
