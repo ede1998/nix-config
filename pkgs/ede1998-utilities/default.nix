@@ -1,56 +1,58 @@
 { pkgs }:
 with pkgs;
 let
-  shellApp' =
-    extraArgs: name: runtimeInputs:
-    writeShellApplication (
-      {
-        inherit name runtimeInputs;
-
-        text = builtins.readFile ./${name};
-      }
-      // extraArgs
-    );
-  shellApp = shellApp' { };
+  shellApp =
+    { name, ... }@args: writeShellApplication ({ text = builtins.readFile ./${name}; } // args);
   apps = [
-    (shellApp "yopenany" [
-      coreutils
-      findutils
-      xdg-utils
-      # kdePackages.kde-cli-tools optionally required by xdg-open
-    ])
-    (shellApp "yrename-no-spaces" [
-      coreutils
-      findutils
-      gnused
-    ])
-    (shellApp' { bashOptions = [ "nounset" ]; } "yrename-pictures" [
-      coreutils
-      exif
-      findutils
-      gnugrep
-      gnused
-    ])
-    (shellApp "ygetscans" [
-      coreutils
-      fd
-      fzf
-      gnused
-      libreoffice-fresh
-      ocrmypdf
-      rm-improved
-      xdg-utils
-      # kdePackages.kde-cli-tools optionally required by xdg-open
-    ])
-    (shellApp'
-      {
-        bashOptions = [
-          "nounset"
-          "pipefail"
-        ];
-      }
-      "ypreparebanking"
-      [
+    (shellApp {
+      name = "yopenany";
+      runtimeInputs = [
+        coreutils
+        findutils
+        xdg-utils
+        # kdePackages.kde-cli-tools optionally required by xdg-open
+      ];
+    })
+    (shellApp {
+      name = "yrename-no-spaces";
+      runtimeInputs = [
+        coreutils
+        findutils
+        gnused
+      ];
+    })
+    (shellApp {
+      name = "yrename-pictures";
+      bashOptions = [ "nounset" ];
+      runtimeInputs = [
+        coreutils
+        exif
+        findutils
+        gnugrep
+        gnused
+      ];
+    })
+    (shellApp {
+      name = "ygetscans";
+      runtimeInputs = [
+        coreutils
+        fd
+        fzf
+        gnused
+        libreoffice-fresh
+        ocrmypdf
+        rm-improved
+        xdg-utils
+        # kdePackages.kde-cli-tools optionally required by xdg-open
+      ];
+    })
+    (shellApp {
+      name = "ypreparebanking";
+      bashOptions = [
+        "nounset"
+        "pipefail"
+      ];
+      runtimeInputs = [
         coreutils
         findutils
         fzf
@@ -61,12 +63,15 @@ let
         libreoffice-fresh
         perl
         poppler_utils
-      ]
-    )
-    (shellApp "yrename-by-last-modified" [
-      coreutils
-      gnused
-    ])
+      ];
+    })
+    (shellApp {
+      name = "yrename-by-last-modified";
+      runtimeInputs = [
+        coreutils
+        gnused
+      ];
+    })
   ];
 in
 pkgs.symlinkJoin {
