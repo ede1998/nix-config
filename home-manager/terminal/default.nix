@@ -6,5 +6,6 @@
     ./konsole.nix
     ./neovim.nix
     ./ssh.nix
+    ./starship.nix
   ];
 }

@@ -84,7 +84,7 @@ while [ $# -gt 0 ]; do
 	esac
 done
 
-fd --type f --print0 "^\d{4}" -- "$source_directory" | \
+fd --unrestricted --type f --print0 "^\d{4}" -- "$source_directory" | \
 while IFS= read -r -d $'\0' file; do
 	# find folder where file should be moved to
 	filename="${file##*/}"
