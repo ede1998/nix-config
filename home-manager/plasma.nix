@@ -140,6 +140,16 @@
           };
         };
 
+        dolphinrc = {
+          General = {
+            RememberOpenedTabs = false;
+            ShowFullPath = true;
+          };
+          # Sadly, the show menu bar configuration is stored in
+          # $XDG_DATA_HOME/dolphin/dolphinstaterc in the State.State field
+          # which is encoded very weirdly
+        };
+
         # Digital clock
         # Display holidays for Baden-Württemberg in Digital Clock calendar widget.
         plasma_calendar_holiday_regions.General.selectedRegion = "de-bw_de";
