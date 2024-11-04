@@ -21,7 +21,6 @@
     fd
     file
     freecad
-    fzf
     gcc
     gimp
     git-crypt

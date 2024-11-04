@@ -159,9 +159,9 @@
       ll = "ls -lsah --color=auto";
       # execute command once for each line in stdin (as opposed to once with all lines as argument for normal xargs)
       trxargs = "tr '\n' '\0' | xargs -0 -n1";
-      ".." = "cd ..";
-      "..." = "cd ../..";
-      "...." = "cd ../../..";
+      ".." = "z ..";
+      "..." = "z ../..";
+      "...." = "z ../../..";
       mv = "mv -i";
       cp = "cp -i";
       ln = "ln -i";
