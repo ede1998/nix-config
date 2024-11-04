@@ -1,0 +1,132 @@
+% Shell configuration
+
+$ nix_config: echo /home/erik/nix-config
+
+# Edit my cheat sheet
+nvim <nix_config>/home-manager/terminal/navi/main.cheat
+
+# Edit starship.toml
+nvim <nix_config>/home-manager/terminal/starship.nix
+
+# Reload bashrc
+source ~/.bashrc
+
+% Ubuntu / Gnome
+
+$ extension_zip: ls *.shell-extension.zip
+$ configurable_extension: gnome-extensions list --prefs
+
+# Install the given gnome extension. Download from https://extensions.gnome.org with version `gnome-extensions version`.
+gnome-extensions install <extension_zip>
+
+# Restart gnome desktop / window manager
+gnome-shell --replace
+
+# Check if user extensions are inactive (might be displayed in INITIALIZED state)
+gsettings get org.gnome.shell disable-user-extensions
+
+# Display/show all shell extensions and their state
+gnome-extensions list --details
+
+# Show settings dialog of extension
+gnome-extensions prefs <configurable_extension>
+
+# add secret to default keyring
+secret-tool store -l <display_name> hee1st:id <unique_personal_id>
+
+# display secret from default keyring
+secret-tool lookup hee1st:id <unique_personal_id>
+
+# print owner deb package of file
+dpkg-query -S <file>
+
+# show info about installed apt/deb package
+dpkg -s <pkg>
+
+$ pkg_file: fd --type f --extension deb
+# unpack files from an apt package into the given directory
+dpkg-deb --extract <pkg_file> <directory>
+# pack/build a apt package from the given directory
+dpkg-deb --build <directory>
+
+$ package: apt list --- --map "sed 's-/.*--'"
+# download the given debian package
+apt download <package>
+
+% Commands - General
+
+# restart the network manager, e.g. if wifi does not connect after enabling
+sudo systemctl restart NetworkManager
+
+$ file: fd --type f
+
+# Print full path for file
+realpath <file>
+
+; list keys -> keep only keys and the associated name -> merge those in 1 line for each pair -> remove redundant chars
+$ key: gpg --list-keys | rg "(^      [A-Z0-9]{40}$|^uid)" | sed 'N;s/\n/ /;' | sed 's/      //;s/uid           //' --- --map "cut -b -40"
+
+# Export GPG key to clipboard for github, bitbucket etc.
+gpg --armor --export "<key>" | if [ "$XDG_SESSION_TYPE" = "wayland" ]; then wl-copy; else xclip -selection clipboard; fi
+
+$ venv: fd --full-path --unrestricted '.*/bin/activate$' `git rev-parse --show-toplevel`/.. --exec realpath --relative-to=.
+# activate venv
+source <venv>
+
+# clear in-memory history of local tab
+history -c
+
+# reset in-memory history of local tab to stored history
+history -r
+
+# print files without newline at the end
+find . -type f -print0 | xargs -0 -L1 bash -c 'test "$(tail -c 1 "$0")" && echo "No new line at end of $0"'
+
+# send HEAD request and only print status code
+curl -ILs -o /dev/null -w "%{http_code}" <url>
+
+$ test_name: pytest --setup-plan | rg --invert-match "(^\s*(SETUP|TEARDOWN))|^[^ \t]|(^$)" | sed 's/^\s*\(.*\) (fixtures used: .*)$/\1/'
+# Run python test without capturing output and printing logging messages
+pytest -s --log-cli-level=DEBUG <test_name>
+
+$ service: systemctl --failed | head -n -6 | tail -n +2 | sed 's/● \([^ ]*\) .*/\1/' | sed 's/\\x\([0-9a-fA-F]\{2\}\)/\\\\x\1/g'
+# Restart failed service
+sudo systemctl reset-failed <service>
+
+% Commands - git
+
+$ old_branch_name: git branch --- --map "cut -b 3-"
+
+# Rename git branch
+git branch -m <old_branch_name> <new_branch_name>
+
+$ repository_url: if [ "$XDG_SESSION_TYPE" = "wayland" ]; then wl-paste; else xclip -selection clipboard -o; fi --- --map "sed 's-^https://--'" --fzf-overrides "--no-select-1"
+
+# clone a repository via personal access token (PAT)
+git clone "https://<personal_access_token>:x-oauth-basic@<repository_url>"
+
+# print file at specific git revision
+git show <revision>:<file>
+
+# diff renamed file that's not showing up as renamed in gui. The path "path/to/file" is absolute from repo root. The path "./path/to/file" relative from working dir.
+git diff <old_branch>:<old_path> <new_branch>:<new_path>
+
+$ remote: git remote
+# push current branch to remote and keep same name as local branch, also track the branch
+git push --set-upstream <remote> HEAD
+
+# compare changes after rebase (similar to my custom rb diff?)
+git range-diff @{u} @{1} @
+
+# show git web interface for repository
+git instaweb --local --httpd 'python -m http'
+
+# show diff/content of git stash
+git stash show -p
+
+# list commits with detailed previews
+git log --oneline <revision_range> | fzf --preview 'git show --color=always $(cut -d " "  -f1 <<< {})' --preview-window down:85%
+
+# show diff with detailed previews
+(REVISION_RANGE=<revision_range>; git diff $REVISION_RANGE --raw | sed 's/.*\t//' | fzf --preview "git diff $REVISION_RANGE --color=always -- {}" --preview-window down:85%)
+

@@ -2,7 +2,6 @@
 {
   programs.starship = {
     enable = true;
-    enableBashIntegration = true;
     settings = {
       continuation_prompt = "▶▶";
       time.disabled = false;
