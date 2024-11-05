@@ -9,6 +9,7 @@
     ./neovim.nix
     ./ssh.nix
     ./starship.nix
+    ./zellij.nix
     ./zoxide.nix
   ];
 }
