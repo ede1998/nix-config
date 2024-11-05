@@ -144,6 +144,10 @@ syntax, there's home-manager options (such as `xdg.configFile`) for including
 files from your config repository into your usual dot directories. Add your
 existing dotfiles to this repo and try it out!
 
+When multiple instances of a key will be merged into a final configuration but
+order for the generated configuration file is important, `mkOrder` can be used:
+https://nixos.wiki/wiki/NixOS:Properties
+
 ### Try opt-in persistence
 
 You might have noticed that there's impurity in your NixOS system, in the form

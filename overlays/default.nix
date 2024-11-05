@@ -1,5 +1,33 @@
 # This file defines overlays
 { inputs }:
+let
+  addPatches =
+    pkg: patches:
+    pkg.overrideAttrs (oldAttrs: {
+      patches = (oldAttrs.patches or [ ]) ++ patches;
+    });
+  # Rust packages need special handling: https://nixos.wiki/wiki/Overlays
+  addRustPatches' =
+    prev: pkg: patches: cargoHash:
+    pkg.overrideAttrs (oldAttrs: rec {
+      # take the original source and apply all patches before making it the new source
+      # we cannot simply override patches or patchPhase because all dependencies are vendored into
+      # a separate derivation before the patch phase resulting in mismatching Cargo.lock
+      # checksums
+      # applyPatches from trivialBuilders:
+      # https://github.com/NixOS/nixpkgs/blob/24.05/pkgs/build-support/trivial-builders/default.nix#L852
+      src = prev.applyPatches {
+        inherit (oldAttrs) src;
+        inherit patches;
+      };
+      cargoDeps = oldAttrs.cargoDeps.overrideAttrs (
+        prev.lib.const {
+          inherit src;
+          outputHash = cargoHash;
+        }
+      );
+    });
+in
 {
   # This one brings our custom packages from the 'pkgs' directory
   additions = final: _prev: import ../pkgs final.pkgs;
@@ -10,32 +38,9 @@
   modifications =
     final: prev:
     let
-      addPatches =
-        pkg: patches:
-        pkg.overrideAttrs (oldAttrs: {
-          patches = (oldAttrs.patches or [ ]) ++ patches;
-        });
-      # Rust packages need special handling: https://nixos.wiki/wiki/Overlays
       addRustPatches =
         pkg: patches: cargoHash:
-        pkg.overrideAttrs (oldAttrs: rec {
-          # take the original source and apply all patches before making it the new source
-          # we cannot simply override patches or patchPhase because all dependencies are vendored into
-          # a separate derivation before the patch phase resulting in mismatching Cargo.lock
-          # checksums
-          # applyPatches from trivialBuilders:
-          # https://github.com/NixOS/nixpkgs/blob/24.05/pkgs/build-support/trivial-builders/default.nix#L852
-          src = prev.applyPatches {
-            inherit (oldAttrs) src;
-            inherit patches;
-          };
-          cargoDeps = oldAttrs.cargoDeps.overrideAttrs (
-            prev.lib.const {
-              inherit src;
-              outputHash = cargoHash;
-            }
-          );
-        });
+        addRustPatches' prev pkg patches cargoHash;
     in
     {
       vorta = addPatches prev.vorta [
@@ -50,6 +55,15 @@
           sha256 = "sha256:0inir6g158hfc4a1s2hwsbr887szb6mzpm961xjpisy1vgbjg9hy";
         })
       ] "sha256-o+jsVnw9FvaKagiEVGwc+l0hE25X+KYY36hFhJwlcj0=";
+
+      kdePackages = prev.kdePackages.overrideScope (
+        final: prev: {
+          konsole = addPatches prev.konsole [
+            # Backport of https://invent.kde.org/utilities/konsole/-/merge_requests/767"
+            ./konsole-osc52-support.patch
+          ];
+        }
+      );
     };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will

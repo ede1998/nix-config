@@ -130,3 +130,7 @@ git log --oneline <revision_range> | fzf --preview 'git show --color=always $(cu
 # show diff with detailed previews
 (REVISION_RANGE=<revision_range>; git diff $REVISION_RANGE --raw | sed 's/.*\t//' | fzf --preview "git diff $REVISION_RANGE --color=always -- {}" --preview-window down:85%)
 
+% Commands - nix
+
+# Show all packages in the current system and home manager generation
+nix-tree
