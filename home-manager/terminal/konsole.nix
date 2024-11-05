@@ -3,7 +3,7 @@
   programs.konsole = {
     enable = true;
     extraConfig = {
-      MainWindow.MenuBar = false;
+      MainWindow.MenuBar = "Disabled";
       "Shortcut Schemes"."Current Scheme" = "EmptyKeybindings";
     };
   };

@@ -153,11 +153,7 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = [ pkgs.unstable.kdePackages.konsole ];
-  environment.plasma6.excludePackages = with pkgs.kdePackages; [
-    elisa
-    konsole
-  ];
+  environment.plasma6.excludePackages = with pkgs.kdePackages; [ elisa ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
