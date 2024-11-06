@@ -51,6 +51,7 @@ in
           insteadOf = "https://github.com";
         };
       };
+      blame.ignoreRevsFile = ".git-blame-ignore-revs";
       rerere.enabled = true;
       branch.sort = "-committerdate";
     } // lib.optionalAttrs (gitVersionAtLeast "2.37.0") { push.autoSetupRemote = true; };
