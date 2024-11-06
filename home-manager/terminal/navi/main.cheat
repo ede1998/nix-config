@@ -53,12 +53,19 @@ $ package: apt list --- --map "sed 's-/.*--'"
 # download the given debian package
 apt download <package>
 
+# mount external hdd
+gio mount -d 'E6A6-B8AA' /run/media/erik/Backup-HDD
+
+# unmount external hdd
+gio mount -u /run/media/erik/Backup-HDD/
+
 % Commands - General
+
+$ file: fd --type f
+$ pdf_file: fd --type file --extension pdf
 
 # restart the network manager, e.g. if wifi does not connect after enabling
 sudo systemctl restart NetworkManager
-
-$ file: fd --type f
 
 # Print full path for file
 realpath <file>
@@ -93,21 +100,51 @@ $ service: systemctl --failed | head -n -6 | tail -n +2 | sed 's/● \([^ ]*\) .
 # Restart failed service
 sudo systemctl reset-failed <service>
 
+# remove encryption/password from a pdf file. 
+pdftk "<pdf_file>" input_pw "<password>" output "<pdf_file>_unencrypted.pdf"
+
+# ocr a pdf file
+ocrmypdf -l deu+eng "<pdf_file>" "<pdf_file>-ocr.pdf"
+
+# remove audio track from video
+ffmpeg -i "<file>" -vcodec copy -an "<output>"
+
+$ http_url : --- --map "sed 's-^webdav-http-'"
+$ mount_point : fd --type directory
+# mount webdav folder
+sudo mount -t davfs <http_url> <mount_point>
+
+# merge audio from file 2 with video from file 1
+ffmpeg -i "<file>" -i "<file1>" -c:v copy -c:a copy output.webm
+
+# check progress of long running mv
+watch 'echo "Remaining: $(find <src> -type f | wc -l)/$(du -sh <src> | sed s/\\s.*//g), Done: $(find -type f | wc -l)/$(du -sh . | sed s/\\s.*//g), Device: $(df -h . | tail -n 1)"; echo; ls <src>'
+
+$ needle
+
+# recursively search pdf texts
+fd -e pdf --exec sh -c 'pdftotext "{}" - | rg --color always "<needle>" | while read line; do echo "{}: $line"; done' \;
+
+
 % Commands - git
 
-$ old_branch_name: git branch --- --map "cut -b 3-"
+$ file: fd --hidden --type file
 
+$ old_branch_name: git branch --- --map "cut -b 3-"
 # Rename git branch
 git branch -m <old_branch_name> <new_branch_name>
 
 $ repository_url: if [ "$XDG_SESSION_TYPE" = "wayland" ]; then wl-paste; else xclip -selection clipboard -o; fi --- --map "sed 's-^https://--'" --fzf-overrides "--no-select-1"
-
 # clone a repository via personal access token (PAT)
 git clone "https://<personal_access_token>:x-oauth-basic@<repository_url>"
 
 # print file at specific git revision
 git show <revision>:<file>
 
+$ old_path: fd --hidden --type file | sed 's-^-./-'
+$ new_path: fd --hidden --type file | sed 's-^-./-'
+$ old_branch: git branch --- --map "cut -b 3-"
+$ new_branch: git branch --- --map "cut -b 3-"
 # diff renamed file that's not showing up as renamed in gui. The path "path/to/file" is absolute from repo root. The path "./path/to/file" relative from working dir.
 git diff <old_branch>:<old_path> <new_branch>:<new_path>
 
@@ -130,7 +167,59 @@ git log --oneline <revision_range> | fzf --preview 'git show --color=always $(cu
 # show diff with detailed previews
 (REVISION_RANGE=<revision_range>; git diff $REVISION_RANGE --raw | sed 's/.*\t//' | fzf --preview "git diff $REVISION_RANGE --color=always -- {}" --preview-window down:85%)
 
-% Commands - nix
+% Commands - Rust
+
+# update all cargo crates currently installed
+cargo install-update -a
+
+$test_executable: CARGO_PROFILE_RELEASE_DEBUG=true cargo test --release --no-run --message-format=json 2> /dev/null | jq 'select(.reason == "compiler-artifact") .executable | select(. != null)'
+$test_name: <test_executable> --list --format=terse 2> /dev/null | sed 's/: test$//'
+
+# run flamegraph for some unit test
+flamegraph "<test_executable>" -- "<test_name>"
+
+# run clippy with ALL lints enabled
+cargo clippy -- -W clippy::pedantic -W clippy::nursery -W clippy::cargo
+
+% Programs I forget the name of
+
+$ file: fd --type f
+
+# find duplicate files in the current working directory and its descendants
+fclones group .
+
+# remove a file
+rip "<file>"
+
+# terminal image viewer
+viu "<file>"
+
+# show disk usage statistics, like baobab or dust
+filelight
+
+# convert file with ffmpeg
+ffmpeg -i "<file>" "<output>"
+
+# list mp3 file metadata
+id3v2 -l "<file>"
+
+# print system info
+inxi
+
+# print extended file attributes, e.g. tag
+getfattr -d "<file>"
 
 # Show all packages in the current system and home manager generation
 nix-tree
+
+% Uninstalled commands
+
+# change logitech keyboard settings via GUI
+piper
+
+# change logitech keyboard settings via CLI
+ratbagctl
+
+# increase img size of QEMU VM
+sudo qemu-img resize win10-2.qcow2 +20G
+
