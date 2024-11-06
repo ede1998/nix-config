@@ -8,7 +8,10 @@
     };
   };
   xdg.dataFile."konsole/shortcuts/EmptyKeybindings".text = ''
-    <gui>
-      <ActionProperties/>
-    </gui>'';
+    <gui name="konsole" version="1">
+      <ActionProperties>
+        <Action name="edit_paste" shortcut="Ctrl+Shift+V"/>
+      </ActionProperties>
+    </gui>
+  '';
 }
