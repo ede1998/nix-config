@@ -30,7 +30,12 @@ let
 in
 {
   # This one brings our custom packages from the 'pkgs' directory
-  additions = final: _prev: import ../pkgs final.pkgs;
+  additions =
+    final: prev:
+    import ../pkgs final.pkgs
+    // {
+      external-flake.rip2 = inputs.rip2.packages.${prev.pkgs.system}.default;
+    };
 
   # This one contains whatever you want to overlay
   # You can change versions, add patches, set compilation flags, anything really.
@@ -38,9 +43,7 @@ in
   modifications =
     final: prev:
     let
-      addRustPatches =
-        pkg: patches: cargoHash:
-        addRustPatches' prev pkg patches cargoHash;
+      addRustPatches = addRustPatches' prev;
     in
     {
       vorta = addPatches prev.vorta [

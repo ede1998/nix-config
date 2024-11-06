@@ -49,7 +49,7 @@
     piper
     psmisc
     ripgrep
-    rm-improved
+    external-flake.rip2
     rust-script
     rustup
     texliveFull
@@ -68,6 +68,7 @@
     wl-clipboard-rs
     xmlstarlet
     xsv
+    yq
     zip
   ];
 }

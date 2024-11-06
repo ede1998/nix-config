@@ -32,8 +32,9 @@ let
     complete -A command catwitch
     complete -A command batwitch
   '';
-  extra-completions = [
+  extra-completions = with pkgs; [
     "source <( fclones complete bash )" # don't use package so completion script doesn't use full path
+    "source <( ${external-flake.rip2}/bin/rip completions bash )"
   ];
 in
 {
