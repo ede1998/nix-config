@@ -12,49 +12,51 @@
       scroll_buffer_size -1;
       pane_frames false;
       keybinds {
-        unbind "Ctrl g" "Ctrl b" "Ctrl t"
+        unbind "Ctrl g" "Ctrl b" "Ctrl t" "Ctrl h"
         locked {
-          unbind "Ctrl g" "Ctrl b" "Ctrl t"
+          unbind "Ctrl g" "Ctrl b" "Ctrl t" "Ctrl h"
           bind "Ctrl k" { SwitchToMode "Normal"; }
         }
         shared_except "locked" {
-          unbind "Ctrl g" "Ctrl b" "Ctrl t"
+          unbind "Ctrl g" "Ctrl b" "Ctrl t" "Alt [" "Alt ]" "Ctrl h"
           bind "Ctrl k" { SwitchToMode "Locked"; }
         }
+        tmux clear-defaults=true {}
         tab {
-          unbind "Ctrl g" "Ctrl b" "Ctrl t"
+          unbind "Ctrl g" "Ctrl b" "Ctrl t" "Ctrl h"
           bind "Ctrl e" { SwitchToMode "Normal"; }
         }
+        pane {
+          bind "[" { PreviousSwapLayout; }
+          bind "]" { NextSwapLayout; }
+        }
+        move {
+          bind "Ctrl j" { SwitchToMode "Normal"; }
+        }
         shared_except "tab" "locked" {
-          unbind "Ctrl g" "Ctrl b" "Ctrl t"
+          unbind "Ctrl g" "Ctrl b" "Ctrl t" "Ctrl h"
           bind "Ctrl e" { SwitchToMode "Tab"; }
         }
         shared_except "tmux" "locked" {
-          unbind "Ctrl g" "Ctrl b" "Ctrl t"
+          unbind "Ctrl g" "Ctrl b" "Ctrl t" "Ctrl h"
         }
+        shared_except "move" "locked" {
+          bind "Ctrl j" { SwitchToMode "Move"; }
+          // TODO PR for status-bar to allow configuration of hotkey display?
+          bind "Ctrl y" {
+              LaunchOrFocusPlugin "forgot" {
+                  floating true
+              }
+          }
+        }
+      }
+      load_plugins {
+        // TODO: package properly and install as nixpkgs?
+        https://github.com/karimould/zellij-forgot/releases/download/0.4.0/zellij_forgot.wasm
+      }
+      plugins {
+        forgot location="https://github.com/karimould/zellij-forgot/releases/download/0.4.0/zellij_forgot.wasm"
       }
     '';
   };
-
-  /*
-    plugins {
-        tab-bar location="zellij:tab-bar"
-        status-bar location="zellij:status-bar"
-        strider location="zellij:strider"
-        compact-bar location="zellij:compact-bar"
-        session-manager location="zellij:session-manager"
-        welcome-screen location="zellij:session-manager" {
-            welcome_screen true
-        }
-        filepicker location="zellij:strider" {
-            cwd "/"
-        }
-    }
-
-    // For more examples, see: https://github.com/zellij-org/zellij/tree/main/example/themes
-    // The name of the default layout to load on startup
-    // Default: "default"
-    //
-    // default_layout "compact"
-  */
 }

@@ -11,6 +11,11 @@ nvim <nix_config>/home-manager/terminal/starship.nix
 # Reload bashrc
 source ~/.bashrc
 
+; Filter symlink and only shows those that go into the nix store
+$ symlink: fd --type symlink --exec sh -c 'realpath {} | rg -q "^/nix/store/.*$" && echo {}'
+# Temporarily replace a home-manager symlink with a copy of that file for quick testing
+(f=$(realpath <symlink>); rip <symlink> && cp --no-preserve=mode "$f" <symlink>)
+
 % Ubuntu / Gnome
 
 $ extension_zip: ls *.shell-extension.zip

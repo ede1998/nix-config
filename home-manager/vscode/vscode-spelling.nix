@@ -55,4 +55,5 @@
   "wokwi"
   "xattr"
   "xclip"
+  "zellij"
 ]
