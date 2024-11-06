@@ -10,7 +10,7 @@
   xdg.dataFile."konsole/shortcuts/EmptyKeybindings".text = ''
     <gui name="konsole" version="1">
       <ActionProperties>
-        <Action name="edit_paste" shortcut="Ctrl+Shift+V"/>
+        <Action name="edit_paste" shortcut="Ctrl+Shift+V; Shift+Ins"/>
       </ActionProperties>
     </gui>
   '';
