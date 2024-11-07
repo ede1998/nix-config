@@ -43,7 +43,7 @@
         shared_except "move" "locked" {
           bind "Ctrl j" { SwitchToMode "Move"; }
           // TODO PR for status-bar to allow configuration of hotkey display?
-          bind "Ctrl y" {
+          bind "F1" {
               LaunchOrFocusPlugin "forgot" {
                   floating true
               }
