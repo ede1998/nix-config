@@ -44,6 +44,12 @@ in
     final: prev:
     let
       addRustPatches = addRustPatches' prev;
+      fclones-with-completions = addRustPatches prev.fclones [
+        (builtins.fetchurl {
+          url = "https://patch-diff.githubusercontent.com/raw/pkolaczk/fclones/pull/280.patch";
+          sha256 = "sha256:0inir6g158hfc4a1s2hwsbr887szb6mzpm961xjpisy1vgbjg9hy";
+        })
+      ] "sha256-o+jsVnw9FvaKagiEVGwc+l0hE25X+KYY36hFhJwlcj0=";
     in
     {
       vorta = addPatches prev.vorta [
@@ -52,12 +58,20 @@ in
           sha256 = "sha256:1das1vk1g0j5mfb7diaf3gs8vkdvqkssj8j6y50kfh38n600fcsf";
         })
       ];
-      fclones = addRustPatches prev.fclones [
-        (builtins.fetchurl {
-          url = "https://patch-diff.githubusercontent.com/raw/pkolaczk/fclones/pull/280.patch";
-          sha256 = "sha256:0inir6g158hfc4a1s2hwsbr887szb6mzpm961xjpisy1vgbjg9hy";
-        })
-      ] "sha256-o+jsVnw9FvaKagiEVGwc+l0hE25X+KYY36hFhJwlcj0=";
+
+      fclones = fclones-with-completions.overrideAttrs (oldAttrs: {
+        nativeBuildInputs = (oldAttrs.nativeBuildInputs or [ ]) ++ [ prev.installShellFiles ];
+        postInstall =
+          (oldAttrs.postInstall or "")
+          + ''
+            # setting PATH required so completion script doesn't use full path
+            export PATH="$PATH:$out/bin"
+            installShellCompletion --cmd $pname \
+              --bash <(fclones complete bash) \
+              --fish <(fclones complete fish) \
+              --zsh <(fclones complete zsh)
+          '';
+      });
 
       kdePackages = prev.kdePackages.overrideScope (
         final: prev: {

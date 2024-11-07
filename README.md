@@ -34,10 +34,10 @@ wl-paste | base64 -d | git crypt unlock -
 - Run `home-manager switch --flake .#username@hostname` to apply your home configuration.
 - Run `nix repl` and then type `:lf .` to load this flake into an interactive interpreter
   and check out available options. Useful commands:
-  `cfg = homeConfigurations."erik@nixos-erik-desktop".config`
-  `lib = nixosConfigurations.nixos-erik-desktop.lib`
-  `pkgs = nixosConfigurations.nixos-erik-desktop.pkgs`
-  `:p <expr>`
+  - `cfg = homeConfigurations."erik@nixos-erik-desktop".config`
+  - `lib = nixosConfigurations.nixos-erik-desktop.lib`
+  - `pkgs = nixosConfigurations.nixos-erik-desktop.pkgs`
+  - `:p <expr>`
 - Update your flake lock with `nix flake update` to get the latest packages and modules.
 
 
@@ -194,6 +194,10 @@ or bring them into your shell with `nix shell .#package-name`.
 
 See [the manual](https://nixos.org/manual/nixpkgs/stable/) for some tips on how
 to package stuff.
+
+`nix develop` can be used to get dropped into a shell with all required build
+dependencies available. Use `runPhase` plus the phase name to run a particular
+phase (`unpackPhase`, `patchPhase`, ...).
 
 ### Adding overlays
 

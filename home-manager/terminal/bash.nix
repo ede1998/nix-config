@@ -32,10 +32,6 @@ let
     complete -A command catwitch
     complete -A command batwitch
   '';
-  extra-completions = with pkgs; [
-    "source <( fclones complete bash )" # don't use package so completion script doesn't use full path
-    "source <( ${external-flake.rip2}/bin/rip completions bash )"
-  ];
 in
 {
   programs.bash = {
@@ -55,8 +51,6 @@ in
 
       ${switchbranch}
       ${catwitch}
-
-      ${lib.concatStringsSep "\n" extra-completions}
 
       source "${pkgs.complete-alias}/bin/complete_alias"
       complete -F _complete_alias "''${!BASH_ALIASES[@]}"

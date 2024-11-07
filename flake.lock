@@ -238,15 +238,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1730764800,
-        "narHash": "sha256-fY9Pk5MBPzo4S/gBkA10zDhx875B2BDjcuTtoh94m74=",
-        "owner": "MilesCranmer",
+        "lastModified": 1730934097,
+        "narHash": "sha256-FmC6qfnLejRyzjrhf3SPx1ksxqAObmZvxHF0bez751g=",
+        "owner": "ede1998",
         "repo": "rip2",
-        "rev": "b87ad6c72c3ba04bd200cc0efa208e51b5cbfffc",
+        "rev": "7e9649a47a764e59773c107fafdaefa239bf6ca4",
         "type": "github"
       },
       "original": {
-        "owner": "MilesCranmer",
+        "owner": "ede1998",
         "repo": "rip2",
         "type": "github"
       }
