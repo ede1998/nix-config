@@ -13,6 +13,10 @@
       pane_frames false;
       keybinds {
         unbind "Ctrl g" "Ctrl b" "Ctrl t" "Ctrl h"
+        normal {
+          bind "Alt f" { ToggleFocusFullscreen; }
+          bind "Alt w" { ToggleFloatingPanes; }
+        }
         locked {
           unbind "Ctrl g" "Ctrl b" "Ctrl t" "Ctrl h"
           bind "Ctrl k" { SwitchToMode "Normal"; }
