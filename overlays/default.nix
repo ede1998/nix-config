@@ -46,6 +46,7 @@ in
       addRustPatches = addRustPatches' prev;
       fclones-with-completions = addRustPatches prev.fclones [
         (builtins.fetchurl {
+          # Add completion subcommand
           url = "https://patch-diff.githubusercontent.com/raw/pkolaczk/fclones/pull/280.patch";
           sha256 = "sha256:0inir6g158hfc4a1s2hwsbr887szb6mzpm961xjpisy1vgbjg9hy";
         })
@@ -54,6 +55,7 @@ in
     {
       vorta = addPatches prev.vorta [
         (builtins.fetchurl {
+          # Replace generic wayland icon with proper Vorta icon
           url = "https://patch-diff.githubusercontent.com/raw/borgbase/vorta/pull/2068.patch";
           sha256 = "sha256:1das1vk1g0j5mfb7diaf3gs8vkdvqkssj8j6y50kfh38n600fcsf";
         })
@@ -76,6 +78,7 @@ in
       kdePackages = prev.kdePackages.overrideScope (
         final: prev: {
           konsole = addPatches prev.konsole [
+            # Add OSC-52 (copy) support
             # Backport of https://invent.kde.org/utilities/konsole/-/merge_requests/767"
             ./konsole-osc52-support.patch
           ];
