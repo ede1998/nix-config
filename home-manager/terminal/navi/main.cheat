@@ -91,6 +91,9 @@ history -c
 # reset in-memory history of local tab to stored history
 history -r
 
+# Write shell history from memory to disk by appending
+history -a
+
 # print files without newline at the end
 find . -type f -print0 | xargs -0 -L1 bash -c 'test "$(tail -c 1 "$0")" && echo "No new line at end of $0"'
 
