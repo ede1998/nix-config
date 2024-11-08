@@ -1,10 +1,15 @@
-{ ... }:
+{ pkgs, ... }:
 {
   programs.konsole = {
     enable = true;
     extraConfig = {
       MainWindow.MenuBar = "Disabled";
       "Shortcut Schemes"."Current Scheme" = "EmptyKeybindings";
+    };
+    defaultProfile = "standard";
+    profiles.standard = {
+      command = "${pkgs.zellij}/bin/zellij";
+      extraConfig."Interaction Options".MiddleClickPasteMode = true;
     };
   };
   xdg.dataFile."konsole/shortcuts/EmptyKeybindings".text = ''
