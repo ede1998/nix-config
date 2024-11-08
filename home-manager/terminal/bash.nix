@@ -1,9 +1,12 @@
 { pkgs, lib, ... }:
 let
+  # sudo showkey can print key codes if needed
   keys = {
     up = "\\e[A";
     down = "\\e[B";
     ctrl = "\\C-";
+    alt = "\\e";
+    ctrl-super = "\M-";
   };
   switchbranch = with pkgs; ''
     switchbranch () 
@@ -62,6 +65,7 @@ in
     bindings = {
       ${keys.up} = "history-search-backward";
       ${keys.down} = "history-search-forward";
+      "${keys.alt}e" = "edit-and-execute-command";
     };
   };
 }
