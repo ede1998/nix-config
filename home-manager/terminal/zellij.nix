@@ -12,7 +12,7 @@
       scroll_buffer_size -1;
       pane_frames false;
       keybinds {
-        unbind "Ctrl g" "Ctrl b" "Ctrl t" "Ctrl h"
+        unbind "Ctrl g" "Ctrl b" "Ctrl t" "Ctrl h" "Ctrl q"
         normal {
           bind "Alt f" { ToggleFocusFullscreen; }
           bind "Alt w" { ToggleFloatingPanes; }
