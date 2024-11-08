@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, config, ... }:
 let
   keys = {
     ctrl = "\\C-";
@@ -12,6 +12,10 @@ let
     "--height=50%"
     "--scheme=path"
     "--reverse"
+    # expand tilde
+    "--bind='~:put(${config.home.homeDirectory}),ctrl-t:put(~)'"
+    "--color header:italic"
+    "--header 'CTRL-T to type ~ verbatim'"
   ];
 in
 {
