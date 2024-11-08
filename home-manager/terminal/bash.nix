@@ -35,6 +35,10 @@ let
     complete -A command catwitch
     complete -A command batwitch
   '';
+  extra-completions = with pkgs; [
+    # Adds zr,zrf,zri aliases because bash-completion only sources on demand when zellij<TAB> is typed
+    "source ${zellij}/share/bash-completion/completions/zellij.bash"
+  ];
 in
 {
   programs.bash = {
@@ -54,6 +58,7 @@ in
 
       ${switchbranch}
       ${catwitch}
+      ${lib.concatStringsSep "\n" extra-completions}
 
       source "${pkgs.complete-alias}/bin/complete_alias"
       complete -F _complete_alias "''${!BASH_ALIASES[@]}"
