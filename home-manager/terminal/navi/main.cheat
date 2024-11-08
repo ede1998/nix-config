@@ -228,3 +228,5 @@ ratbagctl
 # increase img size of QEMU VM
 sudo qemu-img resize win10-2.qcow2 +20G
 
+# Run Github CI job locally
+nix run nixpkgs-unstable#act -- --help
