@@ -30,9 +30,7 @@
     };
 
     rip2 = {
-      # TODO go back to "github:MilesCranmer/rip2" when PR is merged:
-      # https://github.com/MilesCranmer/rip2/pull/65
-      url = "github:ede1998/rip2";
+      url = "github:MilesCranmer/rip2";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
