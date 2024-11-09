@@ -7,8 +7,12 @@
       time.disabled = false;
       status = {
         disabled = false;
-        format = "[$symbol $maybe_int]($style) ";
+        format = "[$symbol $status]($style) ";
         map_symbol = true;
+      };
+      shlvl = {
+        disabled = false;
+        threshold = 1;
       };
       custom.ssh_no_keys = {
         description = "SSH missing keys";
