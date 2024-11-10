@@ -38,6 +38,8 @@ wl-paste | base64 -d | git crypt unlock -
   - `lib = nixosConfigurations.nixos-erik-desktop.lib`
   - `pkgs = nixosConfigurations.nixos-erik-desktop.pkgs`
   - `:p <expr>`
+  - `:e <expr>` to open the source location in $EDITOR (if available)
+  -  `printf "$(nix --extra-experimental-features dynamic-derivations eval .#homeConfigurations."erik@babbage".config.programs.bash.initExtra)"` prints the evaluated value, experimental feature required for multiple runs with the same inputs
 - Update your flake lock with `nix flake update` to get the latest packages and modules.
 
 
