@@ -10,8 +10,17 @@ let
     # transform it to a space.
     "--preview 'tree -C \\$(cut -d \\\"	\\\" -f 2 <<< {}) | head -n 200'"
     "--height=50%"
+    "--layout=reverse"
+    # Location for number of matches
+    "--info=inline"
+    "--cycle"
+    # Hide start of long lines instead of end
+    "--keep-right"
+    # Searching behavior
+    "--exact"
+    "--no-sort"
     "--scheme=path"
-    "--reverse"
+    "--exit-0"
     # expand tilde
     "--bind='~:put(${config.home.homeDirectory}),ctrl-t:put(~)'"
     "--color header:italic"
