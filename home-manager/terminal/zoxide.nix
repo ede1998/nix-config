@@ -22,6 +22,6 @@ in
   programs.zoxide.enable = true;
   programs.bash.initExtra = ''
     export _ZO_FZF_OPTS="${lib.concatStringsSep " " fzf-options}";
-    bind '"${keys.ctrl}a": "zi\n"'
+    bind '"${keys.ctrl}a": "${keys.ctrl}uzi\n"'
   '';
 }

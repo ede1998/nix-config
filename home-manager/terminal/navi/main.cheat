@@ -12,9 +12,13 @@ nvim <nix_config>/home-manager/terminal/starship.nix
 source ~/.bashrc
 
 ; Filter symlink and only shows those that go into the nix store
-$ symlink: fd --type symlink --exec sh -c 'realpath "{}" 2> /dev/null | rg -q "^/nix/store/.*$" && echo "{}"'
+$ symlink: fd . ~/{.config,.local/share} --exclude "Steam" --exclude "Trash" --type symlink --exec sh -c 'realpath "{}" 2> /dev/null | rg -q "^/nix/store/.*$" && echo "{}"'
 # Temporarily replace a home-manager symlink with a copy of that file for quick testing
-(f=$(realpath <symlink>); rip <symlink> && cp --no-preserve=mode "$f" <symlink>)
+( HOME_MANAGER_REPLACED_FILE=$(realpath "<symlink>"); rip "<symlink>" && cp --no-preserve=mode "$HOME_MANAGER_REPLACED_FILE" "<symlink>"; )
+$ file: fd . ~/{.config,.local/share} --exclude "Steam" --exclude "Trash" --type file
+; Need to restore the correct symlink target which is in itself a symlink so realpath on the entire path does not work as it expands too much
+# Restore temporarily replaced home-manager file with symlink again
+( HOME_MANAGER_RESTORE_SOURCE="$(realpath "$HOME/.local/state/home-manager/gcroots/current-home/home-files")/$(realpath "<file>" | sed "s:^$HOME/\?::")"; rip "<file>"; ln -s "$HOME_MANAGER_RESTORE_SOURCE" "<file>"; )
 
 % Ubuntu / Gnome
 

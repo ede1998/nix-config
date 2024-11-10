@@ -14,6 +14,10 @@
         disabled = false;
         threshold = 1;
       };
+      nix_shell = {
+        heuristic = true;
+        unknown_msg = "nix shell";
+      };
       custom.ssh_no_keys = {
         description = "SSH missing keys";
         when = with pkgs; "${openssh}/bin/ssh-add -l | ${gnugrep}/bin/grep -q 'no identities'";
