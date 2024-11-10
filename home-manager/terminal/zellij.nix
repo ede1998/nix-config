@@ -4,6 +4,8 @@
     enable = true;
     enableBashIntegration = true;
   };
+  # Adds zr,zrf,zri aliases because bash-completion only sources on demand when zellij<TAB> is typed
+  programs.bash.initExtra = "source ${config.programs.zellij.package}/share/bash-completion/completions/zellij.bash";
   # kdl support in nix is pretty limited
   xdg.configFile."zellij/config.kdl" = lib.mkIf (config.programs.zellij.enable) {
     text = ''
