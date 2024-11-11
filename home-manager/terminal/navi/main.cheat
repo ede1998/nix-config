@@ -20,6 +20,9 @@ $ file: fd . ~/{.config,.local/share} --exclude "Steam" --exclude "Trash" --type
 # Restore temporarily replaced home-manager file with symlink again
 ( HOME_MANAGER_RESTORE_SOURCE="$(realpath "$HOME/.local/state/home-manager/gcroots/current-home/home-files")/$(realpath "<file>" | sed "s:^$HOME/\?::")"; rip "<file>"; ln -s "$HOME_MANAGER_RESTORE_SOURCE" "<file>"; )
 
+# Format all non-ignored nix files in the repo
+git ls-files --cached --others --exclude-standard | xargs nix fmt
+
 % Ubuntu / Gnome
 
 $ extension_zip: ls *.shell-extension.zip

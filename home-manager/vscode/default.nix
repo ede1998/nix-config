@@ -57,6 +57,14 @@
           silent = true;
         }
       ];
+      "vim.handleKeys" = {
+        # Don't override Search Symbol
+        "<C-t>" = false;
+        # Defaults:
+        "<C-d>" = true;
+        "<C-s>" = false;
+        "<C-z>" = false;
+      };
 
       "rust-analyzer.check.command" = "clippy";
       "rust-analyzer.interpret.tests" = true;
