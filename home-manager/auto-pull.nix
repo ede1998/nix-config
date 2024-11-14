@@ -1,6 +1,11 @@
-{ pkgs, config, ... }:
+{
+  pkgs,
+  config,
+  secrets,
+  ...
+}:
 let
-  github_token = builtins.readFile ../secrets/autoPullNixCfg.cred;
+  github_token = builtins.readFile "${secrets}/autoPullNixCfg.cred";
   git = "${pkgs.git}/bin/git";
 in
 {

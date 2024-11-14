@@ -49,38 +49,95 @@
       ];
       # This is a function that generates an attribute by calling a function you
       # pass to it, with each system as an argument
-      forAllSystems =
-        generator:
-        nixpkgs.lib.genAttrs systems (system: throwIfGitCryptNotInitialized system (generator system));
+      forAllSystems = nixpkgs.lib.genAttrs systems;
+
       # Source: https://github.com/NixOS/nix/issues/4329#issuecomment-740787749
       isDecrypted =
-        test-file: system:
+        test-file:
         with nixpkgs.lib;
         hasInfix "text" (
           fileContents (
-            with nixpkgs.legacyPackages.${system};
+            with nixpkgs.legacyPackages.x86_64-linux;
             runCommandNoCCLocal "chk-encryption" {
               buildInputs = [ file ];
               src = test-file;
             } "file $src > $out"
           )
         );
-      throwIfGitCryptNotInitialized =
-        system: nixpkgs.lib.throwIfNot (isDecrypted ./secrets/hello-world.txt system) warning-git-crypt;
+      throwIfGitCryptNotInitialized = nixpkgs.lib.throwIfNot (isDecrypted ./secrets/hello-world.txt) warning-git-crypt;
       warning-git-crypt = ''
         Please add your decryption key to git-crypt.
         Otherwise, programs will receive encrypted configuration.
         Command:
         wl-paste | base64 -d | git crypt unlock -
       '';
+
       nixpkgsUnfree =
         system:
         (import nixpkgs {
           inherit system;
           config.allowUnfree = true;
         });
+
+      nixosConfigurations' = secrets: {
+        nixos-erik-desktop = nixpkgs.lib.nixosSystem {
+          specialArgs = {
+            inherit inputs outputs secrets;
+          };
+          modules = [
+            # > Our main nixos configuration file <
+            ./nixos/nixos-erik-desktop/configuration.nix
+          ];
+        };
+        babbage = nixpkgs.lib.nixosSystem {
+          specialArgs = {
+            inherit inputs outputs secrets;
+          };
+          modules = [
+            # > Our main nixos configuration file <
+            ./nixos/babbage/configuration.nix
+          ];
+        };
+      };
+      homeConfigurations' = secrets: {
+        "erik@nixos-erik-desktop" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+          extraSpecialArgs = {
+            inherit inputs outputs secrets;
+            hostName = "nixos-erik-desktop";
+          };
+          modules = [
+            # > Our main home-manager configuration file <
+            ./home-manager/home.nix
+          ];
+        };
+        "erik@babbage" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+          extraSpecialArgs = {
+            inherit inputs outputs secrets;
+            hostName = "babbage";
+          };
+          modules = [
+            # > Our main home-manager configuration file <
+            ./home-manager/home.nix
+          ];
+        };
+      };
     in
     {
+      checks = forAllSystems (
+        system:
+        let
+          home-configurations = homeConfigurations' ./secrets-dummy;
+          nixos-configurations = nixosConfigurations' ./secrets-dummy;
+        in
+        nixpkgs.lib.genAttrs (builtins.attrNames home-configurations) (
+          home-config: home-configurations.${home-config}.activationPackage
+        )
+        // nixpkgs.lib.genAttrs (builtins.attrNames nixos-configurations) (
+          nixos-config: nixos-configurations.${nixos-config}.config.system.build.toplevel
+        )
+      );
       # Your custom packages
       # Accessible through 'nix build', 'nix shell', etc
       packages = forAllSystems (system: import ./pkgs (nixpkgsUnfree system));
@@ -101,52 +158,10 @@
 
       # NixOS configuration entrypoint
       # Available through 'nixos-rebuild --flake .#your-hostname'
-      nixosConfigurations = {
-        nixos-erik-desktop = nixpkgs.lib.nixosSystem {
-          specialArgs = {
-            inherit inputs outputs;
-          };
-          modules = [
-            # > Our main nixos configuration file <
-            ./nixos/nixos-erik-desktop/configuration.nix
-          ];
-        };
-        babbage = nixpkgs.lib.nixosSystem {
-          specialArgs = {
-            inherit inputs outputs;
-          };
-          modules = [
-            # > Our main nixos configuration file <
-            ./nixos/babbage/configuration.nix
-          ];
-        };
-      };
+      nixosConfigurations = throwIfGitCryptNotInitialized (nixosConfigurations' ./secrets);
 
       # Standalone home-manager configuration entrypoint
       # Available through 'home-manager --flake .#your-username@your-hostname'
-      homeConfigurations = {
-        "erik@nixos-erik-desktop" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-          extraSpecialArgs = {
-            inherit inputs outputs;
-            hostName = "nixos-erik-desktop";
-          };
-          modules = [
-            # > Our main home-manager configuration file <
-            ./home-manager/home.nix
-          ];
-        };
-        "erik@babbage" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-          extraSpecialArgs = {
-            inherit inputs outputs;
-            hostName = "babbage";
-          };
-          modules = [
-            # > Our main home-manager configuration file <
-            ./home-manager/home.nix
-          ];
-        };
-      };
+      homeConfigurations = throwIfGitCryptNotInitialized (homeConfigurations' ./secrets);
     };
 }

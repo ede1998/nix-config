@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, secrets, ... }:
 let
   cifs-filesystem = {
     fsType = "cifs";
@@ -29,7 +29,7 @@ in
     } // cifs-filesystem;
   };
   environment.etc."samba/QNAP-NAS.cred" = {
-    source = ../secrets/QNAP-NAS.cred;
+    source = "${secrets}/QNAP-NAS.cred";
     mode = "0600";
   };
 }

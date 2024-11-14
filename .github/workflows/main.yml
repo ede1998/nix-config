@@ -20,9 +20,16 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: cachix/install-nix-action@v30
+      - uses: DeterminateSystems/nix-installer-action@v16
 
-      - run: nix flake update
+      - name: Update flake inputs
+        run: nix flake update
+
+      - name: Check flake.lock
+        uses: DeterminateSystems/flake-checker-action@v9
+        with:
+          fail-mode: true
+          nixpkgs-keys: nixpkgs,nixpkgs-unstable
 
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
