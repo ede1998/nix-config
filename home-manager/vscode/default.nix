@@ -12,14 +12,14 @@
     # usual extensions are under `vscode-extensions`
     extensions =
       (with pkgs.vscode-marketplace; [
-        arrterian.nix-env-selector
         alefragnani.bookmarks
+        arrterian.nix-env-selector
         eamodio.gitlens
         fardolieri.close-tabs-via-regex
         james-yu.latex-workshop
         jnoortheen.nix-ide
         ms-python.python
-        nvarner.typst-lsp
+        myriad-dreamin.tinymist
         rust-lang.rust-analyzer
         streetsidesoftware.code-spell-checker
         tamasfe.even-better-toml
