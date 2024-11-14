@@ -1,10 +1,16 @@
-{ lib, config, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 let
   gitVersionAtLeast =
     minimum-version:
     (builtins.compareVersions config.programs.git.package.version minimum-version) >= 0;
 in
 {
+  home.packages = [ pkgs.pre-commit ];
   programs.git = {
     enable = true;
     diff-so-fancy.enable = true;
