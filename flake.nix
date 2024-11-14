@@ -28,11 +28,6 @@
       url = "github:nix-community/nix-vscode-extensions";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    rip2 = {
-      url = "github:MilesCranmer/rip2";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs =

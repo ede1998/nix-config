@@ -49,7 +49,7 @@
     piper
     psmisc
     ripgrep
-    external-flake.rip2
+    unstable.rip2
     rust-script
     rustup
     texliveFull

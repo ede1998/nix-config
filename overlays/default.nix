@@ -30,12 +30,7 @@ let
 in
 {
   # This one brings our custom packages from the 'pkgs' directory
-  additions =
-    final: prev:
-    import ../pkgs final.pkgs
-    // {
-      external-flake.rip2 = inputs.rip2.packages.${prev.pkgs.system}.default;
-    };
+  additions = final: prev: import ../pkgs final.pkgs;
 
   # This one contains whatever you want to overlay
   # You can change versions, add patches, set compilation flags, anything really.
