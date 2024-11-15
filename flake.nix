@@ -49,8 +49,24 @@
       ];
       # This is a function that generates an attribute by calling a function you
       # pass to it, with each system as an argument
-      forAllSystems = nixpkgs.lib.genAttrs systems;
-      git-crypt-initialized = (builtins.readFile ./secrets/hello-world.txt) == "Hello World!";
+      forAllSystems =
+        generator:
+        nixpkgs.lib.genAttrs systems (system: throwIfGitCryptNotInitialized system (generator system));
+      # Source: https://github.com/NixOS/nix/issues/4329#issuecomment-740787749
+      isDecrypted =
+        test-file: system:
+        with nixpkgs.lib;
+        hasInfix "text" (
+          fileContents (
+            with nixpkgs.legacyPackages.${system};
+            runCommandNoCCLocal "chk-encryption" {
+              buildInputs = [ file ];
+              src = test-file;
+            } "file $src > $out"
+          )
+        );
+      throwIfGitCryptNotInitialized =
+        system: nixpkgs.lib.throwIfNot (isDecrypted ./secrets/hello-world.txt system) warning-git-crypt;
       warning-git-crypt = ''
         Please add your decryption key to git-crypt.
         Otherwise, programs will receive encrypted configuration.
@@ -58,7 +74,7 @@
         wl-paste | base64 -d | git crypt unlock -
       '';
     in
-    (nixpkgs.lib.warnIfNot git-crypt-initialized warning-git-crypt {
+    {
       # Your custom packages
       # Accessible through 'nix build', 'nix shell', etc
       packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
@@ -126,5 +142,5 @@
           ];
         };
       };
-    });
+    };
 }
