@@ -111,6 +111,11 @@
         # Also delete older configurations
         options = "--delete-older-than 60d";
       };
+      # Replace duplicate files in nix store with hardlinks
+      optimise = {
+        automatic = true;
+        dates = [ "weekly" ];
+      };
     };
 
   networking.hostName = "babbage";
