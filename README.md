@@ -10,6 +10,7 @@ cd nix-config
 nix-shell
 # Decode secrets
 wl-paste | base64 -d | git crypt unlock -
+pre-commit install
 ```
 - When creating partitions by hand:
   - Create partitions via CLI
