@@ -227,6 +227,9 @@ getfattr -d "<file>"
 # Show all packages in the current system and home manager generation
 nix-tree
 
+# Temporarily open firewall ports
+nix run nixpkgs#nixos-firewall-tool
+
 % Uninstalled commands
 
 # change logitech keyboard settings via GUI
