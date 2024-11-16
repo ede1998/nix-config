@@ -1,0 +1,6 @@
+[extend]
+useDefault = true
+
+[allowlist]
+paths = ["^secrets/.*"]
+commits = ["ce8db0b71cb4a1e940dec5d747a50c569224dad2"]

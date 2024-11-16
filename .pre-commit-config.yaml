@@ -1,0 +1,29 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.21.2
+    hooks:
+      - id: gitleaks
+  - repo: local
+    hooks:
+      - id: sync-dummy-secrets
+        name: Keep secrets and secrets-dummy in sync
+        entry: utils/sync-secrets
+        language: system
+        files: '^secrets/.*$|^secrets/.*$'
+        pass_filenames: false
+      - id: nix-fmt
+        name: Format nix files
+        entry: nix fmt
+        language: system
+        types: [nix]
+      - id: nix-flake-check
+        name: Check if flake builds
+        entry: nix flake check
+        language: system
+        pass_filenames: false
+        stages: [pre-push] # because slow
