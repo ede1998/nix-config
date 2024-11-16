@@ -29,9 +29,10 @@ in
 
     Service = {
       Type = "oneshot";
-      # Starts with `-` so failure is ignored when remote is already added
-      ExecStartPre = "-${git} remote add origin-http https://${github_token}@github.com/ede1998/nix-config.git";
+      ExecStartPre = "${git} remote add origin-http https://${github_token}@github.com/ede1998/nix-config.git";
       ExecStart = "${git} pull origin-http master";
+      # Remove again to not expose token for longer
+      ExecStartPost = "${git} remote remove origin-http";
       # Can we detect this somehow?
       # i.e. where is the nixos configuration directory located?
       WorkingDirectory = "${config.home.homeDirectory}/nix-config";
