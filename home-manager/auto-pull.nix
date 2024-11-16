@@ -2,10 +2,11 @@
   pkgs,
   config,
   secrets,
+  lib,
   ...
 }:
 let
-  github_token = builtins.readFile "${secrets}/autoPullNixCfg.cred";
+  github_token = lib.strings.removeSuffix "\n" (builtins.readFile "${secrets}/autoPullNixCfg.cred");
   git = "${pkgs.git}/bin/git";
 in
 {

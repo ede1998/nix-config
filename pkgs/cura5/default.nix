@@ -41,7 +41,7 @@ appimageTools.wrapType2 {
 
       substituteInPlace $out/share/applications/com.ultimaker.cura.desktop \
         --replace-fail 'Exec=UltiMaker-Cura' 'Exec=cura'
-        
+
       cat > $out/bin/cura << EOF
       ${script}
       EOF

@@ -115,7 +115,7 @@ $ service: systemctl --failed | head -n -6 | tail -n +2 | sed 's/● \([^ ]*\) .
 # Restart failed service
 sudo systemctl reset-failed <service>
 
-# remove encryption/password from a pdf file. 
+# remove encryption/password from a pdf file.
 pdftk "<pdf_file>" input_pw "<password>" output "<pdf_file>_unencrypted.pdf"
 
 # ocr a pdf file

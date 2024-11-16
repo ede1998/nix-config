@@ -4,7 +4,7 @@ let
     ctrl = "\\C-";
   };
   fzf-options = [
-    # Escaping madness. We need to escape the quotes for nix, the dollar 
+    # Escaping madness. We need to escape the quotes for nix, the dollar
     # and the backslashes for bash and also the tab character between the quotes
     # should stay a tab character so take care. Some editor might inadvertantly
     # transform it to a space.

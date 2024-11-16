@@ -28,7 +28,7 @@ for pdf in *.pdf; do
   if ! ocrmypdf -l deu "$pdf" "$ocr_pdf"; then
     continue;
   fi
-  
+
   rip "$pdf"
 
   xdg-open "$ocr_pdf" 2> /dev/null;
@@ -40,7 +40,7 @@ for pdf in *.pdf; do
     echo "Skipping $ocr_pdf";
     continue;
   fi
-  
+
   new_name="${new_name}.pdf"
   dest=$(selectDirectory "$new_name" "$ocr_pdf");
   if [ -z "$dest" ]; then

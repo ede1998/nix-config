@@ -19,11 +19,11 @@ mkdir "$OUTPUT_FOLDER_OTHERS"
 
 function exifAndLink {
   FILE="$1"
- 
+
   #DATE_ORIG=$(exif --tag=0x0132 -m "$FILE" 2> /dev/null | head -n 1)
   DATE_ORIG=$(exif --tag=0x9003 -m "$FILE" 2> /dev/null | head -n 1)
   EXIF_RESULT=$?
-  
+
   if [ "$EXIF_RESULT" -eq 0 ] && [ -n "$DATE_ORIG" ]; then
     DATE_MODIFIED=${DATE_ORIG/ /T}
     DATE=${DATE_MODIFIED//:/-}

@@ -69,7 +69,7 @@ if $recursive; then
 fi
 
 for filepath in "${filenames[@]}"; do
-	if [ ! -e "$filepath" ]; then 
+	if [ ! -e "$filepath" ]; then
 		echo "The file '$filepath' does not exist.";
 		continue;
 	fi

@@ -15,7 +15,7 @@ wl-paste | base64 -d | git crypt unlock -
   - Create partitions via CLI
   - Mount your partitions to `/mnt` and run: `nixos-generate-config --root /mnt --dir .`.
   - Integrate resulting files into repository
-  - Run `nixos-install --flake .#hostname --no-root-password` 
+  - Run `nixos-install --flake .#hostname --no-root-password`
 - When creating partitions with [disko](https://github.com/nix-community/disko)
   - Create partitions in nix configuration
   - Run `nixos-generate-config --no-filesystems --no-filesystems --dir .`
@@ -250,4 +250,3 @@ strictly follow the `flake.lock` file, using the commits written into it when
 you (re)generated.
 
 To update your flake inputs, simply use `nix flake update`.
-

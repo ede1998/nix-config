@@ -49,7 +49,7 @@
       options
     )
   )
-  (gnc:define-report 
+  (gnc:define-report
     'version 1
     'name "Assets Over Time"
     'report-guid "90abc3427cd2498b9a197873dec58d11"
@@ -101,7 +101,7 @@
       options
     )
   )
-  (gnc:define-report 
+  (gnc:define-report
     'version 1
     'name "last-month-expenses-pie-chart"
     'report-guid "700193f08bb24dbb8994309e0f81dc2a"
@@ -175,7 +175,7 @@
       options
     )
   )
-  (gnc:define-report 
+  (gnc:define-report
     'version 1
     'name "tmp-public-transport"
     'report-guid "ff4a2cece323447db70b0ef3179b35d3"
@@ -185,4 +185,3 @@
     'renderer (gnc:report-template-renderer/report-guid "2e22929e5c5b4b769f615a815ef0c20f" "General Ledger")
   )
 )
-

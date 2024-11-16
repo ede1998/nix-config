@@ -92,7 +92,7 @@ while [ -f "$new_filename"  ]; do
 		echo "Too many name collisions, bailing out."
 		break;
 	fi
-	
+
 	((++counter))
 	new_filename="$new_filename_base-$counter.$extension"
 done

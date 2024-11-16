@@ -34,12 +34,12 @@ in
         import-file = "${config.home.homeDirectory}/.vorta-init.json";
       in
       lib.hm.dag.entryAfter [ "installPackages" ] ''
-        import_profile() { 
+        import_profile() {
           local profile="$1";
           verboseEcho "Importing profile $profile"
 
           run cp "$profile" "${import-file}"
-          
+
           local import_profile_script=$(mktemp)
           trap "rm --force --recursive $import_profile_script" EXIT
           cat > "$import_profile_script" << EOF
@@ -48,7 +48,7 @@ in
         spawn ${pkgs.vorta}/bin/vorta
         expect -re "Profile .* imported" { close }
         EOF
-          
+
           run --quiet nix-shell "$import_profile_script"
         }
 

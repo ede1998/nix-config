@@ -9,8 +9,8 @@ let
     ctrl-super = "\M-";
   };
   switchbranch = with pkgs; ''
-    switchbranch () 
-    { 
+    switchbranch ()
+    {
       local branch=$(${git}/bin/git branch | ${gnused}/bin/sed "s/^[* ] //");
       [ -z "$branch" ] && return;
       local branch="$branch"$'\n-';
