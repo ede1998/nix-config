@@ -1,2 +1,72 @@
+name: "Update custom packages"
+
+# inspired by https://github.com/dee0sap/ocm/blob/7f814d567f7d0cece733e2e142c57a6adf96459b/.github/workflows/flake_vendorhash.yaml
+
 on:
-    workflow_dispatch:
+  schedule:
+    - cron: "50 2 * * 6"
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - pkg: "cura5"
+            extra-args: ""
+          - pkg: "koi"
+            extra-args: "--build --test"
+    permissions:
+      id-token: write
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v16
+      - name: Update custom packages
+        run: nix run .#nixosConfigurations.babbage.pkgs.nix-update -- --flake --commit ${{ matrix.pkg }}
+      - name: Check diff
+        id: check-diff
+        run: |
+          diff=$(git diff)
+          if [[ -z "$diff" ]]; then
+            echo "No package updated."
+            exit 0
+          fi
+
+          cat << EOF >> "${GITHUB_STEP_SUMMARY}"
+          \`\`\`diff
+          ${diff}
+          \`\`\`
+          EOF
+
+          cat << EOF >> "$GITHUB_OUTPUT"
+          body=\`\`\`diff
+          ${diff}
+          \`\`\`
+          EOF
+      - name: Create pull request
+        id: create_pull_request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: update vendorHash
+          title: Update vendorHash in flake.nix
+          body: ${{ steps.check-diff.outputs.body }}
+          branch: nix/flake
+          committer: Flake Bot <actions@github.com>
+          author: Flake Bot <actions@github.com>
+          add-paths: |
+            pkgs/
+      #- name: Enable pull request auto merge
+      #  if: ${{ steps.create_pull_request.outputs.pull-request-number }}
+      #  uses: peter-evans/enable-pull-request-automerge@v3
+      #  with:
+      #    token: ${{ steps.generate_token.outputs.token }}
+      #    pull-request-number: ${{ steps.create_pull_request.outputs.pull-request-number }}
+      #    merge-method: squash
