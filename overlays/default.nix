@@ -79,6 +79,14 @@ in
           ];
         }
       );
+
+      nix-update = addPatches prev.nix-update [
+        (builtins.fetchurl {
+          # Make --override-filename work for flakes and prevent error in git diff
+          url = "https://patch-diff.githubusercontent.com/raw/Mic92/nix-update/pull/301.patch";
+          sha256 = "sha256:10lc6ag5x3wwzab765r1x2fxwd1syl4zj8p3dq1dcn650spk7yx0";
+        })
+      ];
     };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will
