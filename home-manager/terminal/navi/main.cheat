@@ -196,6 +196,17 @@ flamegraph "<test_executable>" -- "<test_name>"
 # run clippy with ALL lints enabled
 cargo clippy -- -W clippy::pedantic -W clippy::nursery -W clippy::cargo
 
+% Uninstalled commands
+
+# change logitech keyboard settings via GUI
+piper
+
+# change logitech keyboard settings via CLI
+ratbagctl
+
+# increase img size of QEMU VM
+
+sudo qemu-img resize win10-2.qcow2 +20G
 % Programs I forget the name of
 
 $ file: fd --type f
@@ -230,16 +241,8 @@ nix-tree
 # Temporarily open firewall ports
 nix run nixpkgs#nixos-firewall-tool
 
-% Uninstalled commands
-
-# change logitech keyboard settings via GUI
-piper
-
-# change logitech keyboard settings via CLI
-ratbagctl
-
-# increase img size of QEMU VM
-sudo qemu-img resize win10-2.qcow2 +20G
-
 # Run Github CI job locally
 nix run nixpkgs-unstable#act -- --help
+
+# Compare images or videos side-by-side visually
+identity

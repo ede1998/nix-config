@@ -49,7 +49,6 @@
     piper
     psmisc
     ripgrep
-    unstable.rip2
     rust-script
     rustup
     texliveFull
@@ -59,7 +58,9 @@
     typst
     ungoogled-chromium
     unstable.espup
+    unstable.identity
     unstable.ocrmypdf
+    unstable.rip2
     unzip
     ventoy-full
     viu
