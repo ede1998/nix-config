@@ -246,3 +246,6 @@ nix run nixpkgs-unstable#act -- --help
 
 # Compare images or videos side-by-side visually
 identity
+
+# Measure read and write performance of storage devices, e.g. SSD, with fio. Must be installed to work
+kdiskmark
