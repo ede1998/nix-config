@@ -64,7 +64,7 @@
             } "file $src > $out"
           )
         );
-      throwIfGitCryptNotInitialized = nixpkgs.lib.throwIfNot (isDecrypted ./secrets/hello-world.txt) warning-git-crypt;
+      throwIfGitCryptNotInitialized = nixpkgs.lib.warnIfNot (isDecrypted ./secrets/hello-world.txt) warning-git-crypt;
       warning-git-crypt = ''
         Please add your decryption key to git-crypt.
         Otherwise, programs will receive encrypted configuration.
