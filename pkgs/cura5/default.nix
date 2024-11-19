@@ -3,12 +3,14 @@
   fetchurl,
   pkgs,
   lib,
+  writeScript,
 }:
 let
   pname = "cura5";
   version = "5.8.1";
+  repo = "UltiMaker/Cura";
   src = fetchurl {
-    url = "https://github.com/Ultimaker/Cura/releases/download/${version}/UltiMaker-Cura-${version}-linux-X64.AppImage";
+    url = "https://github.com/${repo}/releases/download/${version}/UltiMaker-Cura-${version}-linux-X64.AppImage";
     hash = "sha256-VLd+V00LhRZYplZbKkEp4DXsqAhA9WLQhF933QAZRX0=";
   };
   appimage-contents = appimageTools.extractType2 { inherit pname version src; };
@@ -48,6 +50,16 @@ appimageTools.wrapType2 {
 
       chmod +x "$out/bin/cura"
     '';
+
+  passthru.custom.newVersionCheck = writeScript "versionCheck.sh" (
+    with pkgs;
+    ''
+      ${curl}/bin/curl --silent -L -H "Accept: application/vnd.github+json" \
+        -H "X-GitHub-Api-Version: 2022-11-28" \
+        'https://api.github.com/repos/${repo}/releases/latest' |
+        ${jq}/bin/jq '.tag_name' --raw-output
+    ''
+  );
 
   meta = with lib; {
     description = "State-of-the-art slicer app to prepare your 3D models for your 3D printer.";

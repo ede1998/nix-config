@@ -13,11 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        include:
-          - pkg: "cura5"
-            extra-args: ""
-          - pkg: "koi"
-            extra-args: "--build --test"
+          pkg:
+          - "cura5"
+          - "koi"
     permissions:
       id-token: write
       contents: write
@@ -29,12 +27,43 @@ jobs:
           fetch-depth: 0
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@v16
-      - name: Update custom packages
-        run: nix run .#nixosConfigurations.babbage.pkgs.nix-update -- --flake --commit ${{ matrix.pkg }}
+      - name: Install dependencies
+        run: nix-env -i git-crypt -f '<nixpkgs>'
+      - name: Detect new version
+        id: detect-new-version
+        run: |
+          HAS_VERSION_CHECKER="$(nix eval .#packages --impure --apply 'pkgs:
+            let
+              lib = (import <nixpkgs> {}).lib;
+              pkg = pkgs.${builtins.currentSystem}.${{ matrix.pkg }};
+            in
+              lib.attrsets.hasAttrByPath [ "passthru" "custom" "newVersionCheck"] pkg
+          ')";
+          if [ "$HAS_VERSION_CHECKER" = 'true' ]; then
+            CURRENT_SYSTEM="$(nix eval --impure --expr 'builtins.currentSystem')"
+            SCRIPT="$(nix build .#packages.${CURRENT_SYSTEM}.${{ matrix.pkg }}.passthru.custom.newVersionCheck --print-out-paths)"
+            echo "NEW_VERSION=$($SCRIPT)" >> "$GITHUB_ENV"
+          else
+            echo "NEW_VERSION=stable" >> "$GITHUB_ENV"
+          fi
+      - name: Apply version update
+        id: apply-version-update
+        run: |
+          nix run github:ede1998/nix-update#nix-update -- \
+            --write-commit-message "commit.txt" \
+            --file ./pkgs/impure.nix \
+            --version ${NEW_VERSION} \
+            ${{ matrix.pkg }}
+          {
+            echo "COMMIT_MSG<<EOF"
+            sed '1s/\([^:]*\): \(.*\)/chore(\1): \2/' < commit.txt
+            echo EOF
+          } >> "$GITHUB_OUTPUT";
+          echo "NEW_VERSION=$NEW_VERSION" >> "$GITHUB_OUTPUT";
       - name: Check diff
         id: check-diff
         run: |
-          diff=$(git diff)
+          diff=$(git diff -- pkgs/${{ matrix.pkg }})
           if [[ -z "$diff" ]]; then
             echo "No package updated."
             exit 0
@@ -46,23 +75,25 @@ jobs:
           \`\`\`
           EOF
 
-          cat << EOF >> "$GITHUB_OUTPUT"
-          body=\`\`\`diff
-          ${diff}
-          \`\`\`
-          EOF
+          {
+            echo 'body<<EOF'
+            echo '```diff'
+            echo "$diff"
+            echo '```'
+            echo EOF
+          } >> "$GITHUB_OUTPUT"
       - name: Create pull request
         id: create_pull_request
         uses: peter-evans/create-pull-request@v7
         with:
-          commit-message: update vendorHash
-          title: Update vendorHash in flake.nix
+          commit-message: ${{ steps.apply-version-update.outputs.COMMIT_MSG }}
+          title: Update ${{ matrix.pkg }} to ${{ steps.apply-version-update.outputs.NEW_VERSION }}
           body: ${{ steps.check-diff.outputs.body }}
-          branch: nix/flake
+          branch: update-${{ matrix.pkg }}
           committer: Flake Bot <actions@github.com>
           author: Flake Bot <actions@github.com>
           add-paths: |
-            pkgs/
+            pkgs/${{ matrix.pkg }}
       #- name: Enable pull request auto merge
       #  if: ${{ steps.create_pull_request.outputs.pull-request-number }}
       #  uses: peter-evans/enable-pull-request-automerge@v3
