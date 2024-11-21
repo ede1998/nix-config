@@ -7,11 +7,11 @@
 }:
 let
   pname = "cura5";
-  version = "5.8.1";
+  version = "5.9.0";
   repo = "UltiMaker/Cura";
   src = fetchurl {
     url = "https://github.com/${repo}/releases/download/${version}/UltiMaker-Cura-${version}-linux-X64.AppImage";
-    hash = "sha256-VLd+V00LhRZYplZbKkEp4DXsqAhA9WLQhF933QAZRX0=";
+    hash = "sha256-STtVeM4Zs+PVSRO3cI0LxnjRDhOxSlttZF+2RIXnAp4=";
   };
   appimage-contents = appimageTools.extractType2 { inherit pname version src; };
 in
