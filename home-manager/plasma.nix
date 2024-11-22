@@ -79,6 +79,7 @@
       #ksmserver = {
       #  "Lock Session" = [ "Screensaver" "Meta+Ctrl+Alt+L" ];
       #};
+      org_kde_powerdevil.powerProfile = [ ];
 
       kwin = {
         "Switch Window Down" = "Meta+J";
