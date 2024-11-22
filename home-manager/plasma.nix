@@ -11,6 +11,7 @@
         idleTimeout = 900;
       };
     };
+    kscreenlocker.timeout = 120;
 
     # Some high-level settings:
     workspace = {
