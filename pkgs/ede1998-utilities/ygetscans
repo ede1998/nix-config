@@ -13,7 +13,7 @@ selectDirectory() {
   local target_dir=/home/erik/Documents
   fd --type d . "$target_dir" | \
     fzf \
-    --header "ESC=skip    TAB=replace query    CTRL+N=use prompt as new directory    ALT+E: edit current PDF (replace file!)" \
+    --header "ESC=skip    TAB=replace query    CTRL+N=create new directory from prompt    ALT+E: edit current PDF (replace file!)" \
     `# CTRL-N: create folder and reload directory list, TAB: replace query with current selection, ALT+E: open in libreoffice` \
     --bind "ctrl-n:execute-silent(mkdir -p {fzf:query})+reload-sync(fd --type d . \"$target_dir\"),tab:replace-query,alt-e:execute-silent(simpress \"$current_name\" &)" \
     --preview "ls --color=always -lsa {}" \

@@ -88,7 +88,17 @@ jobs:
         with:
           commit-message: ${{ steps.apply-version-update.outputs.COMMIT_MSG }}
           title: Update ${{ matrix.pkg }} to ${{ steps.apply-version-update.outputs.NEW_VERSION }}
-          body: ${{ steps.check-diff.outputs.body }}
+          body: |
+            This PR was automatically created by CI job [update-custom-pkgs.yml](.github/workflows/update-custom-pkgs.yml).
+            Run the updated program directly from the PR for testing:
+
+            ```bash
+            nix run github:ede1998/nix-config/update-${{ matrix.pkg }}#.${{ matrix.pkg }}
+            ```
+
+            Diff:
+
+            ${{ steps.check-diff.outputs.body }}
           branch: update-${{ matrix.pkg }}
           committer: Flake Bot <actions@github.com>
           author: Flake Bot <actions@github.com>
