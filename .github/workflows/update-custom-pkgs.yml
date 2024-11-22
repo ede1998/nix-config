@@ -56,7 +56,8 @@ jobs:
             ${{ matrix.pkg }}
           {
             echo "COMMIT_MSG<<EOF"
-            sed '1s/\([^:]*\): \(.*\)/chore(\1): \2/' < commit.txt
+            OLD_VERSION="$( sed -n 's/.*: \(.*\) -> .*/\1/;1p' < commit.txt )"
+            sed '1s/\([^:]*\): \(.*\)/chore(\1): \2/;'"s-/None\.\.\.-/${OLD_VERSION}...-" < commit.txt
             echo EOF
           } >> "$GITHUB_OUTPUT";
           echo "NEW_VERSION=$NEW_VERSION" >> "$GITHUB_OUTPUT";
