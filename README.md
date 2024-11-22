@@ -8,7 +8,7 @@
 git clone https://github.com/ede1998/nix-config.git
 cd nix-config
 nix-shell
-# Decode secrets
+# Decode secretshbkjvuuhiiuh
 wl-paste | base64 -d | git crypt unlock -
 pre-commit install
 git config blame.ignoreRevsFile .git-blame-ignore-revs
