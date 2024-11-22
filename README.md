@@ -3,7 +3,6 @@
 ## Bootstrapping a new system
 
 - Start a [NixOS live system](https://nixos.org/download#download-nixos).
-- Login to Github in browser and get a new personal access token (scope Content)
 ```bash
 git clone https://github.com/ede1998/nix-config.git
 cd nix-config
@@ -44,7 +43,6 @@ git config blame.ignoreRevsFile .git-blame-ignore-revs
   -  `printf "$(nix --extra-experimental-features dynamic-derivations eval .#homeConfigurations."erik@babbage".config.programs.bash.initExtra)"` prints the evaluated value, experimental feature required for multiple runs with the same inputs
 - Update your flake lock with `nix flake update` to get the latest packages and modules.
 
-
 ## Features
 
 *Based on [Misterio77/nix-starter-configs](https://github.com/Misterio77/nix-starter-configs/tree/f1ecf7e2275f541af7bec763866a909224b937a4)*
@@ -53,53 +51,6 @@ git config blame.ignoreRevsFile .git-blame-ignore-revs
   Accessible on your system, home config, as well as `nix build .#package-name`.
 - Boilerplate for custom NixOS (`modules/nixos`) and home-manager (`modules/home-manager`) modules
 - NixOS and home-manager configurations from minimal, and they should also use your overlays and custom packages right out of the box.
-
-
-### Use home-manager as a NixOS module
-
-If you prefer to build your home configuration together with your NixOS one,
-it's pretty simple.
-
-Simply remove the `homeConfigurations` block from the `flake.nix` file; then
-add this to your NixOS configuration (either directly on
-`nixos/configuration.nix` or on a separate file and import it):
-
-```nix
-{ inputs, outputs, ... }: {
-  imports = [
-    # Import home-manager's NixOS module
-    inputs.home-manager.nixosModules.home-manager
-  ];
-
-  home-manager = {
-    extraSpecialArgs = { inherit inputs outputs; };
-    users = {
-      # Import your home-manager configuration
-      your-username = import ../home-manager/home.nix;
-    };
-  };
-}
-```
-
-In this setup, the `home-manager` tool will not be installed (see
-[nix-community/home-manager#4342](https://github.com/nix-community/home-manager/pull/4342)).
-To rebuild your home configuration, use `nixos-rebuild` instead.
-
-But if you want to install the `home-manager` tool anyways, you can add the
-package into your configuration:
-
-```nix
-# To install it for a specific user
-users.users = {
-  your-username = {
-    packages = [ inputs.home-manager.packages.${pkgs.system}.default ];
-  };
-};
-
-# To install it globally
-environment.systemPackages =
-  [ inputs.home-manager.packages.${pkgs.system}.default ];
-```
 
 ### Adding more hosts or users
 
@@ -113,26 +64,6 @@ NixOS makes it easy to share common configuration between hosts (you might want
 to create a common directory for these), while keeping everything in sync.
 home-manager can help you sync your environment (from editor to WM and
 everything in between) anywhere you use it. Have fun!
-
-### User password and secrets
-
-You have basically two ways of setting up default passwords:
-- By default, you'll be prompted for a root password when installing with
-  `nixos-install`. After you reboot, be sure to add a password to your own
-  account and lock root using `sudo passwd -l root`.
-- Alternatively, you can specify `initialPassword` for your user. This will
-  give your account a default password, be sure to change it after rebooting!
-  If you do, you should pass `--no-root-passwd` to `nixos-install`, to skip
-  setting a password on the root account.
-
-If you don't want to set your password imperatively, you can also use
-`passwordFile` for safely and declaratively setting a password from a file
-outside the nix store.
-
-There's also [more advanced options for secret
-management](https://nixos.wiki/wiki/Comparison_of_secret_managing_schemes),
-including some that can include them (encrypted) into your config repo and/or
-nix store, be sure to check them out if you're interested.
 
 ### Dotfile management with home-manager
 
@@ -151,37 +82,6 @@ existing dotfiles to this repo and try it out!
 When multiple instances of a key will be merged into a final configuration but
 order for the generated configuration file is important, `mkOrder` can be used:
 https://nixos.wiki/wiki/NixOS:Properties
-
-### Try opt-in persistence
-
-You might have noticed that there's impurity in your NixOS system, in the form
-of configuration files and other cruft your system generates when running. What
-if you change them in a whim to get something working and forget about it?
-Boom, your system is not fully reproducible anymore.
-
-You can instead fully delete your `/` and `/home` on every boot! Nix is okay
-with a empty root on boot (all you need is `/boot` and `/nix`), and will
-happily reapply your configurations.
-
-There's two main approaches to this: mount a `tmpfs` (RAM disk) to `/`, or
-(using a filesystem such as btrfs or zfs) mount a blank snapshot and reset it
-on boot.
-
-For stuff that can't be managed through nix (such as games downloaded from
-steam, or logs), use [impermanence](https://github.com/nix-community/impermanence)
-for mounting stuff you to keep to a separate partition/volume (such as
-`/nix/persist` or `/persist`). This makes everything vanish by default, and you
-can keep track of what you specifically asked to be kept.
-
-Here's some awesome blog posts about it:
-- [Erase your darlings](https://grahamc.com/blog/erase-your-darlings)
-- [Encrypted BTRFS with Opt-In State on
-  NixOS](https://mt-caret.github.io/blog/posts/2020-06-29-optin-state.html)
-- [NixOS: tmpfs as root](https://elis.nu/blog/2020/05/nixos-tmpfs-as-root/) and
-  [tmpfs as home](https://elis.nu/blog/2020/06/nixos-tmpfs-as-home/)
-
-Note that for `home-manager` to work correctly here, you need to set up its
-NixOS module, as described in the [previous section](#use-home-manager-as-a-nixos-module).
 
 ### Adding custom packages
 
