@@ -80,15 +80,15 @@
         });
 
       nixosConfigurations' = secrets: {
-        nixos-erik-desktop = nixpkgs.lib.nixosSystem {
-          specialArgs = {
-            inherit inputs outputs secrets;
-          };
-          modules = [
-            # > Our main nixos configuration file <
-            ./nixos/nixos-erik-desktop/configuration.nix
-          ];
-        };
+        #nixos-erik-desktop = nixpkgs.lib.nixosSystem {
+        #  specialArgs = {
+        #    inherit inputs outputs secrets;
+        #  };
+        #  modules = [
+        #    # > Our main nixos configuration file <
+        #    ./nixos/nixos-erik-desktop/configuration.nix
+        #  ];
+        #};
         babbage = nixpkgs.lib.nixosSystem {
           specialArgs = {
             inherit inputs outputs secrets;
@@ -100,17 +100,17 @@
         };
       };
       homeConfigurations' = secrets: {
-        "erik@nixos-erik-desktop" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-          extraSpecialArgs = {
-            inherit inputs outputs secrets;
-            hostName = "nixos-erik-desktop";
-          };
-          modules = [
-            # > Our main home-manager configuration file <
-            ./home-manager/home.nix
-          ];
-        };
+        #"erik@nixos-erik-desktop" = home-manager.lib.homeManagerConfiguration {
+        #  pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+        #  extraSpecialArgs = {
+        #    inherit inputs outputs secrets;
+        #    hostName = "nixos-erik-desktop";
+        #  };
+        #  modules = [
+        #    # > Our main home-manager configuration file <
+        #    ./home-manager/home.nix
+        #  ];
+        #};
         "erik@babbage" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = {
