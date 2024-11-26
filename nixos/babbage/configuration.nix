@@ -120,6 +120,7 @@
 
   networking.hostName = "babbage";
   networking.networkmanager.enable = true;
+  networking.interfaces.enp7s0.wakeOnLan.enable = true;
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
