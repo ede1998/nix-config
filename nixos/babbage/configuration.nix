@@ -134,7 +134,7 @@
       initialPassword = "correcthorsebatterystaple";
       isNormalUser = true;
       openssh.authorizedKeys.keys = [
-        # TODO: Add your SSH public key(s) here, if you plan on using SSH to connect
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPk/i+RMmAfLbm1YNLys6xCbqhZoL2zvYJmeQedaN6RX github@erik-hennig.me" # Fairphone
       ];
       uid = 1000;
       extraGroups = [
