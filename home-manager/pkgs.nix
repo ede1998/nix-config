@@ -16,11 +16,11 @@
     dig
     dust
     ede1998-utilities
+    element-desktop-wayland
     exif
     fclones
     fd
     file
-    freecad
     gcc
     gimp
     git-crypt
