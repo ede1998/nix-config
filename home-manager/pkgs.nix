@@ -58,7 +58,7 @@
     typst
     ungoogled-chromium
     unstable.espup
-    unstable.identity
+    (unstable.identity.overrideAttrs (super: self: { meta.priority = 1; }))
     unstable.ocrmypdf
     unstable.rip2
     unzip
