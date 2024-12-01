@@ -58,7 +58,7 @@
     typst
     ungoogled-chromium
     unstable.espup
-    (unstable.identity.overrideAttrs (super: self: { meta.priority = 1; }))
+    (unstable.identity.overrideAttrs (super: self: { meta.priority = 1; })) # fix collision with mesa-demos
     unstable.ocrmypdf
     unstable.rip2
     unzip
