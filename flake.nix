@@ -123,7 +123,10 @@
               ];
             };
         in
-        nixpkgs.lib.genAttrs [ "erik@babbage" "erik@larc" ] config';
+        nixpkgs.lib.genAttrs [
+          "erik@babbage"
+          # "erik@larc"
+        ] config';
     in
     {
       checks = forAllSystems (
