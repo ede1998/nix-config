@@ -1,8 +1,6 @@
 { pkgs, ... }:
-{
-  home.packages = with pkgs; [
-    bat
-    blender
+let
+  dev-tools = with pkgs; [
     cargo-asm
     cargo-binutils
     cargo-bloat
@@ -12,64 +10,73 @@
     cargo-outdated
     cargo-udeps
     cargo-update
-    cura5
+    gcc
+    git-crypt
+    gnumake
+    rust-script
+    rustup
+    unstable.espup
+    ventoy-full
+    wireshark
+  ];
+  cli-tools = with pkgs; [
+    bat
     dig
     dust
     ede1998-utilities
-    element-desktop
     exif
     fclones
     fd
     file
-    gcc
-    gimp
-    git-crypt
-    glxinfo
-    gnumake
     htop
-    hunspell
-    hunspellDicts.de_DE
-    hunspellDicts.en_US
-    inkscape
     inxi
     jq
     jqp
-    kdePackages.filelight
-    kdePackages.kcalc
-    kdePackages.kdepim-addons
-    kdePackages.krdc
-    kdePackages.krfb
-    libreoffice-fresh
     nix-tree
     p7zip
     pciutils
-    pdfarranger
-    pdfpc
     pinentry
-    piper
     psmisc
     ripgrep
-    rust-script
-    rustup
-    texliveFull
     tldr
     traceroute
     tree
-    typst
-    ungoogled-chromium
-    unstable.espup
-    (unstable.identity.overrideAttrs (super: self: { meta.priority = 1; })) # fix collision with mesa-demos
     unstable.ocrmypdf
     unstable.rip2
     unzip
-    ventoy-full
     viu
-    vlc
-    wireshark
-    wl-clipboard-rs
     xmlstarlet
     xsv
     yq
     zip
   ];
+in
+{
+  home.packages =
+    dev-tools
+    ++ cli-tools
+    ++ (with pkgs; [
+      blender
+      cura5
+      element-desktop
+      gimp
+      hunspell
+      hunspellDicts.de_DE
+      hunspellDicts.en_US
+      inkscape
+      kdePackages.filelight
+      kdePackages.kcalc
+      kdePackages.kdepim-addons
+      kdePackages.krdc
+      kdePackages.krfb
+      libreoffice-fresh
+      pdfarranger
+      pdfpc
+      texliveFull
+      typst
+      ungoogled-chromium
+      (unstable.identity.overrideAttrs (super: self: { meta.priority = 1; })) # fix collision with mesa-demos
+      vlc
+      wl-clipboard-rs
+    ]);
 }
