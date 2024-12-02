@@ -132,7 +132,7 @@
 
         # Digital clock
         # Display holidays for Baden-Württemberg in Digital Clock calendar widget.
-        plasma_calendar_holiday_regions.General.selectedRegion = "de-bw_de";
+        plasma_calendar_holiday_regions.General.selectedRegions = "de-bw_de";
         # TODO also automatically configure those calendars
         # at the moment, I added these manually via
         # nix run nixpkgs#kdePackages.akonadiconsole
