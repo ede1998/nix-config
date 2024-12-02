@@ -1,4 +1,4 @@
-{ secrets, ... }:
+{ secrets, pkgs, ... }:
 {
   programs.ssh = {
     enable = true;
@@ -17,7 +17,15 @@
       "github.com".identityFile = "~/.ssh/id_rsa";
     };
   };
+
   services.ssh-agent.enable = true;
+  services.gpg-agent = {
+    enable = true;
+    enableBashIntegration = true;
+    defaultCacheTtl = 3600;
+    maxCacheTtl = 999999;
+    pinentryPackage = pkgs.pinentry;
+  };
 
   home.file.".ssh" = {
     source = "${secrets}/ssh";

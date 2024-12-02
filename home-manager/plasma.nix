@@ -5,14 +5,6 @@
     overrideConfig = true;
     # Run rc2nix tool to see current config formatted as nix: `nix run github:nix-community/plasma-manager`
 
-    powerdevil.AC = {
-      autoSuspend.action = "nothing";
-      turnOffDisplay = {
-        idleTimeout = 900;
-      };
-    };
-    kscreenlocker.timeout = 120;
-
     # Some high-level settings:
     workspace = {
       clickItemTo = "select";
@@ -21,12 +13,6 @@
       #iconTheme = "Papirus-Dark";
       #wallpaper = "${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/Patak/contents/images/1080x1920.png";
     };
-
-    #hotkeys.commands."launch-konsole" = {
-    #  name = "Launch Konsole";
-    #  key = "Meta+Alt+K";
-    #  command = "konsole";
-    #};
 
     panels = [
       # Windows-like panel at the top
@@ -64,14 +50,6 @@
           }
         ];
       }
-      # Global menu at the top
-      # {
-      #   location = "top";
-      #   height = 26;
-      #   widgets = [
-      #     "org.kde.plasma.appmenu"
-      #   ];
-      # }
     ];
 
     # Some mid-level settings:

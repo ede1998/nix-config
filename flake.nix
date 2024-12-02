@@ -99,30 +99,31 @@
           ];
         };
       };
-      homeConfigurations' = secrets: {
-        #"erik@larc" = home-manager.lib.homeManagerConfiguration {
-        #  pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-        #  extraSpecialArgs = {
-        #    inherit inputs outputs secrets;
-        #    hostName = "larc";
-        #  };
-        #  modules = [
-        #    # > Our main home-manager configuration file <
-        #    ./home-manager/home.nix
-        #  ];
-        #};
-        "erik@babbage" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-          extraSpecialArgs = {
-            inherit inputs outputs secrets;
-            hostName = "babbage";
-          };
-          modules = [
-            # > Our main home-manager configuration file <
-            ./home-manager/home.nix
-          ];
-        };
-      };
+      homeConfigurations' =
+        secrets:
+        let
+          config' =
+            user-at-hostName:
+            let
+              hostName = nixpkgs.lib.last (nixpkgs.lib.splitString "@" user-at-hostName);
+            in
+            home-manager.lib.homeManagerConfiguration {
+              pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+              extraSpecialArgs = {
+                inherit
+                  inputs
+                  outputs
+                  secrets
+                  hostName
+                  ;
+              };
+              modules = [
+                # > Our main home-manager configuration file <
+                ./home-manager/${hostName}.nix
+              ];
+            };
+        in
+        nixpkgs.lib.genAttrs [ "erik@babbage" "erik@larc" ] config';
     in
     {
       checks = forAllSystems (
