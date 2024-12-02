@@ -16,7 +16,7 @@
     dig
     dust
     ede1998-utilities
-    element-desktop-wayland
+    element-desktop
     exif
     fclones
     fd
