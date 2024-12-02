@@ -1,6 +1,5 @@
 { config, ... }:
 {
-
   initial-config.nextcloud-client = {
     enable = true;
     start-in-background = true;

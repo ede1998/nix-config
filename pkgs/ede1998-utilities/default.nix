@@ -57,12 +57,9 @@ let
         findutils
         fzf
         gawk
-        gnugrep
         gnused
         iconv
         libreoffice-fresh
-        perl
-        poppler_utils
       ];
     })
     (shellApp {

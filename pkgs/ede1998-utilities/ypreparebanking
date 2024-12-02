@@ -91,7 +91,7 @@ glob-expand() {
 file_ing=$(glob-expand "$dir_download/Umsatzanzeige_DE25500105175512060053_"*".csv")
 file_ing_checking=$(glob-expand "$dir_download/Umsatzanzeige_DE30500105175438009290_"*".csv")
 file_barclay="$dir_download/Umsätze.xlsx"
-file_leaseplan="$dir_download/Kontoauszug.pdf"
+file_leaseplan="$dir_download/Transaktionsuebersicht.csv"
 #file_vw_bank=$(glob-expand "$dir_download/KtoNr_1524931191_Export_Umsätze_"*".csv")
 file_bondora=$(find ~/Downloads/ -maxdepth 1 -type f -name "${last_month_without_year}_01_${year_of_last_month}-${last_month_without_year}_*_${year_of_last_month}*.xlsx" | fzf --select-1 --prompt "Select Bondora file > ")
 
@@ -160,15 +160,13 @@ fi
 
 # prepare leaseplanbank
 if [ "$skip_leaseplan" -eq 0 ]; then
-	mv "$file_leaseplan" "leaseplan.pdf"
-	pdftotext -layout "leaseplan.pdf" - |
-		sed -n '/^Datum.*Referenzkonto/,/^$/p' |
-		grep -v '^$\|^Datum *Referenzkonto' |
-		perl -pe 's/(\d\d)-(\d\d)-(\d\d\d\d) +(.*?) +(.*?) +(dazu|ab) +(.*) €/\3-\2-\1;\4;\5;\7/' > "leaseplan.csv"
-	sed -i 's/Zinsen;;/Zinsen;Zinsen;/' "leaseplan.csv"
+	mv "$file_leaseplan" "leaseplan.csv"
 	fp="$dir_finances/leaseplan/$year_of_last_month"
 	mkdir -p "$fp"
-	mv -i leaseplan.pdf "$fp/transaktionen-$last_month.pdf"
+    if [ -f "$dir_download/Kontoauszug.pdf" ]; then
+	  mv -i "$dir_download/Kontoauszug.pdf" "$fp/transaktionen-$last_month.pdf"
+	fi
+    cp -i "leaseplan.csv" "$fp/transaktionen-$last_month.csv"
 	echo "Leaseplan file $file_leaseplan processed."
 fi
 
