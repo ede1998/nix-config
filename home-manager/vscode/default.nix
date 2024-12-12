@@ -21,6 +21,7 @@
         ms-python.python
         myriad-dreamin.tinymist
         rust-lang.rust-analyzer
+        serayuzgur.crates
         streetsidesoftware.code-spell-checker
         tamasfe.even-better-toml
         usernamehw.errorlens
