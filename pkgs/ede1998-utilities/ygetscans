@@ -41,7 +41,10 @@ for pdf in *.pdf; do
     continue;
   fi
 
-  new_name="${new_name}.pdf"
+  if [[ "$new_name" != *.pdf ]]; then
+    new_name="${new_name}.pdf"
+  fi
+
   dest=$(selectDirectory "$new_name" "$ocr_pdf");
   if [ -z "$dest" ]; then
     echo "Skipping $new_name";
@@ -49,6 +52,8 @@ for pdf in *.pdf; do
   else
     echo "Moving $ocr_pdf to $dest/$new_name";
     mv -i "$ocr_pdf" "$dest/$new_name";
+    # x bit always set on NAS
+    chmod -x "$dest/$new_name";
   fi
 done
 
