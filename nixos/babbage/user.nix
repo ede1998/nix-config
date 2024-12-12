@@ -9,6 +9,7 @@
     extraGroups = [
       "docker"
       "networkmanager"
+      "dialout"
       "wheel"
       "wireshark"
     ];
