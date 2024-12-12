@@ -19,6 +19,7 @@
     ../plasma.nix
     ../printers.nix
     ../sound.nix
+    ../security.nix
 
     ./sshd.nix
     ./user.nix

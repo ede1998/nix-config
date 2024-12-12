@@ -18,6 +18,7 @@
     ../nix.nix
     ../plasma.nix
     ../printers.nix
+    ../security.nix
     ../sound.nix
 
     ./sshd.nix
