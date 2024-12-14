@@ -9,6 +9,7 @@
       nix
       home-manager
       git
+pre-commit
 
       git-crypt
       wl-clipboard # for wl-paste
