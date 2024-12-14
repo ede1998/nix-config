@@ -11,5 +11,4 @@
   };
   security.tpm2.enable = true;
   boot.initrd.systemd.enable = true;
-
 }

@@ -1,4 +1,12 @@
-{ lib, options, ... }:
+{
+  lib,
+  options,
+  hostName,
+  ...
+}:
+let
+  is-babbage = hostName == "babbage";
+in
 {
   programs.plasma = {
     enable = true;
@@ -18,37 +26,39 @@
       # Windows-like panel at the top
       {
         location = "top";
-        screen = 2;
-        widgets = [
-          "org.kde.plasma.kickoff"
-          "org.kde.plasma.pager"
-          {
-            iconTasks.launchers = [
-              "applications:org.kde.dolphin.desktop"
-              "applications:firefox.desktop"
-              "applications:thunderbird.desktop"
-            ];
-          }
-          "org.kde.plasma.marginsseparator"
-          { systemTray.items.hidden = [ "org.kde.plasma.battery" ]; }
-          {
-            digitalClock = {
-              calendar = {
-                firstDayOfWeek = "monday";
-                plugins = [
-                  "holidaysevents"
-                  "pimevents"
-                ];
-                showWeekNumbers = true;
+        screen = if is-babbage then 2 else 1;
+        widgets =
+          [
+            "org.kde.plasma.kickoff"
+            "org.kde.plasma.pager"
+            {
+              iconTasks.launchers = [
+                "applications:org.kde.dolphin.desktop"
+                "applications:firefox.desktop"
+              ] ++ (lib.optional is-babbage "applications:thunderbird.desktop");
+            }
+            "org.kde.plasma.marginsseparator"
+          ]
+          ++ (lib.optional is-babbage { systemTray.items.hidden = [ "org.kde.plasma.battery" ]; })
+          ++ [
+            {
+              digitalClock = {
+                calendar = {
+                  firstDayOfWeek = "monday";
+                  plugins = [
+                    "holidaysevents"
+                    "pimevents"
+                  ];
+                  showWeekNumbers = true;
+                };
+                date.format = "isoDate";
+                time = {
+                  format = "24h";
+                  showSeconds = "always";
+                };
               };
-              date.format = "isoDate";
-              time = {
-                format = "24h";
-                showSeconds = "always";
-              };
-            };
-          }
-        ];
+            }
+          ];
       }
     ];
 
@@ -133,16 +143,6 @@
         # Digital clock
         # Display holidays for Baden-Württemberg in Digital Clock calendar widget.
         plasma_calendar_holiday_regions.General.selectedRegions = "de-bw_de";
-        # TODO also automatically configure those calendars
-        # at the moment, I added these manually via
-        # nix run nixpkgs#kdePackages.akonadiconsole
-        # and add davgroupware resource
-        plasmashellrc.PIMEventsPlugin.calendars = lib.strings.concatStringsSep "," [
-          "15"
-          "16"
-          "17"
-          "18"
-        ];
 
         # Disable KDE global menu daemon
         kded5rc.Module-appmenu.autoload = false;
@@ -155,6 +155,18 @@
           # Source: https://www.reddit.com/r/kde/comments/r5xir0/comment/hoehzhq
           Effect-overview.BorderActivate = hot-corner.disabled;
         };
-      };
+      }
+      // (lib.optionalAttrs is-babbage {
+        # TODO also automatically configure those calendars
+        # at the moment, I added these manually via
+        # nix run nixpkgs#kdePackages.akonadiconsole
+        # and add davgroupware resource
+        plasmashellrc.PIMEventsPlugin.calendars = lib.strings.concatStringsSep "," [
+          "15"
+          "16"
+          "17"
+          "18"
+        ];
+      });
   };
 }

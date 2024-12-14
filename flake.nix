@@ -80,23 +80,17 @@
         });
 
       nixosConfigurations' = secrets: {
-        #larc = nixpkgs.lib.nixosSystem {
-        #  specialArgs = {
-        #    inherit inputs outputs secrets;
-        #  };
-        #  modules = [
-        #    # > Our main nixos configuration file <
-        #    ./nixos/larc/configuration.nix
-        #  ];
-        #};
+        larc = nixpkgs.lib.nixosSystem {
+          specialArgs = {
+            inherit inputs outputs secrets;
+          };
+          modules = [ ./nixos/larc/configuration.nix ];
+        };
         babbage = nixpkgs.lib.nixosSystem {
           specialArgs = {
             inherit inputs outputs secrets;
           };
-          modules = [
-            # > Our main nixos configuration file <
-            ./nixos/babbage/configuration.nix
-          ];
+          modules = [ ./nixos/babbage/configuration.nix ];
         };
       };
       homeConfigurations' =
@@ -125,7 +119,7 @@
         in
         nixpkgs.lib.genAttrs [
           "erik@babbage"
-          # "erik@larc"
+          "erik@larc"
         ] config';
     in
     {

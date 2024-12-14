@@ -19,9 +19,9 @@
     ../plasma.nix
     ../printers.nix
     ../sound.nix
+    ../user.nix
 
     ./sshd.nix
-    ./user.nix
 
     # Import your generated (nixos-generate-config) hardware configuration
     ./disks.nix
