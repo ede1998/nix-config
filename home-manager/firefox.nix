@@ -209,7 +209,8 @@ in
 
   # Source: https://github.com/nix-community/home-manager/issues/1586
   # Also needs package override in programs.firefox.packages
-  home.file.".mozilla/${integration.json}".source = "${pkgs.plasma-browser-integration}/lib/mozilla/${integration.json}";
+  home.file.".mozilla/${integration.json}".source =
+    "${pkgs.plasma-browser-integration}/lib/mozilla/${integration.json}";
 
   xdg.mimeApps.defaultApplications = {
     "text/html" = [ "firefox.desktop" ];
