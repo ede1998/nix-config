@@ -1,12 +1,9 @@
 {
   pkgs,
   config,
-  secrets,
-  lib,
   ...
 }:
 let
-  github_token = lib.strings.removeSuffix "\n" (builtins.readFile "${secrets}/autoPullNixCfg.cred");
   git = "${pkgs.git}/bin/git";
   bash = "${pkgs.bash}/bin/bash";
 in
@@ -30,10 +27,9 @@ in
 
     Service = {
       Type = "oneshot";
-      ExecStartPre = "${git} remote add origin-http https://${github_token}@github.com/ede1998/nix-config.git";
+      ExecStartPre = "${git} remote add origin-http https://github.com/ede1998/nix-config.git";
       # Make pulling work whether branch is checked out or not
       ExecStart = "${bash} -c '${git} fetch origin-http master:master || ${git} pull origin-http master --rebase'";
-      # Remove again to not expose token for longer
       ExecStopPost = "${git} remote remove origin-http";
       # Can we detect this somehow?
       # i.e. where is the nixos configuration directory located?
