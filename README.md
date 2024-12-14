@@ -19,7 +19,7 @@ git config blame.ignoreRevsFile .git-blame-ignore-revs
   - Run `nixos-install --flake .#hostname --no-root-password`
 - When creating partitions with [disko](https://github.com/nix-community/disko)
   - Create partitions in nix configuration
-  - Run `nixos-generate-config --no-filesystems --no-filesystems --dir .`
+  - Run `nixos-generate-config --no-filesystems --dir .`
   - Integrate resulting files into repository
   - Run `sudo nix run 'github:nix-community/disko#disko-install' -- --flake .#hostname --disk disko-disk-name disk-path`
 - Reboot
