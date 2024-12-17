@@ -244,6 +244,9 @@ nix run nixpkgs#nixos-firewall-tool
 # Run Github CI job locally
 nix run nixpkgs-unstable#act -- --help
 
+# zri but for running inside the current nix-shell
+zellij run --name "<command>" --in-place -- nix-shell --run '<command>'
+
 # Compare images or videos side-by-side visually
 identity
 
