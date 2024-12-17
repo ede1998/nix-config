@@ -55,7 +55,7 @@ in
       credential.helper = "store --file ~/.config/git/credentials";
       url = {
         "ssh://git@github.com" = {
-          insteadOf = "https://github.com";
+          pushInsteadOf = "https://github.com";
         };
       };
       rerere.enabled = true;
