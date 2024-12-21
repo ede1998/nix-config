@@ -102,7 +102,7 @@ jobs:
             ${{ steps.check-diff.outputs.body }}
           branch: update-${{ matrix.pkg }}
           committer: Flake Bot <actions@github.com>
-          assignees: [ ede1998 ]
+          assignees: ede1998
           author: Flake Bot <actions@github.com>
           add-paths: |
             pkgs/${{ matrix.pkg }}
