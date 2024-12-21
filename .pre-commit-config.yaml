@@ -30,4 +30,5 @@ repos:
         entry: nix flake check
         language: system
         pass_filenames: false
+        exclude: '^(README\.md|\.git.*|\.envrc|garnix\.yaml|\.pre-commit-config\.yaml|utils/.*)$'
         stages: [pre-push] # because slow
