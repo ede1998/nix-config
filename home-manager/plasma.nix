@@ -25,8 +25,8 @@ in
     panels = [
       # Windows-like panel at the top
       {
-        location = "top";
-        screen = if is-babbage then 2 else 1;
+        location = if is-babbage then "top" else "bottom";
+        screen = if is-babbage then 2 else 0;
         widgets =
           [
             "org.kde.plasma.kickoff"
