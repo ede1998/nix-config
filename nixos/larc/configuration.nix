@@ -1,6 +1,14 @@
 # This is your system's configuration file.
 # Use this to configure your system environment (it replaces /etc/nixos/configuration.nix)
-{ inputs, ... }:
+{
+  inputs,
+  secrets,
+  lib,
+  ...
+}:
+let
+  home-wifi = lib.importJSON "${secrets}/home-wifi.json";
+in
 {
   # You can import other NixOS modules here
   imports = [
@@ -30,6 +38,26 @@
   networking.networkmanager = {
     enable = true;
     ensureProfiles.profiles = {
+      "@home" = {
+        connection = {
+          id = "@home";
+          type = "wifi";
+        };
+        wifi = {
+          mode = "infrastructure";
+          ssid = home-wifi.ssid;
+        };
+        wifi-security = {
+          auth-alg = "shared";
+          key-mgmt = "wpa-psk";
+          psk = home-wifi.psk;
+        };
+        ipv4.method = "auto";
+        ipv6 = {
+          addr-gen-mode = "default";
+          method = "auto";
+        };
+      };
       "38C3" = {
         connection = {
           id = "38C3";
