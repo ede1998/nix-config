@@ -10,6 +10,7 @@
   "Peekable"
   "Signedness"
   "Silvana"
+  "Württemberg"
   "askama"
   "bindgen"
   "bitflags"
