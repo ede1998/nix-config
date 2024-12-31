@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+set errexit
+set pipefail
+set nounset
+
+# Load nixpkgs into the current shell
+# Basically what nix shell <installable> does but without sub-shell
+nix-load() {
+	local s=""
+	local cmd="$1"
+	local installable="$2"
+	if command -v "$cmd" 2>&1 >/dev/null; then
+		return 0
+	fi
+	local p="$(nix build --no-link --print-out-paths $installable)"
+	export PATH="$p/bin:$PATH"
+}
+
+nix-load gpg nixpkgs#gnupg
+nix-load git nixpkgs#git
+nix-load expect nixpkgs#expect
+
+REPO_ROOT=$(git rev-parse --show-toplevel)
+
+gpg --import "${REPO_ROOT}/secrets/gpg/dev.pub.key"
+gpg --import "${REPO_ROOT}/secrets/gpg/dev.key"
+
+expect -c 'spawn gpg --edit-key EC7CF54CC9E03EE217AA83FAA20FCA290932675D trust quit; send "5\ry\r"; expect eof'
+
+echo 'Please see if the key was imported properly:'
+
+echo
+echo 'gpg --list-keys'
+gpg --list-keys
+
+echo
+echo 'gpg --list-secret-keys'
+gpg --list-secret-keys

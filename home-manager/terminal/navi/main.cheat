@@ -83,10 +83,10 @@ sudo systemctl restart NetworkManager
 realpath <file>
 
 ; list keys -> keep only keys and the associated name -> merge those in 1 line for each pair -> remove redundant chars
-$ key: gpg --list-keys | rg "(^      [A-Z0-9]{40}$|^uid)" | sed 'N;s/\n/ /;' | sed 's/      //;s/uid           //' --- --map "cut -b -40"
+$ key: ( if command -v gpg; then CMD=gpg; else CMD='nix shell nixpkgs#gnupg -c gpg'; fi; $CMD --list-keys ) | rg "(^      [A-Z0-9]{40}$|^uid)" | sed 'N;s/\n/ /;' | sed 's/      //;s/uid           //' --- --map "cut -b -40"
 
 # Export GPG key to clipboard for github, bitbucket etc.
-gpg --armor --export "<key>" | if [ "$XDG_SESSION_TYPE" = "wayland" ]; then wl-copy; else xclip -selection clipboard; fi
+( if command -v gpg; then CMD=gpg; else CMD='nix shell nixpkgs#gnupg -c gpg'; fi; $CMD --armor --export "<key>" ) | if [ "$XDG_SESSION_TYPE" = "wayland" ]; then wl-copy; else xclip -selection clipboard; fi
 
 $ venv: fd --full-path --unrestricted '.*/bin/activate$' `git rev-parse --show-toplevel`/.. --exec realpath --relative-to=.
 # activate venv
