@@ -86,6 +86,7 @@ in
         "browser.tabs.loadBookmarksInTabs" = lock-true;
         "browser.download.autohideButton" = lock-false;
         "browser.translations.automaticallyPopup" = lock-false;
+        "signon.firefoxRelay.feature" = lock-false;
 
         # Disable irritating first-run stuff
         "browser.disableResetPrompt" = lock-true;
