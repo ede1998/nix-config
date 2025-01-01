@@ -36,6 +36,7 @@ let
     p7zip
     pciutils
     pinentry
+    poppler_utils
     psmisc
     ripgrep
     tldr
