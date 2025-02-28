@@ -140,6 +140,10 @@ $ needle
 # recursively search pdf texts
 fd -e pdf --exec sh -c 'pdftotext "{}" - | rg --color always "<needle>" | while read line; do echo "{}: $line"; done' \;
 
+$ image: ls *.img
+
+# Mount file system image to loopback device for mounting
+sudo losetup --partscan --show --find <image>
 
 % Commands - git
 
