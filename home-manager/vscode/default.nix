@@ -3,9 +3,9 @@
   programs.vscode = {
     enable = true;
     package = (
-      pkgs.vscodium
+      # pkgs.vscodium
       # stable version is a bit older and some extensions are not compatible
-      #pkgs.unstable.vscodium
+      pkgs.unstable.vscodium
     );
     mutableExtensionsDir = false;
     # overlay is under `vscode-marketplace`
