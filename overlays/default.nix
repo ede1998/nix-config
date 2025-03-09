@@ -7,7 +7,7 @@ let
       patches = (oldAttrs.patches or [ ]) ++ patches;
     });
   # Rust packages need special handling: https://nixos.wiki/wiki/Overlays
-  addRustPatches' =
+  _addRustPatches' =
     prev: pkg: patches: cargoHash:
     pkg.overrideAttrs (oldAttrs: rec {
       # take the original source and apply all patches before making it the new source
@@ -38,14 +38,7 @@ in
   modifications =
     final: prev:
     let
-      addRustPatches = addRustPatches' prev;
-      fclones-with-completions = addRustPatches prev.fclones [
-        (builtins.fetchurl {
-          # Add completion subcommand
-          url = "https://patch-diff.githubusercontent.com/raw/pkolaczk/fclones/pull/280.patch";
-          sha256 = "sha256:0inir6g158hfc4a1s2hwsbr887szb6mzpm961xjpisy1vgbjg9hy";
-        })
-      ] "sha256-o+jsVnw9FvaKagiEVGwc+l0hE25X+KYY36hFhJwlcj0=";
+      _addRustPatches = _addRustPatches' prev;
     in
     {
       vorta = addPatches prev.vorta [
@@ -55,20 +48,6 @@ in
           sha256 = "sha256:1das1vk1g0j5mfb7diaf3gs8vkdvqkssj8j6y50kfh38n600fcsf";
         })
       ];
-
-      fclones = fclones-with-completions.overrideAttrs (oldAttrs: {
-        nativeBuildInputs = (oldAttrs.nativeBuildInputs or [ ]) ++ [ prev.installShellFiles ];
-        postInstall =
-          (oldAttrs.postInstall or "")
-          + ''
-            # setting PATH required so completion script doesn't use full path
-            export PATH="$PATH:$out/bin"
-            installShellCompletion --cmd $pname \
-              --bash <(fclones complete bash) \
-              --fish <(fclones complete fish) \
-              --zsh <(fclones complete zsh)
-          '';
-      });
 
       xsv = prev.xsv.overrideAttrs (
         oldAttrs:
@@ -109,10 +88,30 @@ in
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will
   # be accessible through 'pkgs.unstable'
-  unstable-packages = final: _prev: {
-    unstable = import inputs.nixpkgs-unstable {
-      system = final.system;
-      config.allowUnfree = true;
+  unstable-packages =
+    final: prev:
+    let
+      pkgs = import inputs.nixpkgs-unstable {
+        system = final.system;
+        config.allowUnfree = true;
+      };
+    in
+    {
+      unstable = pkgs // {
+        fclones = pkgs.fclones.overrideAttrs (oldAttrs: {
+          nativeBuildInputs = (oldAttrs.nativeBuildInputs or [ ]) ++ [ prev.installShellFiles ];
+          postInstall =
+            (oldAttrs.postInstall or "")
+            + ''
+              # setting PATH required so completion script doesn't use full path
+              export PATH="$PATH:$out/bin"
+              installShellCompletion --cmd $pname \
+                --bash <(fclones complete bash) \
+                --fish <(fclones complete fish) \
+                --zsh <(fclones complete zsh)
+            '';
+        });
+
+      };
     };
-  };
 }

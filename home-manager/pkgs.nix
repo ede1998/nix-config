@@ -25,7 +25,7 @@ let
     dust
     ede1998-utilities
     exif
-    fclones
+    unstable.fclones
     fd
     file
     htop
