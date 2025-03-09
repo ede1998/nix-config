@@ -41,14 +41,6 @@ in
       _addRustPatches = _addRustPatches' prev;
     in
     {
-      vorta = addPatches prev.vorta [
-        (builtins.fetchurl {
-          # Replace generic wayland icon with proper Vorta icon
-          url = "https://patch-diff.githubusercontent.com/raw/borgbase/vorta/pull/2068.patch";
-          sha256 = "sha256:1das1vk1g0j5mfb7diaf3gs8vkdvqkssj8j6y50kfh38n600fcsf";
-        })
-      ];
-
       xsv = prev.xsv.overrideAttrs (
         oldAttrs:
         let

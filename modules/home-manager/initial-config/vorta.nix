@@ -27,7 +27,7 @@ in
   };
 
   config.home = mkIf cfg.enable {
-    packages = [ pkgs.vorta ];
+    packages = [ pkgs.unstable.vorta ];
     activation.import-vorta-profiles =
       let
         marker-file = "${config.xdg.dataHome}/Vorta/.home-manager-profiles-imported";
