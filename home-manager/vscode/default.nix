@@ -30,6 +30,7 @@
       ++ (with pkgs.vscode-extensions; [
         # This extension from vscode-marketplace does not work.
         ms-vsliveshare.vsliveshare
+        vadimcn.vscode-lldb
       ]);
     keybindings = [
       {
