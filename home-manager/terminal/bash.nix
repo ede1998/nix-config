@@ -57,6 +57,9 @@ in
 
       source "${pkgs.complete-alias}/bin/complete_alias"
       complete -F _complete_alias "''${!BASH_ALIASES[@]}"
+
+      # TODO contribute to fzf
+      complete -F _fzf_proc_completion -o default -o bashdefault waitpid
     '';
   };
   programs.readline = {
