@@ -98,7 +98,7 @@ in
         numlock.active-on-startup = 0;
       in
       {
-        baloofilerc."Basic Settings".Indexing-Enabled = false;
+        baloofilerc."Basic Settings".Indexing-Enabled = true;
         katerc.General."Close After Last" = true;
         gwenviewrc = {
           # Need to have LastUsedVersion set or menubar config will be removed
