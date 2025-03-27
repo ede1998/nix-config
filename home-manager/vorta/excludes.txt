@@ -5,6 +5,8 @@ pp:/home/erik/.cache
 pp:/home/erik/nvme/lost+found
 pf:/home/erik/daten/vm/win10-wireshark.qcow2
 pp:/home/erik/nvme/steam-games
+pp:/home/erik/tmp/whishper/whishper_data
+pf:/home/erik/.local/share/baloo/index
 
 # rust-artefacts
 fm:*/.cargo
