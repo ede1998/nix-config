@@ -190,3 +190,29 @@ fi
 #	cp -i "vw-bank.csv" "$fp/KtoNr_1524931191_Export_Umsaetze_$last_month.csv"
 #	echo "VW bank file $file_vw_bank processed."
 #fi
+
+process_stock_pdf() {
+	local file="$1";
+	local content;
+	local isin;
+	local price;
+	local shares;
+	local date;
+	local order_number;
+	content="$(pdftotext "${file}" - || exit)";
+	isin=$(sed -n 's/^\([A-Z0-9]\{12\}\) (.*/\1/p' <<< "$content" || exit);
+	price=$(sed -n '/St.ck/{n;n;n;p}' <<< "$content" || exit);
+	shares=$(sed -n '/St.ck/{n;p}' <<< "$content" || exit);
+	date=$(sed -n '/Valuta/{n;n;n;p}' <<< "$content" || exit);
+	order_number=$(grep '[0-9]\{9\}\.001' --only-matching <<< "$content" || exit);
+	echo "${isin};${shares};${price};${date};ETF-Sparplan Kauf ${order_number}";
+}
+
+echo 'ISIN;Shares;Price;Date;Description' > stocks.csv
+
+for stock_pdf in "$dir_download/Direkt_Depot_8013499245_Abrechnung_Kauf_"*.pdf; do
+	process_stock_pdf "$stock_pdf" >> stocks.csv
+	mkdir -p "$dir_finances/ing/depot/aktienkaeufe/${year_of_last_month}"
+	mv -i "$stock_pdf" "$dir_finances/ing/depot/aktienkaeufe/${year_of_last_month}"
+	echo "Processed $stock_pdf"
+done
