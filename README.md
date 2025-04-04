@@ -133,6 +133,12 @@ sure to also add them to the listing at `modules/nixos/default.nix` or
 See [the wiki article](https://nixos.wiki/wiki/Module) to learn more about
 them.
 
+Use this command to test an out-of-tree module:
+
+```bash
+home-manager build --override-input nextcloud-tag-sync ~/dev/rust/nextcloud-tag-sync/
+```
+
 ## Troubleshooting / FAQ
 
 Please [let me know](https://github.com/Misterio77/nix-starter-config/issues)
