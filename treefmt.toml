@@ -1,0 +1,11 @@
+ excludes = [".direnv", ".git"]
+
+# Exit with error if any changes were made during execution
+fail-on-change = true
+
+# Log paths that did not match any formatters at the specified log level
+on-unmatched = "debug"
+
+[formatter.nix]
+command = "nixfmt"
+includes = ["*.nix"]
