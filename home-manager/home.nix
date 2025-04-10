@@ -34,6 +34,12 @@
   xdg.configFile."nixpkgs/config.nix".text = "{ allowUnfree = true; }";
 
   programs.home-manager.enable = true;
+  services.home-manager.autoExpire = {
+    enable = true;
+    frequency = "weekly";
+    timestamp = "-90 days";
+  };
+
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
 
