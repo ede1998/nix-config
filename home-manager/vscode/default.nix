@@ -14,6 +14,7 @@
       (with pkgs.vscode-marketplace; [
         alefragnani.bookmarks
         arrterian.nix-env-selector
+        barbosshack.crates-io
         eamodio.gitlens
         fardolieri.close-tabs-via-regex
         james-yu.latex-workshop
@@ -21,7 +22,6 @@
         ms-python.python
         myriad-dreamin.tinymist
         rust-lang.rust-analyzer
-        serayuzgur.crates
         streetsidesoftware.code-spell-checker
         tamasfe.even-better-toml
         usernamehw.errorlens
