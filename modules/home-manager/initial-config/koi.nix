@@ -139,34 +139,44 @@ in
         "/path/to/wallpaper-light.jpeg";
   };
 
-  config = mkIf cfg.enable {
-    home.packages = [ pkgs.koi ];
-    home.file."${config.xdg.configHome}/autostart/koi.desktop" = {
-      enable = cfg.auto-start;
-      source = "${pkgs.koi}/share/applications/koi.desktop";
-    };
-    initial-files.file."${config.xdg.configHome}/koirc" = {
-      force = cfg.force;
-      text = generators.toINI { } {
-        General = with cfg.General; {
-          current = initial-theme;
-          notify = to-bool notify-on-swap;
-          start-hidden = to-bool start-hidden;
-          schedule = to-bool schedule.enable;
-          schedule-type = schedule.trigger;
-          time-dark = schedule.time.dark;
-          time-light = schedule.time.light;
-          latitude = schedule.location.latitude;
-          longitude = schedule.location.longitude;
-        };
+  config =
+    let
+      desktop-file = "${pkgs.koi}/share/applications/local.KoiDbusInterface.desktop";
+    in
+    mkIf cfg.enable {
+      home.packages = [ pkgs.koi ];
+      home.file."${config.xdg.configHome}/autostart/koi.desktop" = {
+        enable = cfg.auto-start;
+        source = desktop-file;
+      };
+      assertions = [
+        {
+          assertion = cfg.auto-start && builtins.pathExists desktop-file;
+          message = "Failed to find desktop file to link for autostart: ${desktop-file}";
+        }
+      ];
+      initial-files.file."${config.xdg.configHome}/koirc" = {
+        force = cfg.force;
+        text = generators.toINI { } {
+          General = with cfg.General; {
+            current = initial-theme;
+            notify = to-bool notify-on-swap;
+            start-hidden = to-bool start-hidden;
+            schedule = to-bool schedule.enable;
+            schedule-type = schedule.trigger;
+            time-dark = schedule.time.dark;
+            time-light = schedule.time.light;
+            latitude = schedule.location.latitude;
+            longitude = schedule.location.longitude;
+          };
 
-        ColorScheme = to-type cfg.ColorScheme;
-        GTKTheme = to-type cfg.GTKTheme;
-        IconTheme = to-type cfg.IconTheme;
-        KvantumStyle = to-type cfg.KvantumStyle;
-        PlasmaStyle = to-type cfg.PlasmaStyle;
-        Wallpaper = to-type cfg.Wallpaper;
+          ColorScheme = to-type cfg.ColorScheme;
+          GTKTheme = to-type cfg.GTKTheme;
+          IconTheme = to-type cfg.IconTheme;
+          KvantumStyle = to-type cfg.KvantumStyle;
+          PlasmaStyle = to-type cfg.PlasmaStyle;
+          Wallpaper = to-type cfg.Wallpaper;
+        };
       };
     };
-  };
 }
