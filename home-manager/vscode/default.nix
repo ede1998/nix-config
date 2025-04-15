@@ -21,6 +21,7 @@
         jnoortheen.nix-ide
         ms-python.python
         myriad-dreamin.tinymist
+        rjmacarthy.twinny
         rust-lang.rust-analyzer
         streetsidesoftware.code-spell-checker
         tamasfe.even-better-toml
@@ -78,6 +79,9 @@
       "liveshare.connectionMode" = "relay";
 
       "bookmarks.saveBookmarksInProject" = true;
+
+      "twinny.fileContextEnabled" = true;
+      "twinny.completionCacheEnabled" = true;
 
       # Invoke the correct shell for VSCode integrated terminal:
       # https://www.reddit.com/r/NixOS/comments/ycde3d/vscode_terminal_not_working_properly

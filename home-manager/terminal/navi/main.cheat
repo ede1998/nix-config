@@ -23,6 +23,20 @@ $ file: fd . ~/{.config,.local/share} --exclude "Steam" --exclude "Trash" --type
 # Format all non-ignored nix files in the repo
 git ls-files --cached --others --exclude-standard | rg '\.nix$' | xargs nix fmt
 
+# List available Visual Studio Code/VSCodium extensions in nix flake with extra extensions and make them searchable with fzf.
+nix eval --apply '
+extensions:
+let
+  namespaces = builtins.attrNames extensions;
+in
+builtins.concatLists
+  (builtins.map
+  (ns: builtins.map
+       (ext: "${ns}.${ext}")
+       (builtins.attrNames extensions.${ns})
+  )
+  namespaces)' .#homeConfigurations.erik@babbage.pkgs.vscode-marketplace --json | jq --raw-output '.[]' | fzf --sync | wl-copy
+
 % Ubuntu / Gnome
 
 $ extension_zip: ls *.shell-extension.zip

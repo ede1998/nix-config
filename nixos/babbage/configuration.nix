@@ -54,6 +54,14 @@
     SUBSYSTEM=="usb", DRIVER=="snd-usb-audio", ATTRS{idVendor}=="1871", ATTRS{idProduct}=="0341", ATTR{authorized}="0"
   '';
 
+  services.ollama = {
+    enable = true;
+    acceleration = "rocm";
+    # Required to make ollama actually use the GPU:
+    # https://wiki.nixos.org/wiki/Ollama
+    rocmOverrideGfx = "10.3.0";
+  };
+
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "24.05";
 }
