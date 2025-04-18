@@ -76,6 +76,7 @@ in
       texliveFull
       typst
       ungoogled-chromium
+      unstable.fluffychat
       (unstable.identity.overrideAttrs (super: self: { meta.priority = 1; })) # fix collision with mesa-demos
       vlc
       wl-clipboard-rs

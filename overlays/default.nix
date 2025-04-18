@@ -85,7 +85,14 @@ in
     let
       pkgs = import inputs.nixpkgs-unstable {
         system = final.system;
-        config.allowUnfree = true;
+        config = {
+          allowUnfree = true;
+          permittedInsecurePackages = [
+            # Fluffychat uses olm which is deprecated. Issue: https://github.com/krille-chan/fluffychat/issues/1258
+            "fluffychat-linux-1.25.1"
+            "olm-3.2.16"
+          ];
+        };
       };
     in
     {
