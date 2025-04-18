@@ -80,6 +80,9 @@
 
       "bookmarks.saveBookmarksInProject" = true;
 
+      # Disable Github Copilot controls
+      "chat.commandCenter.enabled" = false;
+
       "twinny.fileContextEnabled" = true;
       "twinny.completionCacheEnabled" = true;
 
