@@ -1,8 +1,14 @@
-{ lib, config, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 {
   programs.zellij = {
     enable = true;
     enableBashIntegration = true;
+    package = pkgs.unstable.zellij;
   };
   # Adds zr,zrf,zri aliases because bash-completion only sources on demand when zellij<TAB> is typed
   programs.bash.initExtra = "source ${config.programs.zellij.package}/share/bash-completion/completions/zellij.bash";
@@ -13,6 +19,7 @@
       scrollback_lines_to_serialize 10000;
       scroll_buffer_size -1;
       pane_frames false;
+      show_startup_tips false;
       keybinds {
         unbind "Ctrl g" "Ctrl b" "Ctrl t" "Ctrl h" "Ctrl q"
         normal {

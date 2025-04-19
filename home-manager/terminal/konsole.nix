@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   programs.konsole = {
     enable = true;
@@ -8,7 +8,7 @@
     };
     defaultProfile = "standard";
     profiles.standard = {
-      command = "${pkgs.zellij}/bin/zellij";
+      command = "${config.programs.zellij.package}/bin/zellij";
       extraConfig."Interaction Options".MiddleClickPasteMode = true;
     };
   };

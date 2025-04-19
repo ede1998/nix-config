@@ -60,7 +60,7 @@
     # Required to make ollama actually use the GPU:
     # https://wiki.nixos.org/wiki/Ollama
     rocmOverrideGfx = "10.3.0";
-    environmentVariables.HCC_AMDGPU_TARGET = "gfx1030"; # try fix that ollama service must be restarted to use GPU after reboot
+    # For some reason, I always needs to restart the ollama service after boot to make it pick up the GPU
   };
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
