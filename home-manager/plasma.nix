@@ -27,38 +27,35 @@ in
       {
         location = if is-babbage then "top" else "bottom";
         screen = if is-babbage then 2 else 0;
-        widgets =
-          [
-            "org.kde.plasma.kickoff"
-            "org.kde.plasma.pager"
-            {
-              iconTasks.launchers = [
-                "applications:org.kde.dolphin.desktop"
-                "applications:firefox.desktop"
-              ] ++ (lib.optional is-babbage "applications:thunderbird.desktop");
-            }
-            "org.kde.plasma.marginsseparator"
-          ]
-          ++ (lib.optional is-babbage { systemTray.items.hidden = [ "org.kde.plasma.battery" ]; })
-          ++ [
-            {
-              digitalClock = {
-                calendar = {
-                  firstDayOfWeek = "monday";
-                  plugins = [
-                    "holidaysevents"
-                    "pimevents"
-                  ];
-                  showWeekNumbers = true;
-                };
-                date.format = "isoDate";
-                time = {
-                  format = "24h";
-                  showSeconds = "always";
-                };
+        widgets = [
+          "org.kde.plasma.kickoff"
+          "org.kde.plasma.pager"
+          {
+            iconTasks.launchers = [
+              "applications:org.kde.dolphin.desktop"
+              "applications:firefox.desktop"
+            ] ++ (lib.optional is-babbage "applications:thunderbird.desktop");
+          }
+          "org.kde.plasma.marginsseparator"
+          { systemTray.items.hidden = (lib.optional is-babbage "org.kde.plasma.battery"); }
+          {
+            digitalClock = {
+              calendar = {
+                firstDayOfWeek = "monday";
+                plugins = [
+                  "holidaysevents"
+                  "pimevents"
+                ];
+                showWeekNumbers = true;
               };
-            }
-          ];
+              date.format = "isoDate";
+              time = {
+                format = "24h";
+                showSeconds = "always";
+              };
+            };
+          }
+        ];
       }
     ];
 

@@ -84,6 +84,15 @@ When multiple instances of a key will be merged into a final configuration but
 order for the generated configuration file is important, `mkOrder` can be used:
 https://nixos.wiki/wiki/NixOS:Properties
 
+### Plasma configuration
+
+This configuration uses home-manager to configure the KDE desktop environment
+with [plasma-manager](https://github.com/nix-community/plasma-manager).
+Available options can be found under <https://nix-community.github.io/plasma-manager/options.xhtml>.
+
+- See current configuration: `bat $(rg '/.*plasma-config' result/activate --only-matching)`
+- Convert existing KDE configuration to nix; `nix run github:nix-community/plasma-manager`
+
 ### Adding custom packages
 
 Something you want to use that's not in nixpkgs yet? You can easily build and
