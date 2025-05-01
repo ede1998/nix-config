@@ -39,8 +39,9 @@ jobs:
             in
               lib.attrsets.hasAttrByPath [ "passthru" "custom" "newVersionCheck"] pkg
           ')";
+          CURRENT_SYSTEM="$(nix eval --impure --expr 'builtins.currentSystem')"
+          echo "CURRENT_SYSTEM=$CURRENT_SYSTEM" >> "$GITHUB_ENV"
           if [ "$HAS_VERSION_CHECKER" = 'true' ]; then
-            CURRENT_SYSTEM="$(nix eval --impure --expr 'builtins.currentSystem')"
             SCRIPT="$(nix build .#packages.${CURRENT_SYSTEM}.${{ matrix.pkg }}.passthru.custom.newVersionCheck --print-out-paths)"
             echo "NEW_VERSION=$($SCRIPT)" >> "$GITHUB_ENV"
           else
@@ -59,16 +60,21 @@ jobs:
             OLD_VERSION="$( sed -n 's/.*: \(.*\) -> .*/\1/;1p' < commit.txt )"
             sed '1s/\([^:]*\): \(.*\)/chore(\1): \2/;'"s-/None\.\.\.-/${OLD_VERSION}...-" < commit.txt
             echo EOF
+            echo "DIFF_COMPARE=$( sed -n '/^Diff: / s/Diff: \(.*\)/\1/p' < commit.txt )"
+            echo "NEW_VERSION=$( sed -n 's/.*: .* -> \(.*\)/\1/;1p' < commit.txt )"
+            echo "UPSTREAM_URL=$(nix eval .#packages.${CURRENT_SYSTEM}.${{ matrix.pkg }}.meta.homepage --raw)"
           } >> "$GITHUB_OUTPUT";
-          echo "NEW_VERSION=$NEW_VERSION" >> "$GITHUB_OUTPUT";
       - name: Check diff
         id: check-diff
         run: |
           diff=$(git diff -- pkgs/${{ matrix.pkg }})
           if [[ -z "$diff" ]]; then
             echo "No package updated."
+            echo "PACKAGE_UPDATED=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
+
+          echo "PACKAGE_UPDATED=true" >> "$GITHUB_OUTPUT"
 
           cat << EOF >> "${GITHUB_STEP_SUMMARY}"
           \`\`\`diff
@@ -85,6 +91,7 @@ jobs:
           } >> "$GITHUB_OUTPUT"
       - name: Create pull request
         id: create_pull_request
+        if: ${{ steps.check-diff.outputs.PACKAGE_UPDATED == 'true' }}
         uses: peter-evans/create-pull-request@v7
         with:
           commit-message: ${{ steps.apply-version-update.outputs.COMMIT_MSG }}
@@ -96,6 +103,9 @@ jobs:
             ```bash
             nix run github:ede1998/nix-config/update-${{ matrix.pkg }}#${{ matrix.pkg }}
             ```
+
+            Upstream URL: <${{ steps.apply-version-update.outputs.UPSTREAM_URL }}>
+            Version Diff URL: <${{ steps.apply-version-update.outputs.DIFF_COMPARE }}>
 
             Diff:
 
