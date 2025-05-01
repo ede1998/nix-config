@@ -39,6 +39,11 @@
     frequency = "weekly";
     timestamp = "-90 days";
   };
+  nix = {
+    package = pkgs.nix;
+    # Not sure if substituters is required again here if it is already part of the NixOS configuration.
+    settings.substituters = [ "https://cache.garnix.io" ];
+  };
 
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
