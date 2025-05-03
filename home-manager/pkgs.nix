@@ -78,6 +78,7 @@ in
       ungoogled-chromium
       unstable.fluffychat
       (unstable.identity.overrideAttrs (super: self: { meta.priority = 1; })) # fix collision with mesa-demos
+      unstable.openscad-unstable
       vlc
       wl-clipboard-rs
     ]);
