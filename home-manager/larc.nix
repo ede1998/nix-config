@@ -19,6 +19,7 @@
     ./firefox.nix
     ./home.nix
     ./koi.nix
+    ./openscad.nix
     ./pkgs.nix
     ./plasma.nix
     ./terminal

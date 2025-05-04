@@ -25,6 +25,7 @@
     ./home.nix
     ./koi.nix
     ./nextcloud.nix
+    ./openscad.nix
     ./pkgs.nix
     ./plasma.nix
     ./terminal
