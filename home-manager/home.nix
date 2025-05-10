@@ -59,7 +59,10 @@
   home = rec {
     username = "erik";
     homeDirectory = "/home/erik";
-    sessionVariables.NIXOS_OZONE_WL = "1";
+    sessionVariables = {
+      NIXOS_OZONE_WL = "1";
+      NIXPKGS_ALLOW_UNFREE = "1";
+    };
     shellAliases = with pkgs; {
       # for simple aliases that are cross-shell compatible
       code = "codium";
