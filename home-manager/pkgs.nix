@@ -34,6 +34,7 @@ let
     jqp
     nix-tree
     p7zip
+    patreon-dl
     pciutils
     pinentry
     poppler_utils
