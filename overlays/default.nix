@@ -89,7 +89,8 @@ in
           allowUnfree = true;
           permittedInsecurePackages = [
             # Fluffychat uses olm which is deprecated. Issue: https://github.com/krille-chan/fluffychat/issues/1258
-            "fluffychat-linux-1.26.0"
+            "fluffychat-linux-1.26.1"
+            "fluffychat-linux-1.26.0" # TODO remove later
             "olm-3.2.16"
           ];
         };
