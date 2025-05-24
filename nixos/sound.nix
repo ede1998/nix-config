@@ -1,7 +1,7 @@
 { ... }:
 {
   # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   hardware.bluetooth = {
     enable = true;
     powerOnBoot = true;

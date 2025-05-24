@@ -166,10 +166,10 @@ in
         order = [
           "SearXNG"
           "dict.cc"
-          "DuckDuckGo"
+          "ddg" # DuckDuckGo
           "Nix Packages"
           "Home Manager Options"
-          "Google"
+          "google"
         ];
         engines = {
           "SearXNG" = {
@@ -179,11 +179,11 @@ in
                 # or via params = [{ name = "q"; value = "{searchTerms}"; }];
               }
             ];
-            iconUpdateURL = "https://searx.space/favicon.ico";
+            icon = "https://searx.space/favicon.ico";
           };
           "dict.cc" = {
             urls = [ { template = "https://dict.cc?s={searchTerms}"; } ];
-            iconUpdateURL = "https://www.dict.cc/favicon.ico";
+            icon = "https://www.dict.cc/favicon.ico";
             definedAliases = [ "@dict" ];
           };
           "Nix Packages" = {
@@ -196,8 +196,8 @@ in
             icon = "''${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
             definedAliases = [ "@hm" ];
           };
-          "Bing".metaData.hidden = true;
-          "Wikipedia (en)".metaData.hidden = true;
+          "bing".metaData.hidden = true;
+          "wikipedia".metaData.hidden = true;
         };
       };
 
@@ -211,7 +211,7 @@ in
   # Source: https://github.com/nix-community/home-manager/issues/1586
   # Also needs package override in programs.firefox.packages
   home.file.".mozilla/${integration.json}".source =
-    "${pkgs.plasma-browser-integration}/lib/mozilla/${integration.json}";
+    "${pkgs.kdePackages.plasma-browser-integration}/lib/mozilla/${integration.json}";
 
   xdg.mimeApps.defaultApplications = {
     "text/html" = [ "firefox.desktop" ];

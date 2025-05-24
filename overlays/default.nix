@@ -41,33 +41,16 @@ in
       _addRustPatches = _addRustPatches' prev;
     in
     {
-      xsv = prev.xsv.overrideAttrs (
-        oldAttrs:
-        let
-          completion-script = builtins.fetchurl {
-            url = "https://gist.githubusercontent.com/unhammer/2c60a9089ec9cc1c6e7d7660bd7d5734/raw/4b2500b5c33e01b1f2b61e3e2c3ec174c24ad212/xsv.bash";
-            sha256 = "sha256:0zvapcf78yl18qxhv013h45kqs4a50xn0m7n8m1k33bqc9rr7fj2";
-          };
-        in
-        {
-          nativeBuildInputs = (oldAttrs.nativeBuildInputs or [ ]) ++ [ prev.installShellFiles ];
-          postInstall =
-            (oldAttrs.postInstall or "")
-            + ''
-              installShellCompletion --bash ${completion-script}
-            '';
-        }
-      );
-
-      kdePackages = prev.kdePackages.overrideScope (
-        final: prev: {
-          konsole = addPatches prev.konsole [
-            # Add OSC-52 (copy) support
-            # Backport of https://invent.kde.org/utilities/konsole/-/merge_requests/767"
-            ./konsole-osc52-support.patch
-          ];
-        }
-      );
+      xan = prev.xan.overrideAttrs (oldAttrs: {
+        nativeBuildInputs = (oldAttrs.nativeBuildInputs or [ ]) ++ [ prev.installShellFiles ];
+        postInstall =
+          (oldAttrs.postInstall or "")
+          + (prev.lib.optionalString (prev.stdenv.buildPlatform.canExecute prev.stdenv.hostPlatform) ''
+            installShellCompletion --cmd $pname \
+              --bash <($out/bin/xan completions bash) \
+              --zsh <($out/bin/xan completions zsh)
+          '');
+      });
 
       nix-update = addPatches prev.nix-update [
         (builtins.fetchurl {

@@ -1,13 +1,14 @@
 { pkgs, ... }:
 let
   dev-tools = with pkgs; [
-    cargo-asm
+    #ventoy-full # disabled because I'm not using it at the moment and there is some discussion: https://github.com/NixOS/nixpkgs/issues/404663
     cargo-binutils
     cargo-bloat
     cargo-edit
     cargo-espmonitor
     cargo-expand
     cargo-outdated
+    cargo-show-asm
     cargo-udeps
     cargo-update
     gcc
@@ -16,7 +17,6 @@ let
     rust-script
     rustup
     unstable.espup
-    ventoy-full
     wireshark
   ];
   cli-tools = with pkgs; [
@@ -47,8 +47,8 @@ let
     unstable.rip2
     unzip
     viu
+    xan
     xmlstarlet
-    xsv
     yq
     zip
   ];

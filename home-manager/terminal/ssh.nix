@@ -24,7 +24,7 @@
     enableBashIntegration = true;
     defaultCacheTtl = 3600;
     maxCacheTtl = 999999;
-    pinentryPackage = pkgs.pinentry;
+    pinentry.package = pkgs.pinentry;
   };
 
   home.file.".ssh" = {

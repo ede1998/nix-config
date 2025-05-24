@@ -12,7 +12,7 @@ let
   };
 in
 {
-  home.packages = [ pkgs.unstable.openscad-unstable ];
+  home.packages = [ pkgs.openscad ];
   xdg.dataFile."${library-dir}/BOSL" = {
     source = bosl;
   };
