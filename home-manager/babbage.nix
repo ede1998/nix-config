@@ -15,7 +15,7 @@
     # Or modules exported from other flakes (such as nix-colors):
     # inputs.nix-colors.homeManagerModules.default
     inputs.plasma-manager.homeManagerModules.plasma-manager
-    inputs.nextcloud-tag-sync.homeManagerModules.nextcloud-tag-sync
+    inputs.nextcloud-tag-sync.homeModules.nextcloud-tag-sync
 
     # You can also split up your configuration and import pieces of it here:
     ./auto-pull.nix
