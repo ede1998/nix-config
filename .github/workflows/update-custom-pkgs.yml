@@ -16,6 +16,7 @@ jobs:
           pkg:
           - "cura5"
           - "koi"
+          - "patreon-dl"
     permissions:
       id-token: write
       contents: write
