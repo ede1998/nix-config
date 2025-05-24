@@ -1,7 +1,7 @@
 # This file defines overlays
 { inputs }:
 let
-  addPatches =
+  _addPatches =
     pkg: patches:
     pkg.overrideAttrs (oldAttrs: {
       patches = (oldAttrs.patches or [ ]) ++ patches;
@@ -51,14 +51,6 @@ in
               --zsh <($out/bin/xan completions zsh)
           '');
       });
-
-      nix-update = addPatches prev.nix-update [
-        (builtins.fetchurl {
-          # Make --override-filename work for flakes and prevent error in git diff
-          url = "https://patch-diff.githubusercontent.com/raw/Mic92/nix-update/pull/301.patch";
-          sha256 = "sha256:10lc6ag5x3wwzab765r1x2fxwd1syl4zj8p3dq1dcn650spk7yx0";
-        })
-      ];
     };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will
@@ -73,28 +65,12 @@ in
           permittedInsecurePackages = [
             # Fluffychat uses olm which is deprecated. Issue: https://github.com/krille-chan/fluffychat/issues/1258
             "fluffychat-linux-1.26.1"
-            "fluffychat-linux-1.26.0" # TODO remove later
             "olm-3.2.16"
           ];
         };
       };
     in
     {
-      unstable = pkgs // {
-        fclones = pkgs.fclones.overrideAttrs (oldAttrs: {
-          nativeBuildInputs = (oldAttrs.nativeBuildInputs or [ ]) ++ [ prev.installShellFiles ];
-          postInstall =
-            (oldAttrs.postInstall or "")
-            + ''
-              # setting PATH required so completion script doesn't use full path
-              export PATH="$PATH:$out/bin"
-              installShellCompletion --cmd $pname \
-                --bash <(fclones complete bash) \
-                --fish <(fclones complete fish) \
-                --zsh <(fclones complete zsh)
-            '';
-        });
-
-      };
+      unstable = pkgs;
     };
 }
