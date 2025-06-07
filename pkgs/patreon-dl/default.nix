@@ -22,13 +22,13 @@
 }:
 buildNpmPackage (finalAttrs: {
   pname = "patreon-dl";
-  version = "2.4.2";
+  version = "2.4.3";
 
   src = fetchFromGitHub {
     owner = "patrickkfkan";
     repo = "patreon-dl";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-3CLO/bWoRyTQpxfLM2JmeyzVozdj/SwYVZyPIz9conY=";
+    hash = "sha256-zLBc1XbtXhe8KGE5osnTe1yWKJkZHc/sPtggNQjtXQI=";
   };
 
   nativeBuildInputs = [
@@ -39,7 +39,7 @@ buildNpmPackage (finalAttrs: {
     ffmpeg
   ];
 
-  npmDepsHash = "sha256-UxrsmFs7TQKPIoiHibF46UXnsR4wKGfdJ6/bRdjt50E=";
+  npmDepsHash = "sha256-vURM7qaGgpyc748WiKVNznXN4vzX8R1MVzV5V4X2hO0=";
 
   # The prepack script runs the build script, which we'd rather do in the build phase.
   npmPackFlags = [ "--ignore-scripts" ];
