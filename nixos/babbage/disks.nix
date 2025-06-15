@@ -3,12 +3,7 @@
   imports = [ ../nas.nix ];
 
   fileSystems = {
-    # Cannot use "${config.users.users.erik.home}/nvme" due to infinite recursion
-    "/home/erik/nvme" = {
-      # My first NVMe drive, partition 2, the first has windows installed
-      device = "/dev/disk/by-uuid/7467cf57-c823-4e93-b078-521fe8879865";
-      fsType = "ext4";
-    };
+    # Cannot use "${config.users.users.erik.home}/daten" due to infinite recursion
     "/home/erik/daten" = {
       # HDD, partition 1, just some extra storage
       device = "/dev/disk/by-uuid/b9867d2a-2c7c-4cb3-8e6a-1b0f3d9fc2da";
