@@ -62,11 +62,13 @@ in
         system = final.system;
         config = {
           allowUnfree = true;
-          permittedInsecurePackages = [
-            # Fluffychat uses olm which is deprecated. Issue: https://github.com/krille-chan/fluffychat/issues/1258
-            "fluffychat-linux-1.26.1"
-            "olm-3.2.16"
-          ];
+          allowInsecurePredicate =
+            pkg:
+            builtins.elem (prev.lib.getName pkg) [
+              # Fluffychat uses olm which is deprecated. Issue: https://github.com/krille-chan/fluffychat/issues/1258
+              "fluffychat-linux"
+              "olm"
+            ];
         };
       };
     in
