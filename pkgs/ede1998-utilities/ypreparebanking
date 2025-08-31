@@ -211,6 +211,7 @@ process_stock_pdf() {
 echo 'ISIN;Shares;Price;Date;Description' > stocks.csv
 
 for stock_pdf in "$dir_download/Direkt_Depot_8013499245_Abrechnung_Kauf_"*.pdf; do
+	[ -f "$stock_pdf" ] || continue # skip if glob did not match
 	process_stock_pdf "$stock_pdf" >> stocks.csv
 	mkdir -p "$dir_finances/ing/depot/aktienkaeufe/${year_of_last_month}"
 	mv -i "$stock_pdf" "$dir_finances/ing/depot/aktienkaeufe/${year_of_last_month}"
