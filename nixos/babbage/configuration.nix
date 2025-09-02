@@ -45,6 +45,8 @@
   };
   programs.kdeconnect.enable = true;
 
+  programs.adb.enable = true;
+
   virtualisation.docker.enable = true;
 
   services.udev.extraRules = ''

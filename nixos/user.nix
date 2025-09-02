@@ -7,9 +7,10 @@
     isNormalUser = true;
     uid = 1000;
     extraGroups = [
+      "adbusers"
+      "dialout"
       "docker"
       "networkmanager"
-      "dialout"
       "wheel"
       "wireshark"
     ];
