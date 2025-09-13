@@ -11,6 +11,7 @@
       "dialout"
       "docker"
       "networkmanager"
+      "samba"
       "wheel"
       "wireshark"
     ];

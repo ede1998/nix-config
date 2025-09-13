@@ -18,6 +18,7 @@
     ../nix.nix
     ../plasma.nix
     ../printers.nix
+    ../samba.nix
     ../sound.nix
     ../user.nix
 
