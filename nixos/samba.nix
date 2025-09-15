@@ -4,8 +4,8 @@
   environment.systemPackages = with pkgs; [ kdePackages.kdenetwork-filesharing ];
   services.samba = {
     enable = true;
-    securityType = "user";
     openFirewall = true;
+    settings.global.security = "user";
     usershares.enable = true;
   };
 }
