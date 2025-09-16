@@ -38,6 +38,11 @@
         home-manager.follows = "home-manager";
       };
     };
+
+    bore-scheduler-src = {
+      url = "github:firelzrd/bore-scheduler";
+      flake = false;
+    };
   };
 
   outputs =

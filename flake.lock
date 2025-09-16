@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "bore-scheduler-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1757855862,
+        "narHash": "sha256-ub9MVH2hQyuAUxqUmxsWuZM+ZbmO4nMnHWqiSKFgAn0=",
+        "owner": "firelzrd",
+        "repo": "bore-scheduler",
+        "rev": "1921b881b4c7c859514a1dbab93af8035fd4e245",
+        "type": "github"
+      },
+      "original": {
+        "owner": "firelzrd",
+        "repo": "bore-scheduler",
+        "type": "github"
+      }
+    },
     "disko": {
       "inputs": {
         "nixpkgs": [
@@ -196,6 +212,7 @@
     },
     "root": {
       "inputs": {
+        "bore-scheduler-src": "bore-scheduler-src",
         "disko": "disko",
         "home-manager": "home-manager",
         "nextcloud-tag-sync": "nextcloud-tag-sync",
