@@ -11,13 +11,13 @@
 
 stdenv.mkDerivation rec {
   pname = "koi";
-  version = "0.5.1";
+  version = "0.6";
 
   src = fetchFromGitHub {
     owner = "baduhai";
     repo = "Koi";
     rev = "${version}";
-    sha256 = "sha256-fXLGlq41Qwdp0cYJcNqPlYnlpVXsZk0imYxP7Bgdcvw=";
+    sha256 = "sha256-YRbS+WZaK0gJxNTU0KKi122Sn2hVk8t0vFhYr91sGfY=";
   };
 
   nativeBuildInputs = [
