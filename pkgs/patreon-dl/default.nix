@@ -22,13 +22,13 @@
 }:
 buildNpmPackage (finalAttrs: {
   pname = "patreon-dl";
-  version = "3.2.0";
+  version = "3.2.1";
 
   src = fetchFromGitHub {
     owner = "patrickkfkan";
     repo = "patreon-dl";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-nM5VoWZaezJqtEvhYevdxFk60we4cnddFSVR3dx1tNU=";
+    hash = "sha256-P4Wew3aP6Ke2sBy4jBu6n04KMbBt0elE8zp8D8wG5AI=";
   };
 
   nativeBuildInputs = [
@@ -41,7 +41,7 @@ buildNpmPackage (finalAttrs: {
 
   env.PUPPETEER_SKIP_DOWNLOAD = true;
 
-  npmDepsHash = "sha256-Wk+o+Rkc6qPRWmzP6cbEFXNOfmtqzfFY5CGV33QyXhQ=";
+  npmDepsHash = "sha256-taVluVVaLMqZtDXd6GOiLR+hqgM5V/LmiscWUw6ZEXY=";
 
   # The prepack script runs the build script, which we'd rather do in the build phase.
   npmPackFlags = [ "--ignore-scripts" ];
