@@ -71,6 +71,14 @@ in
       kdePackages.kdepim-addons
       kdePackages.krdc
       kdePackages.krfb
+      (unstable.kgeotag.overrideAttrs (
+        super: self: {
+          postInstall = ''
+            mkdir -p $out/share/kxmlgui5/kgeotag
+            install -Dm644 $srcs/kgeotagui.rc $out/share/kxmlgui5/kgeotag/kgeotagui.rc
+          '';
+        }
+      ))
       libreoffice-fresh
       pdfarranger
       pdfpc
