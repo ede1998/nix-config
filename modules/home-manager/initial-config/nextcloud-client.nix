@@ -195,7 +195,8 @@ in
             "0\\displayName" = cfg.user;
             "0\\url" = cfg.instance-url;
             "0\\webflow_user" = cfg.user;
-          } // sync-entries;
+          }
+          // sync-entries;
         }
       );
       directory =

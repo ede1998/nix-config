@@ -34,7 +34,8 @@ in
             iconTasks.launchers = [
               "applications:org.kde.dolphin.desktop"
               "applications:firefox.desktop"
-            ] ++ (lib.optional is-babbage "applications:thunderbird.desktop");
+            ]
+            ++ (lib.optional is-babbage "applications:thunderbird.desktop");
           }
           "org.kde.plasma.marginsseparator"
           { systemTray.items.hidden = (lib.optional is-babbage "org.kde.plasma.battery"); }

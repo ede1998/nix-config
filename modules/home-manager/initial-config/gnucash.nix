@@ -138,6 +138,7 @@ in
         "org/gnucash/GnuCash/dialogs/new-user".first-startup = cfg.show-first-startup;
         "org/gnucash/GnuCash/dialogs/tip-of-the-day".show-at-startup = cfg.show-tip-of-the-day;
         "org/gnucash/GnuCash/general".prefs-version = 5009;
-      } // optionalAttrs (default-book != "") { "org/gnucash/GnuCash/history".file0 = default-book; };
+      }
+      // optionalAttrs (default-book != "") { "org/gnucash/GnuCash/history".file0 = default-book; };
     };
 }

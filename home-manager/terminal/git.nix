@@ -62,6 +62,7 @@ in
       branch.sort = "-committerdate";
       push.useForceIfIncludes = true;
       fetch.prune = true;
-    } // lib.optionalAttrs (gitVersionAtLeast "2.37.0") { push.autoSetupRemote = true; };
+    }
+    // lib.optionalAttrs (gitVersionAtLeast "2.37.0") { push.autoSetupRemote = true; };
   };
 }

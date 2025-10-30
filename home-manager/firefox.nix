@@ -40,7 +40,8 @@ in
       EnableTrackingProtection = {
         Cryptomining = true;
         Fingerprinting = true;
-      } // lock-true;
+      }
+      // lock-true;
       DisablePocket = true;
       DisableSetDesktopBackground = true;
       # Don't show first run or post update page
@@ -151,7 +152,8 @@ in
               "save-to-pocket-button"
               "developer-button"
               # don't put downloads-button here or download panel won't open
-            ] ++ attrValues browser-action;
+            ]
+            ++ attrValues browser-action;
           };
           Status = "locked";
         };
