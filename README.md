@@ -36,9 +36,9 @@ git config blame.ignoreRevsFile .git-blame-ignore-revs
 - Run `home-manager switch --flake .#username@hostname` to apply your home configuration.
 - Run `nix repl` and then type `:lf .` to load this flake into an interactive interpreter
   and check out available options. Useful commands:
-  - `cfg = homeConfigurations."erik@nixos-erik-desktop".config`
-  - `lib = nixosConfigurations.nixos-erik-desktop.lib`
-  - `pkgs = nixosConfigurations.nixos-erik-desktop.pkgs`
+  - `cfg = homeConfigurations."erik@babbage".config`
+  - `lib = nixosConfigurations.babbage.lib`
+  - `pkgs = nixosConfigurations.babbage.pkgs`
   - `:p <expr>`
   - `:e <expr>` to open the source location in $EDITOR (if available)
   -  `printf "$(nix --extra-experimental-features dynamic-derivations eval .#homeConfigurations."erik@babbage".config.programs.bash.initExtra)"` prints the evaluated value, experimental feature required for multiple runs with the same inputs
