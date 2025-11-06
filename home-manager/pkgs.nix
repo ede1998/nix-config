@@ -71,18 +71,7 @@ in
       kdePackages.kdepim-addons
       kdePackages.krdc
       kdePackages.krfb
-      (unstable.kgeotag.overrideAttrs (
-        super: self: {
-          version = "1.8.0-unstable-2025-11-01";
-          src = fetchFromGitLab {
-            domain = "invent.kde.org";
-            repo = "kgeotag";
-            owner = "graphics";
-            rev = "879418eb57e96beb5be3e3a69d0bab2b666b7c7f";
-            hash = "sha256-RFC8UMrURn2vsTRjPFyLNlsep/PWRadkRkS7aFtTlKE=";
-          };
-        }
-      ))
+      unstable.kgeotag
       libreoffice-fresh
       pdfarranger
       pdfpc
