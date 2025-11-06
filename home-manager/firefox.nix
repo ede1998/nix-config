@@ -163,7 +163,7 @@ in
       isDefault = true;
       search = {
         force = true;
-        default = "SearXNG";
+        default = "ddg";
         privateDefault = "SearXNG";
         order = [
           "SearXNG"
