@@ -59,7 +59,7 @@ in
     ++ cli-tools
     ++ (with pkgs; [
       blender
-      cura5
+      cura-appimage
       element-desktop
       gimp
       hunspell
