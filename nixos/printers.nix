@@ -17,7 +17,7 @@
         name = "Xerox_WorkCentre_6027";
         description = "Xerox WorkCentre 6027 (configured by Nix)";
         location = "Büro";
-        deviceUri = "dnssd://Xerox%20WorkCentre%206027%20(50%3A9E%3A39)._pdl-datastream._tcp.local/";
+        deviceUri = "dnssd://Xerox%20WorkCentre%206027%20(50%3A9E%3A39)._ipp._tcp.local/?uuid=00000001-0000-1000-8000-9c934e509e39";
         model = "Xerox/Xerox_WorkCentre_6027.ppd.gz";
         ppdOptions = {
           PageSize = "A4";
