@@ -36,8 +36,8 @@ let
     p7zip
     patreon-dl
     pciutils
-    pinentry
-    poppler_utils
+    pinentry-curses
+    poppler-utils
     psmisc
     ripgrep
     tldr

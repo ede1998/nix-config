@@ -2,8 +2,21 @@
 {
   programs.ssh = {
     enable = true;
-    addKeysToAgent = "yes";
+    enableDefaultConfig = false;
     matchBlocks = {
+      # default config
+      "*" = {
+        addKeysToAgent = "yes";
+        forwardAgent = false;
+        compression = false;
+        serverAliveInterval = 0;
+        serverAliveCountMax = 3;
+        hashKnownHosts = false;
+        userKnownHostsFile = "~/.ssh/known_hosts";
+        controlMaster = "no";
+        controlPath = "~/.ssh/master-%r@%n:%p";
+        controlPersist = "no";
+      };
       smartknx = {
         hostname = "smartknx.local";
         user = "pi";
@@ -24,7 +37,7 @@
     enableBashIntegration = true;
     defaultCacheTtl = 3600;
     maxCacheTtl = 999999;
-    pinentry.package = pkgs.pinentry;
+    pinentry.package = pkgs.pinentry-curses;
   };
 
   home.file.".ssh" = {

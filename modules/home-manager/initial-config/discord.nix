@@ -31,6 +31,8 @@ in
     };
   };
 
+  # TODO: skip_host_update is now officially supported by home-manager -> try it out?
+
   config = mkIf cfg.enable {
     home.packages = [ pkgs.discord ];
     initial-files.file."${config.xdg.configHome}/discord/settings.json" = {

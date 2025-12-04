@@ -2,7 +2,6 @@
   pkgs,
   inputs,
   lib,
-  config,
   ...
 }:
 {
@@ -22,7 +21,8 @@
 
   boot.kernelPatches =
     let
-      patchesDir = "${inputs.bore-scheduler-src}/patches/stable/linux-${lib.versions.majorMinor config.boot.kernelPackages.kernel.version}-bore";
+      kernelVersion = "6.17"; # TODO bore is not released yet for 6.18 so we cannot get it like this: lib.versions.majorMinor config.boot.kernelPackages.kernel.version;
+      patchesDir = "${inputs.bore-scheduler-src}/patches/stable/linux-${kernelVersion}-bore";
     in
     lib.mapAttrsToList (name: _: {
       name = "bore-${name}";

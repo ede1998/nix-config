@@ -2,7 +2,7 @@
   description = "Erik's NixOS configuration";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
     # You can access packages and modules from different nixpkgs revs
     # at the same time. Here's an working example:
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -14,7 +14,7 @@
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -73,7 +73,7 @@
         hasInfix "text" (
           fileContents (
             with nixpkgs.legacyPackages.x86_64-linux;
-            runCommandNoCCLocal "chk-encryption" {
+            runCommandLocal "chk-encryption" {
               buildInputs = [ file ];
               src = test-file;
             } "file $src > $out"

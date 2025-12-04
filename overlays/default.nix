@@ -59,7 +59,7 @@ in
     final: prev:
     let
       pkgs = import inputs.nixpkgs-unstable {
-        system = final.system;
+        system = final.stdenv.hostPlatform.system;
         config = {
           allowUnfree = true;
           allowInsecurePredicate =

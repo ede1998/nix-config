@@ -22,11 +22,10 @@ let
   color = {
     pink = "#FD3297";
     blue = "#1365CA";
-    green = "#247E1E";
     violet = "#4A27D0";
   };
 in
-rec {
+{
   accounts.email = {
     accounts.mailbox-org = {
       primary = true;
@@ -65,6 +64,7 @@ rec {
             "mail.chat.enabled" = false;
             # Reply from this identity when delivery headers match:
             "mail.identity.id_${id}.catchAllHint" = "*@erik-hennig.me";
+            "calendar.week.start" = 1;
           };
       };
     };
@@ -76,52 +76,42 @@ rec {
   };
 
   accounts.calendar.accounts = {
-    mailbox-org-main = {
+    "Kalender" = {
       primary = true;
 
       thunderbird = {
+        enable = true;
         color = color.pink;
-        display-name = "Kalender";
-        position = 0;
       };
 
       # TODO This information is never used by KDE
       remote = mailboxOrgCalendar "Y2FsOi8vMC8zMQ";
     };
 
-    mailbox-org-birthdays = {
+    "Geburtstage" = {
       thunderbird = {
+        enable = true;
         color = color.blue;
-        display-name = "Geburtstage";
-        read-only = true;
-        position = 1;
+        readOnly = true;
       };
 
       remote = mailboxOrgCalendar "Y2FsOi8vMS8w";
     };
 
-    mailbox-org-lectures = {
+    "Müllabfuhr" = {
       thunderbird = {
-        color = color.green;
-        display-name = "Vorlesungen";
-        position = 2;
-      };
-
-      remote = mailboxOrgCalendar "Y2FsOi8vMC80Ng";
-    };
-
-    mailbox-org-trash-pickup = {
-      thunderbird = {
+        enable = true;
         color = color.violet;
-        display-name = "Müllabfuhr";
-        position = 3;
       };
 
       remote = mailboxOrgCalendar "Y2FsOi8vMC80Mg";
     };
   };
 
-  accounts.contact.accounts.Kontakte.remote = mailboxOrgContactList 32;
+  accounts.contact.accounts.Kontakte = {
+    remote = mailboxOrgContactList 32;
+    thunderbird.enable = true;
+  };
 
   programs.thunderbird = {
     enable = true;
@@ -138,17 +128,11 @@ rec {
     profiles.default = {
       isDefault = true;
       withExternalGnupg = true;
-      # Work-around for repeated creation of new profile
-      # https://github.com/nix-community/home-manager/issues/5031
-      settings = {
-        "mail.accountmanager.accounts" =
-          let
-            toHashedName = x: "account_" + (builtins.hashString "sha256" x);
-            accountUsesThunderbird = account_name: accounts.email.accounts.${account_name}.thunderbird.enable;
-            account-names = lib.filter accountUsesThunderbird (lib.attrNames accounts.email.accounts);
-          in
-          lib.concatStringsSep "," ((map toHashedName account-names) ++ [ "account1" ]);
-      };
+      calendarAccountsOrder = [
+        "Kalender"
+        "Geburtstage"
+        "Müllabfuhr"
+      ];
     };
   };
 }
