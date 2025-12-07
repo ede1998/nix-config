@@ -26,7 +26,7 @@ in
       # Windows-like panel at the top
       {
         location = if is-babbage then "top" else "bottom";
-        screen = if is-babbage then 2 else 0;
+        screen = 0;
         widgets = [
           "org.kde.plasma.kickoff"
           "org.kde.plasma.pager"
