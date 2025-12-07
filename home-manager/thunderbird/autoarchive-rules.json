@@ -34,5 +34,9 @@
     {
         "path": "mailbox-org/Archives/${year}/internet/hetzner",
         "selector": "return message.author.includes('billing@hetzner.com');"
+    },
+    {
+        "path": "mailbox-org/Archives/${year}/wohnung",
+        "selector": "return message.author.includes('@sw-verwaltungsgesellschaft.de');"
     }
 ]
