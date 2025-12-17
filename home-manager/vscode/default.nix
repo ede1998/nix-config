@@ -85,6 +85,7 @@
 
         "twinny.fileContextEnabled" = true;
         "twinny.completionCacheEnabled" = true;
+        "geminicodeassist.project" = "gen-lang-client-0227919942";
 
         # Invoke the correct shell for VSCode integrated terminal:
         # https://www.reddit.com/r/NixOS/comments/ycde3d/vscode_terminal_not_working_properly
