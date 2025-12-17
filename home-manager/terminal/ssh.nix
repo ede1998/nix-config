@@ -27,6 +27,11 @@
         user = "admin";
         identityFile = "~/.ssh/id_rsa";
       };
+      z3 = {
+        hostname = "z3.local";
+        user = "buffalo";
+        identityFile = "~/.ssh/id_rsa";
+      };
       "github.com".identityFile = "~/.ssh/id_rsa";
     };
   };
