@@ -8,5 +8,10 @@
         "ssid": "dummy",
         "psk": "dummy",
         "larc-mac": "00:01:02:03:04:05"
+    },
+    "mine": {
+        "ssid": "dummy",
+        "psk": "dummy",
+        "larc-mac": "00:01:02:03:04:05"
     }
 }
