@@ -18,12 +18,12 @@
         controlPersist = "no";
       };
       smartknx = {
-        hostname = "smartknx.local";
+        hostname = "192.168.140.44";
         user = "pi";
         identityFile = "~/.ssh/id_rsa";
       };
       qnap-nas = {
-        hostname = "qnap-nas.local";
+        hostname = "192.168.140.100";
         user = "admin";
         identityFile = "~/.ssh/id_rsa";
       };
