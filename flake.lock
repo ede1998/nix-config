@@ -3,11 +3,11 @@
     "bore-scheduler-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1771660696,
-        "narHash": "sha256-9UIz+a29jzP5LBA8B67S3h2PGtzZuI7bgnjRxggJY0s=",
+        "lastModified": 1771741215,
+        "narHash": "sha256-Lz2jEw1Pr1JJxPFBIqNw04rj/DGMNCSQI1QNPYaX6V4=",
         "owner": "firelzrd",
         "repo": "bore-scheduler",
-        "rev": "11804199f7f51cf30de04fc5fefdb0ac7efbe405",
+        "rev": "0c3eecf759659ad2b6efd5dd28eb8fca2d300d4c",
         "type": "github"
       },
       "original": {
@@ -66,11 +66,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1770260404,
-        "narHash": "sha256-3iVX1+7YUIt23hBx1WZsUllhbmP2EnXrV8tCRbLxHc8=",
+        "lastModified": 1771744638,
+        "narHash": "sha256-EDLi+YAsEEAmMeZe1v6GccuGRbCkpSZp/+A6g+pivR8=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "0d782ee42c86b196acff08acfbf41bb7d13eed5b",
+        "rev": "cb6c151f5c9db4df0b69d06894dc8484de1f16a0",
         "type": "github"
       },
       "original": {
@@ -111,11 +111,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1764878721,
-        "narHash": "sha256-KOENk8aGKP824FaHIno3cCWJTyK//JZGtyJ426AMu0I=",
+        "lastModified": 1771780872,
+        "narHash": "sha256-qkOMSsAvLIgEQ81rZozO+HDbgvofHw8YR4kzez2AiYk=",
         "owner": "ede1998",
         "repo": "nextcloud-tag-sync",
-        "rev": "09c7cdefa29f1cc15bccdb163f8aaa7de6d286d3",
+        "rev": "b2a515593fcaaaa0be092144e6b6be6175bc68bd",
         "type": "github"
       },
       "original": {
