@@ -29,7 +29,7 @@ in
         name = "ede1998";
         email = "online@erik-hennig.me";
       };
-      aliases = {
+      alias = {
         restore = "!f() { git checkout $(git rev-list -n 1 HEAD -- $1)~1 -- $(git diff --name-status $(git rev-list -n 1 HEAD -- $1)~1 | grep ^D | cut -f 2); }; f";
         fix-commit = "commit --edit --file=.git/COMMIT_EDITMSG";
         co = "checkout";
@@ -38,7 +38,7 @@ in
         unstage = "reset HEAD --";
         cp = "cherry-pick";
         # log {{{
-        last = "log -1 HEAD";
+        last = "log -1";
         lg = "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit";
         ll = "log --pretty=format:'%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [a:%an,c:%cn]' --decorate --numstat";
         # }}}
