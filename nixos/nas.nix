@@ -12,9 +12,25 @@ let
       "mfsymlinks"
     ];
   };
+  atlas-cifs-filesystem = {
+    fsType = "cifs";
+    options = [
+      "uid=${toString config.users.users.erik.uid}"
+      "gid=${toString config.users.groups.users.gid}"
+      "guest"
+      "rw"
+      "workgroup=WORKGROUP"
+      "vers=3.0"
+      "mfsymlinks"
+    ];
+  };
 in
 {
   fileSystems = {
+    "/mnt/atlas-download" = {
+      device = "//nas.erik-hennig.me/download";
+    }
+    // atlas-cifs-filesystem;
     "/mnt/erikdoc" = {
       device = "//QNAP-NAS/home";
     }
