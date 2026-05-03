@@ -28,12 +28,4 @@ in
     name = "bore-${name}";
     patch = "${patchesDir}/${name}";
   }) (builtins.readDir patchesDir);
-
-  warnings =
-    if (kernelVersion != "6.19") then
-      [
-        "Bore Scheduler: Kernel version is ${kernelVersion}, but bore patches are pinned to be compatible with 6.19. Consider unpinning."
-      ]
-    else
-      [ ];
 }

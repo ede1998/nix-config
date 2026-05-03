@@ -40,7 +40,7 @@
     };
 
     bore-scheduler-src = {
-      url = "github:firelzrd/bore-scheduler?rev=a020594b8562909d71494f1857432f61cb75893a";
+      url = "github:firelzrd/bore-scheduler";
       flake = false;
     };
   };

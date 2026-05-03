@@ -3,17 +3,16 @@
     "bore-scheduler-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1773428819,
-        "narHash": "sha256-Nb20eFFliVngS7Fr+FMm3BExz8PaKwxeZfp3kNxaa6M=",
+        "lastModified": 1777633487,
+        "narHash": "sha256-KdeMUJ0Sp0PgS/ZA2q3VK2Nf0mTtcncEwZr4meepOwI=",
         "owner": "firelzrd",
         "repo": "bore-scheduler",
-        "rev": "a020594b8562909d71494f1857432f61cb75893a",
+        "rev": "b3d32d475646ab95d7c1e59f210117d71ed5046d",
         "type": "github"
       },
       "original": {
         "owner": "firelzrd",
         "repo": "bore-scheduler",
-        "rev": "a020594b8562909d71494f1857432f61cb75893a",
         "type": "github"
       }
     },
