@@ -91,7 +91,7 @@ glob-expand() {
 file_ing=$(glob-expand "$dir_download/Umsatzanzeige_DE25500105175512060053_"*".csv")
 file_ing_checking=$(glob-expand "$dir_download/Umsatzanzeige_DE30500105175438009290_"*".csv")
 file_barclay="$dir_download/Umsätze.xlsx"
-file_leaseplan="$dir_download/Transaktionsuebersicht.csv"
+file_leaseplan="$dir_download/Kontoauszug.csv"
 #file_vw_bank=$(glob-expand "$dir_download/KtoNr_1524931191_Export_Umsätze_"*".csv")
 file_bondora=$(find ~/Downloads/ -maxdepth 1 -type f -name "${last_month_without_year}_01_${year_of_last_month}-${last_month_without_year}_*_${year_of_last_month}*.xlsx" | fzf --select-1 --prompt "Select Bondora file > ")
 
