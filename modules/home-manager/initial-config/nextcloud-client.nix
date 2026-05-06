@@ -103,7 +103,7 @@ in
                 ignoreHiddenFiles = mkOption {
                   default = true;
                   type = types.bool;
-                  description = ''Whether to sync hidden files.'';
+                  description = "Whether to sync hidden files.";
                 };
               };
 

@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   programs.vscode = {
     enable = true;
@@ -21,7 +21,6 @@
           jnoortheen.nix-ide
           ms-python.python
           myriad-dreamin.tinymist
-          rjmacarthy.twinny
           rust-lang.rust-analyzer
           streetsidesoftware.code-spell-checker
           tamasfe.even-better-toml
@@ -33,6 +32,24 @@
           ms-vsliveshare.vsliveshare
           vadimcn.vscode-lldb
         ]);
+      #++ [
+      #  (pkgs.vscode-utils.buildVscodeMarketplaceExtension {
+      #    mktplcRef = {
+      #      publisher = "github";
+      #      name = "copilot-chat";
+      #      version = "0.40.1"; # works with current VSCodium 112
+      #      hash = "sha256-wVxryUaW53xU4zZKU4t1pZaAB7BFIOkkcng91JnCLOk=";
+      #    };
+
+      #    meta = {
+      #      description = "GitHub Copilot Chat is a companion extension to GitHub Copilot that houses experimental chat features";
+      #      downloadPage = "https://marketplace.visualstudio.com/items?itemName=GitHub.copilot-chat";
+      #      homepage = "https://github.com/features/copilot";
+      #      license = lib.licenses.mit;
+      #      maintainers = [ ];
+      #    };
+      #  })
+      #];
       keybindings = [
         {
           key = "ctrl+alt+x";
@@ -78,13 +95,9 @@
         "liveshare.diagnosticLogging" = true;
         "liveshare.connectionMode" = "relay";
 
+        "chat.disableAIFeatures" = false;
         "bookmarks.saveBookmarksInProject" = true;
 
-        # Disable Github Copilot controls
-        "chat.commandCenter.enabled" = false;
-
-        "twinny.fileContextEnabled" = true;
-        "twinny.completionCacheEnabled" = true;
         "geminicodeassist.project" = "gen-lang-client-0227919942";
 
         # Invoke the correct shell for VSCode integrated terminal:
