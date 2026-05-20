@@ -31,25 +31,25 @@
           # This extension from vscode-marketplace does not work.
           ms-vsliveshare.vsliveshare
           vadimcn.vscode-lldb
-        ]);
-      #++ [
-      #  (pkgs.vscode-utils.buildVscodeMarketplaceExtension {
-      #    mktplcRef = {
-      #      publisher = "github";
-      #      name = "copilot-chat";
-      #      version = "0.40.1"; # works with current VSCodium 112
-      #      hash = "sha256-wVxryUaW53xU4zZKU4t1pZaAB7BFIOkkcng91JnCLOk=";
-      #    };
+        ])
+        ++ [
+          (pkgs.vscode-utils.buildVscodeMarketplaceExtension {
+            mktplcRef = {
+              publisher = "github";
+              name = "copilot-chat";
+              version = "0.40.1"; # works with current VSCodium 112
+              hash = "sha256-wVxryUaW53xU4zZKU4t1pZaAB7BFIOkkcng91JnCLOk=";
+            };
 
-      #    meta = {
-      #      description = "GitHub Copilot Chat is a companion extension to GitHub Copilot that houses experimental chat features";
-      #      downloadPage = "https://marketplace.visualstudio.com/items?itemName=GitHub.copilot-chat";
-      #      homepage = "https://github.com/features/copilot";
-      #      license = lib.licenses.mit;
-      #      maintainers = [ ];
-      #    };
-      #  })
-      #];
+            meta = {
+              description = "GitHub Copilot Chat is a companion extension to GitHub Copilot that houses experimental chat features";
+              downloadPage = "https://marketplace.visualstudio.com/items?itemName=GitHub.copilot-chat";
+              homepage = "https://github.com/features/copilot";
+              license = lib.licenses.mit;
+              maintainers = [ ];
+            };
+          })
+        ];
       keybindings = [
         {
           key = "ctrl+alt+x";
@@ -97,8 +97,6 @@
 
         "chat.disableAIFeatures" = false;
         "bookmarks.saveBookmarksInProject" = true;
-
-        "geminicodeassist.project" = "gen-lang-client-0227919942";
 
         # Invoke the correct shell for VSCode integrated terminal:
         # https://www.reddit.com/r/NixOS/comments/ycde3d/vscode_terminal_not_working_properly
