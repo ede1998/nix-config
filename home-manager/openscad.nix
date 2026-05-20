@@ -11,6 +11,13 @@ let
     sha256 = "sha256-FHHZ5MnOWbWnLIL2+d5VJoYAto4/GshK8S0DU3Bx7O8=";
   };
 
+  bosl2 = pkgs.fetchFromGitHub {
+    owner = "BelfrySCAD";
+    repo = "BOSL2";
+    rev = "v2.0.741";
+    sha256 = "sha256-0qy9WX7lhiVoY5Jv5pdXHOMXf6QfnrEJ5XHzv5B2Skk=";
+  };
+
   round-anything = pkgs.fetchFromGitHub {
     owner = "Irev-Dev";
     repo = "Round-Anything";
@@ -23,6 +30,9 @@ in
   xdg.dataFile = {
     "${library-dir}/BOSL" = {
       source = bosl;
+    };
+    "${library-dir}/BOSL2" = {
+      source = bosl2;
     };
     "${library-dir}/Round-Anything" = {
       source = round-anything;
