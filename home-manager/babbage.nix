@@ -24,6 +24,7 @@
     ./gnucash
     ./home.nix
     ./koi.nix
+    ./krdc.nix
     ./nextcloud.nix
     ./openscad.nix
     ./pkgs.nix

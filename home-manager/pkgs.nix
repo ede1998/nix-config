@@ -69,7 +69,6 @@ in
       kdePackages.filelight
       kdePackages.kcalc
       kdePackages.kdepim-addons
-      kdePackages.krdc
       kdePackages.krfb
       unstable.kgeotag
       libreoffice-fresh

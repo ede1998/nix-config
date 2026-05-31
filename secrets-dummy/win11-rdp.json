@@ -1,0 +1,7 @@
+{
+  "pveUrl": "192.168.1.100",
+  "pveNode": "pve",
+  "vmId": "100",
+  "vmIp": "192.168.1.105",
+  "pveToken": "PVEAPIToken=root@pam!rdp_starter=YOUR-UUID-SECRET-HERE"
+}
