@@ -18,6 +18,7 @@ let
       #!/usr/bin/env bash
       set -euo pipefail
 
+      exec >/tmp/win11-rdp-launcher.log 2>&1
 
       echo 'Starting Windows 11 VM (${credentials.vmId}) on Proxmox host ${credentials.pveUrl}...'
 
@@ -51,22 +52,22 @@ let
       echo
       echo 'RDP is up! Launching KRDC...'
 
-      exec krdc 'rdp://${credentials.vmIp}'
+      krdc 'rdp://${credentials.vmIp}' &
+      disown
     '';
   };
 in
 {
-  # Ensure krdc is available globally; the start script is provided as a package
   home.packages = with pkgs; [ kdePackages.krdc ];
 
-  # Desktop entry to run the script (opens in a terminal)
+  home.file.".local/share/icons/hicolor/scalable/apps/icon-win11.svg".source = ./icon-win11.svg;
   home.file.".local/share/applications/Windows11-Proxmox.desktop".text = lib.mkForce ''
     [Desktop Entry]
     Name=Windows 11 (Proxmox)
     Comment=Starts Proxmox VM and opens RDP
     Exec=${startScript}/bin/start-win11-rdp.sh
-    Icon=windows
-    Terminal=true
+    Icon=icon-win11
+    Terminal=false
     Type=Application
     Categories=Network;RemoteAccess;
   '';
