@@ -42,6 +42,8 @@ git config blame.ignoreRevsFile .git-blame-ignore-revs
   - `:p <expr>`
   - `:e <expr>` to open the source location in $EDITOR (if available)
   -  `printf "$(nix --extra-experimental-features dynamic-derivations eval .#homeConfigurations."erik@babbage".config.programs.bash.initExtra)"` prints the evaluated value, experimental feature required for multiple runs with the same inputs
+  - `nixosConfigurations.babbage.config.system.build.toplevel` refers to the derivation that is built with nixos-rebuild.
+  - `homeConfigurations.erik@babbage.activationPackage` refers to the derivation that is built with home-manager.
 - Update your flake lock with `nix flake update` to get the latest packages and modules.
 
 ## Features

@@ -1,3 +1,4 @@
 # create by home-manager build
 /result
+/utils/docker-nix-ci/result
 /.direnv
