@@ -1,0 +1,52 @@
+name: Update Nix CI docker
+
+on:
+  schedule:
+    # Runs at 03:00 on Monday.
+    - cron: '0 3 * * 1'
+  workflow_dispatch: # Manually trigger-able for testing
+
+jobs:
+  update-flake:
+    runs-on: selfhosted
+
+    container:
+      image: codeberg.org/ede1998/nix-config/ci:latest
+
+    steps:
+      - name: Checkout repository
+        uses: https://github.com/actions/checkout@v4
+
+      - name: Update Nix CI docker flake inputs
+        id: update-flake-inputs
+        run: |
+          echo "date=$(date +'%Y-%m-%d')" >> "$FORGEJO_OUTPUT"
+
+          # Run the update and capture the output for the PR body
+          {
+            echo "body<<EOF"
+            nix flake update --flake ./utils/docker-nix-ci |& grep -v '^unpacking\|^warning: updating lock file\|^warning: Git tree .* is dirty$'
+            echo "EOF"
+          } >> "$FORGEJO_OUTPUT"
+
+      - name: Create pull request
+        id: create_pull_request
+        uses: https://github.com/ede1998/forgejo-create-pr@patch-1
+        with:
+          token: ${{ forgejo.token }}
+          commit-message: "chore: Bump ci docker flake.lock"
+          pr-title: "Update CI docker on ${{ steps.update-flake-inputs.outputs.date }}"
+          pr-body: |
+            This PR was automatically created by CI job [update-docker-ci.yml](.forgejo/workflows/update-docker-ci.yml).
+
+            Output of `nix flake update`:
+
+            ```
+            ${{ steps.update-flake-inputs.outputs.body }}
+            ```
+          pr-branch: update-ci-docker
+          pr-automerge: true
+          commit-user: Flake Bot
+          commit-email: actions@codeberg.org
+          add-paths: ./utils/docker-nix-ci/flake.lock
+          base: master

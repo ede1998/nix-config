@@ -1,0 +1,57 @@
+name: Build and Push Nix CI Container
+
+on:
+  push:
+    branches:
+      - master
+    paths: &trigger_paths
+      - 'utils/docker-nix-ci/**'
+  pull_request:
+    paths: *trigger_paths
+  workflow_dispatch: # Manually trigger-able for testing
+
+jobs:
+  build-and-push:
+    runs-on: selfhosted
+    container:
+      # Run inside CURRENT version of the CI container to have `nix` available to build the new one.
+      image: codeberg.org/ede1998/nix-config/ci:latest
+
+    steps:
+      - name: Checkout repository
+        uses: https://github.com/actions/checkout@v4
+
+      - name: Build container with Nix
+        id: build
+        run: |
+          {
+            echo "image_path<<EOF"
+            nix build ./utils/docker-nix-ci --print-out-paths
+            echo EOF
+          } >> "$FORGEJO_OUTPUT"
+
+      - name: Check flake.lock
+        uses: https://github.com/DeterminateSystems/flake-checker-action@v9
+        with:
+          flake-lock-path: ./utils/docker-nix-ci/flake.lock
+          fail-mode: true
+          # nixpkgs-keys: nixpkgs # default
+
+      - name: Check docker image validity
+        run: |
+          echo "Local image:"
+          nix run --log-format raw nixpkgs#skopeo -- inspect "docker-archive:${{ steps.build.outputs.image_path }}"
+          echo "Remote image:"
+          nix run --log-format raw nixpkgs#skopeo -- inspect --creds "${{ forgejo.actor }}:${{ secrets.NIX_CONFIG_PACKAGE_PUSH }}" "docker://codeberg.org/ede1998/nix-config/ci:latest"
+
+      - name: Push Docker Image After Merge
+        if: github.ref == 'refs/heads/master'
+        run: |
+          # Use skopeo via ad-hoc download to limit image size
+          # Should maybe use a policy but I can't be bothered to research how this works right now.
+          nix run --log-format raw nixpkgs#skopeo -- \
+            --insecure-policy \
+            copy \
+            --dest-creds "${{ forgejo.actor }}:${{ secrets.NIX_CONFIG_PACKAGE_PUSH }}" \
+            "docker-archive:${{ steps.build.outputs.image_path }}" \
+            "docker://codeberg.org/ede1998/nix-config/ci:latest"
