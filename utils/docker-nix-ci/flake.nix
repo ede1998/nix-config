@@ -27,6 +27,11 @@
         "$@"
       '';
 
+      formatDate =
+        d: "${builtins.substring 0 4 d}-${builtins.substring 4 2 d}-${builtins.substring 6 2 d}";
+      formatTime =
+        t: "${builtins.substring 8 2 t}-${builtins.substring 10 2 t}-${builtins.substring 12 2 t}";
+      formatDateTime = dt: "${formatDate dt}T${formatTime dt}";
     in
     {
       formatter.${system} = pkgs.treefmt;
@@ -36,6 +41,16 @@
         container = buildImageWithNix {
           name = "codeberg.org/ede1998/nix-config/ci";
           tag = "latest";
+
+          Labels = {
+            "org.opencontainers.image.title" = "ede1998's Nix CI";
+            "org.opencontainers.image.source" =
+              "https://codeberg.org/ede1998/nix-config/src/branch/master/utils/docker-nix-ci/flake.nix";
+            "org.opencontainers.image.vendor" = "ede1998";
+            "org.opencontainers.image.version" = formatDateTime self.lastModifiedDate;
+            "org.opencontainers.image.description" =
+              "Used to build ede1998's NixOS configuration in CI. Based on official nix-os/nix image.";
+          };
 
           nixConf = {
             experimental-features = [
