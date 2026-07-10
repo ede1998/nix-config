@@ -8,6 +8,7 @@ pp:/home/erik/nvme/steam-games
 pp:/home/erik/tmp/whishper/whishper_data
 pf:/home/erik/.local/share/baloo/index
 pf:/home/erik/.platformio
+pf:/home/erik/.ollama/models
 
 # rust-artefacts
 fm:*/.cargo
