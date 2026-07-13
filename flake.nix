@@ -108,6 +108,7 @@
           modules = [ ./nixos/babbage/configuration.nix ];
         };
       };
+
       homeConfigurations' =
         secrets:
         let
@@ -151,20 +152,25 @@
           nixos-config: nixos-configurations.${nixos-config}.config.system.build.toplevel
         )
       );
+
       # Your custom packages
       # Accessible through 'nix build', 'nix shell', etc
       packages = forAllSystems (system: import ./pkgs (nixpkgsUnfree system));
+
       # Make `nix develop` possible
       devShells = forAllSystems (system: import ./shell.nix nixpkgs.legacyPackages.${system});
+
       # Formatter for your nix files, available through 'nix fmt'
       # Other options beside 'alejandra' include 'nixpkgs-fmt'
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.treefmt);
 
       # Your custom packages and modifications, exported as overlays
       overlays = import ./overlays { inherit inputs; };
+
       # Reusable nixos modules you might want to export
       # These are usually stuff you would upstream into nixpkgs
       nixosModules = import ./modules/nixos;
+
       # Reusable home-manager modules you might want to export
       # These are usually stuff you would upstream into home-manager
       homeModules = import ./modules/home-manager;

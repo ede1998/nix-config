@@ -1,0 +1,25 @@
+name: Flake Lock Checker
+
+on:
+  push:
+    branches: [ main ]
+    paths: &trigger_paths
+      - 'flake.lock'
+  pull_request:
+    paths: *trigger_paths
+  workflow_dispatch: # Manually trigger-able for testing
+
+jobs:
+  check-flake:
+    name: Check flake.lock
+    runs-on: selfhosted
+    container:
+      image: codeberg.org/ede1998/nix-config/ci:latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Check flake.lock
+        uses: https://github.com/DeterminateSystems/flake-checker-action@v9
+        with:
+          fail-mode: true
+          nixpkgs-keys: nixpkgs,nixpkgs-unstable

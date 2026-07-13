@@ -1,0 +1,70 @@
+name: Nix Flake CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  workflow_dispatch: # Manually trigger-able for testing
+
+jobs:
+  format:
+    name: Check Code Formatting
+    runs-on: selfhosted
+    container:
+      image: codeberg.org/ede1998/nix-config/ci:latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Verify nix fmt
+        run: |
+          treefmt --ci || { 
+            echo "::error title=Formatter Error::Code is not formatted. Please run 'nix fmt' locally and push.";
+
+            FORMATTER_FLAKE=$(nix eval .#formatter.x86_64-linux.outPath --raw)/bin/treefmt
+            FORMATTER_CI=$(realpath $(which treefmt))
+
+            if [ "${FORMATTER_CI}" != "${FORMATTER_FLAKE}" ]; then
+              echo "::warning title=Formatter Mismatch::CI package out of sync, which could lead to mismatched formatting expectations. Flake uses ${FORMATTER_FLAKE} but CI has ${FORMATTER_CI}."
+            fi
+
+            exit 1;
+          }
+  build:
+      name: Build All
+      runs-on: selfhosted
+      container:
+        image: codeberg.org/ede1998/nix-config/ci:latest
+      steps:
+        - uses: actions/checkout@v4
+        - name: Setup Attic cache
+          uses: https://github.com/ryanccn/attic-action@v0
+          with:
+            endpoint: "http://10.1.0.107:8080"
+            cache: default
+            token: ${{ secrets.ATTIC_TOKEN }}
+        - name: Build attribute sets
+          id: build_attr_sets
+          run: |
+            echo $FORGEJO_STEP_SUMMARY
+            export FORGEJO_STEP_SUMMARY=${FORGEJO_STEP_SUMMARY:-asdf.txt}
+            nix-fast-build \
+              --skip-cached \
+              --max-jobs 2 \
+              --attic-cache default \
+              --option min-free $((512 * 1024 * 1024)) \
+              --option max-free $((2 * 1024 * 1024 * 1024)) \
+              --flake "." \
+              --select 'flake: { checks.x86_64-linux = flake.checks.x86_64-linux; packages.x86_64-linux = flake.packages.x86_64-linux; }'
+
+              {
+                echo "summary<<EOF"
+                cat "$FORGEJO_STEP_SUMMARY"
+                echo "EOF"
+              } >> "$FORGEJO_OUTPUT"
+            
+        - name: Print Build Summary
+          if: always()
+          run: |
+            echo "=== WORKFLOW STEP SUMMARY ==="
+            echo "${{ steps.build_attr_sets.outputs.summary }}"
+            echo "============================="
