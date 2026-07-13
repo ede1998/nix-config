@@ -1,0 +1,78 @@
+name: Nix Flake CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  check-flake:
+    name: Check flake.lock
+    runs-on: selfhosted
+    container:
+      image: codeberg.org/ede1998/nix-config/ci:latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+  format:
+    name: Check Code Formatting
+    runs-on: selfhosted
+    container:
+      image: codeberg.org/ede1998/nix-config/ci:latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Verify nix fmt
+        run: |
+          nix fmt || { echo "Code is not formatted. Please run 'nix fmt' locally and push."; exit 1; }
+  discover:
+    name: Auto-Detect Flake Outputs
+    runs-on: selfhosted
+    container:
+      image: codeberg.org/ede1998/nix-config/ci:latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Generate Build Matrix
+        id: set-matrix
+        run: |
+          get_outputs() {
+            local attr=$1
+            local attr_path_prefix=$2
+            local attr_path_suffix=$3
+            local display_name=$4
+            
+            if nix eval --json ".#${attr}" --apply 'builtins.attrNames' > keys.json 2>/dev/null; then
+              jq -c --arg pref "$attr_path_prefix" --arg suff "$attr_path_suffix" --arg disp "$display_name" \
+                'map({name: ($disp + " " + .), attr: ($pref + "\"\(.)\"" + $suff)})' keys.json
+            else
+              echo "[]"
+            fi
+          }
+
+          pkgs=$(get_outputs "packages.x86_64-linux" "packages.x86_64-linux." "" "package")
+          nixos=$(get_outputs "nixosConfigurations" "nixosConfigurations." ".config.system.build.toplevel" "check")
+          hm=$(get_outputs "homeConfigurations" "homeConfigurations." ".activationPackage" "check")
+
+          matrix=$(jq -c -n --argjson p "$pkgs" --argjson n "$nixos" --argjson h "$hm" '{include: ($p + $n + $h)}')
+          
+          echo "Discovered matrix: $matrix"
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: discover
+    runs-on: selfhosted
+    container:
+      image: codeberg.org/ede1998/nix-config/ci:latest
+    strategy:
+      fail-fast: false 
+      matrix: ${{ fromJSON(needs.discover.outputs.matrix) }}
+    name: ${{ matrix.name }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Build ${{ matrix.name }}
+        run: |
+          #nix build --print-build-logs '.#${{ matrix.attr }}'
