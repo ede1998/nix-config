@@ -64,10 +64,13 @@
           inherit pkgs;
           extraPkgs = with pkgs; [
             fakeSudo
-            jq
+            attic-client
             findutils
             gnugrep
+            jq
+            nixfmt
             nodejs-slim
+            treefmt
             xz
           ];
         };
