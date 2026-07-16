@@ -44,7 +44,6 @@
     # Not sure if substituters is required again here if it is already part of the NixOS configuration.
     settings.substituters = [
       "https://cache.nixos.org"
-      "https://cache.garnix.io"
     ];
   };
 
