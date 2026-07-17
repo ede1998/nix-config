@@ -9,6 +9,10 @@
       url = "github:NixOS/nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-fast-build = {
+      url = "github:Mic92/nix-fast-build";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -16,6 +20,7 @@
       self,
       nix,
       nixpkgs,
+      nix-fast-build,
     }:
     let
       system = "x86_64-linux";
@@ -68,6 +73,7 @@
             findutils
             gnugrep
             jq
+            nix-fast-build.packages.${system}.default
             nixfmt
             nodejs-slim
             treefmt
