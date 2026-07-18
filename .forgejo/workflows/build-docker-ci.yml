@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths: &trigger_paths
-      - 'utils/docker-nix-ci/**'
+      - 'utils/ci/docker/**'
   pull_request:
     paths: *trigger_paths
   workflow_dispatch: # Manually trigger-able for testing
@@ -26,14 +26,14 @@ jobs:
         run: |
           {
             echo "image_path<<EOF"
-            nix build ./utils/docker-nix-ci --print-out-paths
+            nix build ./utils/ci/docker --print-out-paths
             echo EOF
           } >> "$FORGEJO_OUTPUT"
 
       - name: Check flake.lock
         uses: https://github.com/DeterminateSystems/flake-checker-action@v9
         with:
-          flake-lock-path: ./utils/docker-nix-ci/flake.lock
+          flake-lock-path: ./utils/ci/docker/flake.lock
           fail-mode: true
           # nixpkgs-keys: nixpkgs # default
 

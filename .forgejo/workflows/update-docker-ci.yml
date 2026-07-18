@@ -25,7 +25,7 @@ jobs:
           # Run the update and capture the output for the PR body
           {
             echo "body<<EOF"
-            nix flake update --flake ./utils/docker-nix-ci |& grep -v '^unpacking\|^warning: updating lock file\|^warning: Git tree .* is dirty$'
+            nix flake update --flake ./utils/ci/docker |& grep -v '^unpacking\|^warning: updating lock file\|^warning: Git tree .* is dirty$'
             echo "EOF"
           } >> "$FORGEJO_OUTPUT"
 
@@ -48,5 +48,5 @@ jobs:
           pr-automerge: true
           commit-user: Flake Bot
           commit-email: actions@codeberg.org
-          add-paths: ./utils/docker-nix-ci/flake.lock
+          add-paths: ./utils/ci/docker/flake.lock
           base: master

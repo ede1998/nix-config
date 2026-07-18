@@ -50,7 +50,7 @@
           Labels = {
             "org.opencontainers.image.title" = "ede1998's Nix CI";
             "org.opencontainers.image.source" =
-              "https://codeberg.org/ede1998/nix-config/src/branch/master/utils/docker-nix-ci/flake.nix";
+              "https://codeberg.org/ede1998/nix-config/src/branch/master/utils/ci/docker/flake.nix";
             "org.opencontainers.image.vendor" = "ede1998";
             "org.opencontainers.image.version" = formatDateTime self.lastModifiedDate;
             "org.opencontainers.image.description" =
@@ -76,6 +76,7 @@
             nix-fast-build.packages.${system}.default
             nixfmt
             nodejs-slim
+            python3
             treefmt
             xz
           ];
