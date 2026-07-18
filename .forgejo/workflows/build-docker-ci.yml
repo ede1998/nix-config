@@ -1,5 +1,4 @@
 name: Build and Push Nix CI Container
-
 on:
   push:
     branches:
@@ -9,18 +8,15 @@ on:
   pull_request:
     paths: *trigger_paths
   workflow_dispatch: # Manually trigger-able for testing
-
 jobs:
   build-and-push:
     runs-on: selfhosted
     container:
       # Run inside CURRENT version of the CI container to have `nix` available to build the new one.
       image: codeberg.org/ede1998/nix-config/ci:latest
-
     steps:
       - name: Checkout repository
         uses: https://github.com/actions/checkout@v4
-
       - name: Build container with Nix
         id: build
         run: |
@@ -29,21 +25,18 @@ jobs:
             nix build ./utils/ci/docker --print-out-paths
             echo EOF
           } >> "$FORGEJO_OUTPUT"
-
       - name: Check flake.lock
         uses: https://github.com/DeterminateSystems/flake-checker-action@v9
         with:
           flake-lock-path: ./utils/ci/docker/flake.lock
           fail-mode: true
           # nixpkgs-keys: nixpkgs # default
-
       - name: Check docker image validity
         run: |
           echo "Local image:"
           nix run --log-format raw nixpkgs#skopeo -- inspect "docker-archive:${{ steps.build.outputs.image_path }}"
           echo "Remote image:"
           nix run --log-format raw nixpkgs#skopeo -- inspect --creds "${{ forgejo.actor }}:${{ secrets.NIX_CONFIG_PACKAGE_PUSH }}" "docker://codeberg.org/ede1998/nix-config/ci:latest"
-
       - name: Push Docker Image After Merge
         if: github.ref == 'refs/heads/master'
         run: |

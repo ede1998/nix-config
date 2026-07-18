@@ -1,29 +1,23 @@
 # Based on https://github.com/reckenrode/nixos-configs/blob/6677f800e858f7cef20706c1df57f7454bb436fa/.github/workflows/main.yml
 name: Bump flake.lock
-
 on:
   schedule:
     - cron: "0 2 * * *"
   workflow_dispatch:
-
 jobs:
   build:
     runs-on: ubuntu-latest
-
     permissions:
       id-token: write
       # Give the default GITHUB_TOKEN write permission to commit and push the
       # added or changed files to the repository.
       contents: write
       pull-requests: write
-
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
       - uses: DeterminateSystems/nix-installer-action@v16
-
       - name: Update flake inputs
         id: update-flake-inputs
         run: |
@@ -33,13 +27,11 @@ jobs:
             nix flake update |& grep -v '^unpacking\|^warning: updating lock file\|^warning: Git tree .* is dirty$'
             echo EOF
           } >> "$GITHUB_OUTPUT"
-
       - name: Check flake.lock
         uses: DeterminateSystems/flake-checker-action@v9
         with:
           fail-mode: true
           nixpkgs-keys: nixpkgs,nixpkgs-unstable
-
       - name: Create pull request
         id: create_pull_request
         uses: peter-evans/create-pull-request@v7

@@ -1,11 +1,9 @@
 name: Nix Flake CI
-
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
   workflow_dispatch: # Manually trigger-able for testing
-
 jobs:
   format:
     name: Check Code Formatting
@@ -17,7 +15,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Verify nix fmt
         run: |
-          treefmt --ci || { 
+          treefmt --ci || {
             echo "::error title=Formatter Error::Code is not formatted. Please run 'nix fmt' locally and push.";
 
             FORMATTER_FLAKE=$(nix eval .#formatter.x86_64-linux.outPath --raw)/bin/treefmt
@@ -30,30 +28,30 @@ jobs:
             exit 1;
           }
   build:
-      name: Build All
-      runs-on: selfhosted
-      container:
-        image: codeberg.org/ede1998/nix-config/ci:latest
-      steps:
-        - uses: actions/checkout@v4
-        - name: Setup Attic cache
-          uses: https://github.com/ryanccn/attic-action@v0
-          with:
-            endpoint: "http://10.1.0.107:8080"
-            cache: default
-            token: ${{ secrets.ATTIC_TOKEN }}
-        - name: Build attribute sets
-          run: |
-            nix-fast-build \
-              --skip-cached \
-              --max-jobs 2 \
-              --attic-cache default \
-              --option min-free $((512 * 1024 * 1024)) \
-              --option max-free $((2 * 1024 * 1024 * 1024)) \
-              --result-file /tmp/build-results.json \
-              --flake "." \
-              --select 'flake: { checks.x86_64-linux = flake.checks.x86_64-linux; packages.x86_64-linux = flake.packages.x86_64-linux; }'
-        - name: Print Build Summary
-          if: always()
-          run: |
-            python3 utils/ci/format-nix-fast-build-json.py /tmp/build-results.json | tee -a "$FORGEJO_STEP_SUMMARY"
+    name: Build All
+    runs-on: selfhosted
+    container:
+      image: codeberg.org/ede1998/nix-config/ci:latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Attic cache
+        uses: https://github.com/ryanccn/attic-action@v0
+        with:
+          endpoint: "http://10.1.0.107:8080"
+          cache: default
+          token: ${{ secrets.ATTIC_TOKEN }}
+      - name: Build attribute sets
+        run: |
+          nix-fast-build \
+            --skip-cached \
+            --max-jobs 2 \
+            --attic-cache default \
+            --option min-free $((512 * 1024 * 1024)) \
+            --option max-free $((2 * 1024 * 1024 * 1024)) \
+            --result-file /tmp/build-results.json \
+            --flake "." \
+            --select 'flake: { checks.x86_64-linux = flake.checks.x86_64-linux; packages.x86_64-linux = flake.packages.x86_64-linux; }'
+      - name: Print Build Summary
+        if: always()
+        run: |
+          python3 utils/ci/format-nix-fast-build-json.py /tmp/build-results.json | tee -a "$FORGEJO_STEP_SUMMARY"

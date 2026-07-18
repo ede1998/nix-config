@@ -1,22 +1,17 @@
 name: Update Nix CI docker
-
 on:
   schedule:
     # Runs at 03:00 on Monday.
     - cron: '0 3 * * 1'
   workflow_dispatch: # Manually trigger-able for testing
-
 jobs:
   update-flake:
     runs-on: selfhosted
-
     container:
       image: codeberg.org/ede1998/nix-config/ci:latest
-
     steps:
       - name: Checkout repository
         uses: https://github.com/actions/checkout@v4
-
       - name: Update Nix CI docker flake inputs
         id: update-flake-inputs
         run: |
@@ -28,7 +23,6 @@ jobs:
             nix flake update --flake ./utils/ci/docker |& grep -v '^unpacking\|^warning: updating lock file\|^warning: Git tree .* is dirty$'
             echo "EOF"
           } >> "$FORGEJO_OUTPUT"
-
       - name: Create pull request
         id: create_pull_request
         uses: https://github.com/ede1998/forgejo-create-pr@patch-1
