@@ -6,3 +6,5 @@ cf9f1e66571890217dc5a66f1fc28c0983c0619d
 1f63aae0ff92a645ebf791045255c62a0eaad6ff
 # formatting with newer nix-fmt
 f34201c733d47b9e0577a492f9ad61205e5dc23c
+# re-format yaml files with yamlfmt
+f3ae4359e7c62c48751cf42ac8c73058a9735129
