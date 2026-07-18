@@ -43,28 +43,17 @@ jobs:
             cache: default
             token: ${{ secrets.ATTIC_TOKEN }}
         - name: Build attribute sets
-          id: build_attr_sets
           run: |
-            echo $FORGEJO_STEP_SUMMARY
-            export FORGEJO_STEP_SUMMARY=${FORGEJO_STEP_SUMMARY:-asdf.txt}
             nix-fast-build \
               --skip-cached \
               --max-jobs 2 \
               --attic-cache default \
               --option min-free $((512 * 1024 * 1024)) \
               --option max-free $((2 * 1024 * 1024 * 1024)) \
+              --result-file /tmp/build-results.json \
               --flake "." \
               --select 'flake: { checks.x86_64-linux = flake.checks.x86_64-linux; packages.x86_64-linux = flake.packages.x86_64-linux; }'
-
-              {
-                echo "summary<<EOF"
-                cat "$FORGEJO_STEP_SUMMARY"
-                echo "EOF"
-              } >> "$FORGEJO_OUTPUT"
-            
         - name: Print Build Summary
           if: always()
           run: |
-            echo "=== WORKFLOW STEP SUMMARY ==="
-            echo "${{ steps.build_attr_sets.outputs.summary }}"
-            echo "============================="
+            python3 utils/ci/format-nix-fast-build-json.py /tmp/build-results.json | tee -a "$FORGEJO_STEP_SUMMARY"
