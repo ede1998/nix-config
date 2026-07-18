@@ -11,7 +11,7 @@ jobs:
       image: codeberg.org/ede1998/nix-config/ci:latest
     steps:
       - name: Checkout repository
-        uses: https://github.com/actions/checkout@v4
+        uses: actions/checkout@v4
       - name: Update Nix CI docker flake inputs
         id: update-flake-inputs
         run: |
@@ -25,7 +25,8 @@ jobs:
           } >> "$FORGEJO_OUTPUT"
       - name: Create pull request
         id: create_pull_request
-        uses: https://github.com/ede1998/forgejo-create-pr@patch-1
+        uses: https://github.com/maxking/forgejo-create-pr
+        #uses: https://github.com/maxking/forgejo-create-pr@40a9fc1008252e082053cda0fc00d4cc38814056
         with:
           token: ${{ secrets.NIX_CONFIG_OPEN_PR }}
           commit-message: "chore: Bump ci docker flake.lock"

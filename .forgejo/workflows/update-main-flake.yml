@@ -1,0 +1,51 @@
+# Based on https://github.com/reckenrode/nixos-configs/blob/6677f800e858f7cef20706c1df57f7454bb436fa/.github/workflows/main.yml
+name: Bump flake.lock
+on:
+  schedule:
+    # Runs everyday at 01:00.
+    - cron: "0 1 * * *"
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: selfhosted
+    container:
+      image: codeberg.org/ede1998/nix-config/ci:latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Attic cache
+        uses: https://github.com/ryanccn/attic-action@v0
+        with:
+          endpoint: "http://10.1.0.107:8080"
+          cache: default
+          token: ${{ secrets.ATTIC_TOKEN }}
+      - name: Update flake inputs
+        id: update-flake-inputs
+        run: |
+          echo "date=$(date +'%Y-%m-%d')" >> "$FORGEJO_OUTPUT"
+          {
+            echo "body<<EOF"
+            nix flake update |& grep -v '^unpacking\|^warning: updating lock file\|^warning: Git tree .* is dirty$'
+            echo EOF
+          } >> "$FORGEJO_OUTPUT"
+      - name: Create pull request
+        id: create_pull_request
+        uses: https://github.com/maxking/forgejo-create-pr
+        #uses: https://github.com/maxking/forgejo-create-pr@40a9fc1008252e082053cda0fc00d4cc38814056
+        with:
+          token: ${{ secrets.NIX_CONFIG_OPEN_PR }}
+          commit-message: "chore: Bump flake.lock"
+          pr-title: Update flake.lock on ${{ steps.update-flake-inputs.outputs.date }}
+          pr-body: |
+            This PR was automatically created by CI job [update-main-flake.yml](.forgejo/workflows/update-main-flake.yml).
+
+            Output of `nix flake update`:
+
+            ```
+            ${{ steps.update-flake-inputs.outputs.body }}
+            ```
+          pr-branch: update-lockfile
+          pr-automerge: true
+          commit-user: Flake Bot
+          commit-email: actions@codeberg.org
+          add-paths: flake.lock
+          base: master
